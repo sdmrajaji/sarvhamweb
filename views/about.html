@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | Sarvham Foundation</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../public/css/about.css" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Typed.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <h1 class="logo">Sarvham Foundation</h1>
+      <nav>
+        <ul>
+          <li><a href="../views/index.html">Home</a></li>
+          <li><a href="../views/about.html">About</a></li>
+          <li><a href="../views/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <!-- About Section -->
+    <section class="about scroll-animate">
+      <div class="image">
+        <img src="../public/images/sarvham new logo.jpg" alt="Sarvham Foundation Logo" />
+      </div>
+      <div class="text">
+        <h3 id="typewriter"></h3>
+        <p>We are Sarvham Foundation, a passionate team of changemakers dedicated to fighting poverty...</p>
+        <p>Our team, lovingly called <strong>"Sarvamates"</strong>, believes that no one deserves to live without basic needs...</p>
+        <p><strong>Our Vision:</strong> <em>End Poverty. Empower Humanity.</em></p>
+      </div>
+    </section>
+
+    <!-- Join Us Form -->
+    <section id="join-us" class="container scroll-animate">
+      <h2>Join the Sarvamates Family</h2>
+      <p>Become a part of our mission. Fill out the form below and join us!</p>
+
+      <form id="joinForm" class="join-form">
+        <div class="input-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="fatherName">Father's Name</label>
+            <input type="text" id="fatherName" name="fatherName" placeholder="Enter your father's name" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="whatsapp">WhatsApp Number</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="Enter your WhatsApp number" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="aadhar">Aadhar Card Number</label>
+            <input type="text" id="aadhar" name="aadhar" placeholder="Enter your Aadhar number" pattern="\d{12}" maxlength="12" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+            </select>
+        </div>
+    
+        <div class="input-group">
+            <label for="bloodGroup">Blood Group</label>
+            <select id="bloodGroup" name="bloodGroup" required>
+                <option value="">Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="A1+">A1+</option>
+                <option value="A1-">A1-</option>
+                <option value="A2+">A2+</option>
+                <option value="A2-">A2-</option>
+                <option value="Bombay">Bombay (hh)</option>
+                <option value="INRA">INRA (Very Rare)</option>
+            </select>
+        </div>
+    
+        <!-- Address Fields -->
+        <div class="input-group">
+            <label for="street">Street</label>
+            <input type="text" id="street" name="street" placeholder="Enter your street" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="place">Place</label>
+            <input type="text" id="place" name="place" placeholder="Enter your area/place name" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="district">District</label>
+            <input type="text" id="district" name="district" placeholder="Enter your district" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="pincode">Pincode</label>
+            <input type="text" id="pincode" name="pincode" placeholder="Enter your pincode" pattern="\d{6}" maxlength="6" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" placeholder="Enter your state" required />
+        </div>
+    
+        <div class="input-group">
+            <label for="message">Why do you want to join?</label>
+            <textarea id="message" name="message" rows="5" placeholder="Share your thoughts..." required></textarea>
+        </div>
+    
+        <button type="submit" class="cta-button">Join Now</button>
+    </form>
+    
+      
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>📍 Coimbatore | 📞 +91 6385842829 | ✉️ sarvhamhelp@gmail.com</p>
+      <p>© 2025 Sarvham Foundation. All rights reserved.</p>
+      <p>Follow us:
+        <a href="https://www.facebook.com/share/1DdRn9s3sg/"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k"><i class="fab fa-instagram"></i></a>
+        <!-- <a href="#"><i class="fab fa-twitter"></i></a> -->
+        <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Typewriter
+      new Typed("#typewriter", {
+        strings: ["Who We Are"],
+        typeSpeed: 70,
+        backSpeed: 40,
+        loop: false,
+        showCursor: false,
+      });
+    
+      // Section scroll animation
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate");
+          }
+        });
+      }, { threshold: 0.1 });
+    
+      document.querySelectorAll(".scroll-animate").forEach((el) => {
+        observer.observe(el);
+      });
+    
+      // Form submission
+      const joinForm = document.getElementById("joinForm");
+      const submitBtn = joinForm.querySelector("button");
+    
+      // Create loading spinner
+      const loadingSpinner = document.createElement("div");
+      loadingSpinner.classList.add("loading-spinner");
+      loadingSpinner.innerHTML = "Submitting...";
+    
+      joinForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+    
+        const fullName = document.getElementById("fullname").value.trim();
+        const fatherName = document.getElementById("fatherName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const whatsapp = document.getElementById("whatsapp").value.trim();
+        const aadhar = document.getElementById("aadhar").value.trim();
+        const dob = document.getElementById("dob").value.trim();
+        const gender = document.getElementById("gender").value.trim();
+        const bloodGroup = document.getElementById("bloodGroup").value.trim();
+        const street = document.getElementById("street").value.trim();
+        const place = document.getElementById("place").value.trim();
+        const district = document.getElementById("district").value.trim();
+        const pincode = document.getElementById("pincode").value.trim();
+        const state = document.getElementById("state").value.trim();
+        const message = document.getElementById("message").value.trim();
+    
+        // Validate the fields
+        if (
+          !fullName ||
+          !fatherName ||
+          !email ||
+          !phone ||
+          !whatsapp ||
+          !aadhar ||
+          !dob ||
+          !gender ||
+          !bloodGroup ||
+          !street ||
+          !place ||
+          !district ||
+          !pincode ||
+          !state ||
+          !message
+        ) {
+          showErrorPopup("Please fill out all fields.");
+          return;
+        }
+    
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+        document.body.appendChild(loadingSpinner); // Show loading spinner
+    
+        try {
+          const response = await fetch("http://localhost:5000/api/volunteer", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fullName,
+              fatherName,
+              email,
+              phone,
+              whatsapp,
+              aadhar,
+              dob,
+              gender,
+              bloodGroup,
+              street,
+              place,
+              district,
+              pincode,
+              state,
+              message,
+            }),
+          });
+    
+          const result = await response.json();
+          if (response.ok) {
+            showSuccessPopup(result.message || "Successfully joined!");
+            joinForm.reset();
+          } else {
+            showErrorPopup("Error: " + result.error);
+          }
+        } catch (err) {
+          console.error("Error:", err);
+          showErrorPopup("Something went wrong. Please try again later.");
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Join Now";
+          document.body.removeChild(loadingSpinner); // Remove loading spinner
+        }
+      });
+    
+      // Success message popup
+      function showSuccessPopup(message) {
+        const popup = document.createElement("div");
+        popup.className = "success-popup";
+        popup.innerHTML = `<p>${message}</p>`;
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 3000);
+      }
+    
+      // Error message popup
+      function showErrorPopup(message) {
+        const popup = document.createElement("div");
+        popup.className = "error-popup";
+        popup.innerHTML = `<p>${message}</p>`;
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 3000);
+      }
+    });
+    
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,594 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    background: #ffffff;
+    color: #333;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #d84c4c;
+}
+
+a:hover {
+    color: #f8a72f;
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Navbar */
+.navbar {
+    background: #e60000;
+    color: white;
+    padding: 1rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #e60000; /* or your preferred background */
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    padding-top: 80px; /* Adjust based on navbar height */
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+
+/* Section Styling */
+section {
+    padding: 60px 0;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    color: #d84c4c;
+    margin-bottom: 20px;
+}
+
+section p {
+    color: #555;
+    max-width: 800px;
+    margin: auto;
+    font-size: 1.1rem;
+}
+
+/* About Section */
+.about {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 60px 0;
+}
+
+.about .text {
+    flex: 1 1 500px;
+    text-align: left;
+}
+
+.about .text h3 {
+    color: #d84c4c;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.about .text p {
+    margin-bottom: 15px;
+}
+
+.about .image {
+    flex: 1 1 400px;
+    text-align: center;
+}
+
+.about .image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Section */
+.contact {
+    padding: 60px 0;
+    background-color: #fff;
+    text-align: center;
+}
+
+/* Contact Header */
+.contact-header {
+    margin-bottom: 40px;
+}
+
+.contact-header h2 {
+    font-size: 2.5rem;
+    color: #d84c4c;
+}
+
+.contact-header p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-top: 10px;
+}
+
+/* Contact Content */
+.contact-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.contact .location, .contact .social-media {
+    flex: 1 1 45%;
+    text-align: left;
+}
+
+.contact .social-media ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact .social-media ul li {
+    margin-bottom: 10px;
+}
+
+.contact .social-media ul li a {
+    font-size: 1.2rem;
+    color: #d84c4c;
+}
+
+.contact .social-media ul li a:hover {
+    color: #f8a72f;
+}
+
+/* Google Map */
+.map-container {
+    margin-top: 20px;
+}
+
+.contact .map-container iframe {
+    width: 100%;
+    border: none;
+}
+
+/* Contact Form */
+.contact-form {
+    background: #fff;
+    padding: 40px;
+    max-width: 600px;
+    margin: 40px auto 0;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+.contact-form .input-group {
+    margin-bottom: 20px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #d84c4c;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.contact-form button {
+    background-color: #d84c4c;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact-form button:hover {
+    background-color: #f8a72f;
+}
+
+/* Footer */
+footer {
+    background: #d84c4c;
+    color: white;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 50px;
+}
+
+footer a {
+    color: white;
+    margin: 0 8px;
+    font-size: 1.2rem;
+}
+
+footer a:hover {
+    color: #f8a72f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    nav .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .about {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about .text {
+        text-align: center;
+    }
+
+    .contact-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact .location, .contact .social-media {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+}
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Apply animations */
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 1s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 1s ease-out forwards;
+}
+
+.animate-popIn {
+  animation: popIn 0.8s ease-out forwards;
+}
+
+/* Smooth transitions for buttons and links */
+.contact-form button,
+.navbar a {
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-form button:hover {
+  transform: scale(1.05);
+  background-color: #f8a72f;
+}
+
+.navbar a:hover {
+  color: #f8a72f;
+  transform: translateY(-2px);
+}
+
+/* .form-feedback {
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+    display: none;
+}
+
+.form-feedback.processing {
+    display: block;
+    background: #fff3cd;
+    color: #856404;
+}
+
+.form-feedback.success {
+    display: block;
+    background: #d4edda;
+    color: #155724; 
+}
+
+.form-feedback.error {
+    display: block;
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* add new intraction */
+
+/*
+.form-feedback {
+    margin-top: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .form-feedback.success {
+    color: white;
+    background-color: #2ecc71;
+    border: 2px solid #27ae60;
+    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.4);
+    animation: bounceIn 1s ease-out, pulse 2.5s ease-in-out infinite;
+  
+  }
+
+  .form-feedback.success i {
+    margin-right: 10px;
+    font-size: 1.2em;
+    animation: bounceIcon 0.5s ease-out;
+  } 
+
+  
+  .form-feedback.error {
+    color: #e74c3c;
+  }
+  
+   .form-feedback.processing {
+    color: #3498db;
+  } */
+  /* General Styles */
+.form-feedback {
+    margin-top: 10px;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Success feedback style */
+  .form-feedback.success {
+    color: white;
+    background-color: #2ecc71;
+    border: 2px solid #27ae60;
+    box-shadow: 0 4px 6px rgba(46, 204, 113, 0.4);
+    animation: bounceIn 1s ease-out, pulse 1.5s ease-in-out infinite;
+  }
+  
+  /* Animated bounce effect */
+  @keyframes bounceIn {
+    0% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Pulse effect after success message */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.05);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  /* Adding a checkmark icon with animation */
+  .form-feedback.success i {
+    margin-right: 10px;
+    font-size: 1.2em;
+    animation: bounceIcon 0.5s ease-out;
+  }
+  
+  @keyframes bounceIcon {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Error feedback style */
+  .form-feedback.error {
+    color: white;
+    background-color: #e74c3c;
+    border: 2px solid #c0392b;
+    box-shadow: 0 4px 6px rgba(231, 76, 60, 0.4);
+    animation: shakeError 0.5s ease-out;
+  }
+  
+  /* Animation for error feedback */
+  @keyframes shakeError {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  /* Adding a cross icon with animation */
+  .form-feedback.error i {
+    margin-right: 10px;
+    font-size: 1.2em;
+    animation: shakeIcon 0.5s ease-out;
+  }
+  
+  @keyframes shakeIcon {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    75% {
+      transform: translateX(-5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  /* Processing feedback style */
+  .form-feedback.processing {
+    background-color: #3498db;
+    color: white;
+    border: 2px solid #2980b9;
+    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.4);
+  }
+  
+
+
+  input:invalid, textarea:invalid {
+    border: 2px solid #e67e22;
+  }
+  
+  input:valid, textarea:valid {
+    border: 2px solid #2ecc71;
+  }
+  
+  /* Optional fade-in animations for sections */
+  .animate-fadeIn {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+  }
+  
+  .animate-slideInLeft {
+    opacity: 0;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s ease forwards;
+  }
+  
+  .animate-slideInRight {
+    opacity: 0;
+    transform: translateX(50px);
+    animation: slideInRight 1s ease forwards;
+  }
+  
+  .animate-popIn {
+    opacity: 0;
+    transform: scale(0.6);
+    animation: popIn 0.5s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideInLeft {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  @keyframes slideInRight {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  
+  @keyframes popIn {
+    to { opacity: 1; transform: scale(1); }
+  }
+  

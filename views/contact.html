@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Sarvham Foundation - Get in touch with our team for volunteering, donations, or any inquiries">
+    <title>Contact - Sarvham Foundation</title>
+    <link rel="stylesheet" href="../public/css/contactpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <h1 class="logo">Sarvham Foundation</h1>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html" aria-current="page">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Section -->
+    <main class="contact">
+        <div class="container">
+            <!-- Contact Header -->
+            <div class="contact-header animate-fadeIn">
+                <h1>Contact Us</h1>
+                <p>We're here to help. Get in touch with us!</p>
+            </div>
+
+            <!-- Contact Content -->
+            <div class="contact-content">
+                <!-- Location -->
+                <div class="location animate-slideInLeft">
+                    <h2>Our Location</h2>
+                    <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamil Nadu, India</p>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15667.069987683373!2d76.9559!3d11.0047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzE2LjkiTiA3NsKwNTcnMjEuMiJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy"
+                            aria-label="Map showing Sarvham Foundation location in Coimbatore">
+                        </iframe>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div class="social-media animate-slideInRight">
+                    <h2>Follow Us</h2>
+                    <ul>
+                        <li><a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                        <li><a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <!-- <li><a href="https://x.com" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i> X</a></li> -->
+                        <li><a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i> YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form animate-popIn">
+                <h2>Get in Touch</h2>
+                <form id="contact-form" method="post" novalidate>
+                    <div class="input-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" name="contact-name" required aria-required="true">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="contact-email">Your Email</label>
+                        <input type="email" id="contact-email" name="contact-email" required aria-required="true">
+                    </div>
+                    <div class="input-group">
+                        <label for="contact-phone">your phone number</label>
+                        <input type="phone" id="contact-phone" name="contact-phone" required aria-required="true" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="contact-message">Your Message</label>
+                        <textarea id="contact-message" name="contact-message" required aria-required="true"></textarea>
+                    </div>
+
+                    <button type="submit" class="cta-button">Send Message</button>
+                    <div id="form-feedback" class="form-feedback"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+          <p>📍 Coimbatore | 📞 +91 6385842829 | ✉️ sarvhamhelp@gmail.com</p>
+          <p>© 2025 Sarvham Foundation. All rights reserved.</p>
+          <p>Follow us:
+              <a href="https://www.facebook.com/share/1DdRn9s3sg/"><i class="fab fa-facebook"></i></a>
+              <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k"><i class="fab fa-instagram"></i></a>
+              <!-- <a href="#"><i class="fab fa-twitter"></i></a> -->
+              <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+              
+            </p>
+      </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('contact-form');
+      const feedback = document.getElementById('form-feedback');
+      const button = form.querySelector('button');
+  
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        feedback.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        feedback.className = 'form-feedback processing';
+        button.disabled = true;
+  
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const phone = document.getElementById('contact-phone').value.trim();
+        const message = document.getElementById('contact-message').value.trim();
+  
+        if (!name || !email || !phone || !message) {
+          feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> All fields are required.';
+          feedback.className = 'form-feedback error';
+          button.disabled = false;
+          return;
+        }
+  
+        try {
+          const response = await fetch('http://localhost:5000/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, message })
+          });
+  
+          const result = await response.json();
+  
+          if (response.ok) {
+            feedback.innerHTML = '<i class="fas fa-check-circle"></i> Message sent successfully!';
+            feedback.className = 'form-feedback success';
+            form.reset();
+          } else {
+            throw new Error(result.error || 'Failed to send message.');
+          }
+        } catch (err) {
+          feedback.innerHTML = `<i class="fas fa-times-circle"></i> ${err.message}`;
+          feedback.className = 'form-feedback error';
+        } finally {
+          button.disabled = false;
+          setTimeout(() => feedback.textContent = '', 4000);
+        }
+      });
+    });
+  </script>
+  
+</body>
+</html>

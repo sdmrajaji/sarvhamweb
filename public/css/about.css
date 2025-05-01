@@ -1,0 +1,335 @@
+/* ===== Basic Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* ===== Body ===== */
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.6;
+    background: #ffffff;
+    color: #333;
+}
+  
+  
+  /* ===== Links ===== */
+  a {
+    text-decoration: none;
+    color: #d84c4c;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #f8a72f;
+  }
+  
+  /* ===== Container ===== */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  /* ===== Navbar ===== */
+  
+/* Navbar */
+.navbar {
+    background: #e60000;
+    color: white;
+    padding: 1rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #e60000; /* or your preferred background */
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    padding-top: 80px; /* Adjust based on navbar height */
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.4s;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+  
+  /* ===== Section ===== */
+  section {
+    padding: 60px 20px;
+    text-align: center;
+  }
+  section h2 {
+    font-size: 2.5rem;
+    color: #e60000;
+    margin-bottom: 20px;
+  }
+  section p {
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+  }
+  
+  /* ===== About Section ===== */
+  .about {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .about .text {
+    flex: 1 1 500px;
+    text-align: left;
+  }
+  .about .text h3 {
+    color: #d84c4c;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  .about .text p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #444;
+  }
+  .about .image {
+    flex: 1 1 400px;
+    text-align: center;
+  }
+  .about .image img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ===== Join Us Form ===== */
+  .join-form {
+    background: #fff;
+    padding: 40px;
+    max-width: 600px;
+    margin: 40px auto 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+  .join-form .input-group {
+    margin-bottom: 20px;
+  }
+  .join-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #e60000;
+  }
+  .join-form input,
+  .join-form textarea {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  .join-form button {
+    background-color: #d84c4c;
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .join-form button:hover {
+    background-color: #f8a72f;
+    transform: scale(1.05);
+  }
+  
+  /* ===== Footer ===== */
+  footer {
+    background: #e60000;
+    color: white;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 50px;
+  }
+  footer a {
+    color: white;
+    margin: 0 10px;
+    font-size: 1.2rem;
+  }
+  footer a:hover {
+    color: #f8a72f;
+  }
+  
+  /* ===== Animations ===== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideInFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .scroll-animate {
+    opacity: 0;
+  }
+  .scroll-animate.animate {
+    opacity: 1;
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  .about.scroll-animate.animate .text {
+    animation: slideInFromLeft 1s ease-out forwards;
+  }
+  .about.scroll-animate.animate .image {
+    animation: popIn 1s ease-out forwards;
+  }
+  .join-form.scroll-animate.animate {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .navbar .container {
+      flex-direction: column;
+      align-items: center;
+    }
+    .navbar ul {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .about {
+      flex-direction: column;
+      text-align: center;
+    }
+    .about .text {
+      text-align: center;
+    }
+    .join-form {
+      padding: 30px 20px;
+    }
+  }
+  
+.form-feedback {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 5px;
+  display: none;
+}
+
+.form-feedback.processing {
+  display: block;
+  background: #fff3cd;
+  color: #856404;
+}
+
+.form-feedback.success {
+  display: block;
+  background: #d4edda;
+  color: #155724;
+}
+
+.form-feedback.error {
+  display: block;
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Spinner during form submission */
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 20px 40px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  display: none;
+}
+
+/* Success Popup */
+.success-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 1rem;
+}
+
+/* Error Popup */
+.error-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-size: 1rem;
+}
+
