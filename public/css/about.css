@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+
 /* ===== Basic Reset ===== */
 * {
     margin: 0;
@@ -36,9 +38,17 @@ body {
   
 /* Navbar */
 .navbar {
-    background: #e60000;
-    color: white;
-    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(230, 0, 0, 0.95); /* Deep high-end translucent red */
+    backdrop-filter: blur(12px); /* Glassmorphic blur overlay */
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.8rem 0; /* Slightly more compact for a modern premium feel */
+    transition: all 0.3s ease;
 }
 
 .navbar .container {
@@ -49,14 +59,6 @@ body {
     margin: auto;
     padding: 0 20px;
 }
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: #e60000; /* or your preferred background */
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
 
 body {
     padding-top: 80px; /* Adjust based on navbar height */
@@ -65,6 +67,17 @@ body {
 .logo {
     font-size: 1.8rem;
     font-weight: bold;
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.logo a:hover {
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    opacity: 0.95;
 }
 
 .navbar ul {
@@ -77,11 +90,35 @@ body {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    transition: 0.4s;
+    transition: all 0.3s ease-in-out;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 4px;
 }
 
-.navbar a:hover {
-    text-decoration: underline;
+/* Premium sliding underline hover and active effects */
+.navbar a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #f8a72f;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.navbar a:hover::after,
+.navbar a[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.navbar a:hover,
+.navbar a[aria-current="page"] {
+    color: #f8a72f;
 }
   
   /* ===== Section ===== */
@@ -136,62 +173,260 @@ body {
   
   /* ===== Join Us Form ===== */
   .join-form {
-    background: #fff;
-    padding: 40px;
-    max-width: 600px;
+    background: #ffffff;
+    padding: 50px 40px;
+    max-width: 800px; /* Wider container for gorgeous side-by-side grids */
     margin: 40px auto 0;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.05);
+    border: 1px solid #fce4e4;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
     text-align: left;
   }
+
   .join-form .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 0; /* Handled by grid gap */
   }
-  .join-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #e60000;
+
+  /* Full-width overrides inside grid */
+  .join-form .input-group:nth-last-child(2) {
+    grid-column: span 2; /* Why do you want to join spans full width */
   }
-  .join-form input,
-  .join-form textarea {
-    width: 100%;
-    padding: 14px 16px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
+
   .join-form button {
+    grid-column: span 2;
+    justify-self: center;
+    width: 100%;
+    max-width: 250px;
     background-color: #d84c4c;
     color: white;
     padding: 14px 30px;
     border: none;
     border-radius: 30px;
     font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(216, 76, 76, 0.3);
   }
+
   .join-form button:hover {
     background-color: #f8a72f;
-    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(248, 167, 47, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .join-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #2c3e50;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+  }
+
+  .join-form input,
+  .join-form textarea,
+  .join-form select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fafafa;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .join-form input:focus,
+  .join-form textarea:focus,
+  .join-form select:focus {
+    border-color: #e60000;
+    background-color: #ffffff;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(230, 0, 0, 0.1);
   }
   
-  /* ===== Footer ===== */
-  footer {
-    background: #e60000;
-    color: white;
-    text-align: center;
-    padding: 25px 10px;
-    margin-top: 50px;
-  }
-  footer a {
-    color: white;
-    margin: 0 10px;
+  /* ==================== Footer Redesign ==================== */
+.main-footer {
+    background-color: #1a1a1a;
+    color: #d1d1d1;
+    padding: 80px 0 0;
+    font-size: 0.95rem;
+    max-width: 100% !important;
+    text-align: left;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.2fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-col h4 {
+    color: #ffffff;
     font-size: 1.2rem;
-  }
-  footer a:hover {
+    margin-bottom: 25px;
+    font-weight: 700;
+    position: relative;
+}
+
+.footer-col h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    width: 35px;
+    height: 3px;
+    background: #e60000;
+    border-radius: 2px;
+}
+
+.brand-col .footer-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.brand-col .footer-logo span {
     color: #f8a72f;
-  }
+}
+
+.brand-col .footer-logo a {
+    color: white;
+    text-decoration: none;
+}
+
+.brand-col .footer-desc {
+    line-height: 1.7;
+    margin-bottom: 25px;
+    color: #aaa;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-socials a {
+    width: 42px;
+    height: 42px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding-bottom: 0;
+}
+
+.footer-socials a:hover {
+    background: #e60000;
+    color: white !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(230, 0, 0, 0.3);
+}
+
+.links-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.links-col ul li {
+    margin-bottom: 14px;
+}
+
+.links-col ul li a {
+    color: #aaa !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.links-col ul li a i {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.links-col ul li a:hover {
+    color: #e60000 !important;
+    padding-left: 5px;
+}
+
+.links-col ul li a:hover i {
+    transform: translateX(2px);
+}
+
+.contact-col p {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #aaa;
+}
+
+.contact-col p i {
+    color: #e60000;
+    font-size: 1.1rem;
+}
+
+.footer-bottom {
+    background: #111111;
+    padding: 25px 0;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #777;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ==================== Grid & Columns mobile responsiveness overrides ==================== */
+@media (max-width: 991px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    
+    .footer-col h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-socials {
+        justify-content: center;
+    }
+    
+    .contact-col p {
+        justify-content: center;
+    }
+
+    .links-col ul {
+        display: flex;
+        flex-direction: row; /* Horizontal alignment */
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .links-col ul li {
+        margin-bottom: 0; /* Clear bottom margins */
+    }
+}
   
   /* ===== Animations ===== */
   @keyframes fadeInUp {
@@ -243,15 +478,26 @@ body {
   
   /* ===== Responsive ===== */
   @media (max-width: 768px) {
+    body {
+      padding-top: 80px; /* Standard top padding since navbar remains single-line */
+    }
     .navbar .container {
-      flex-direction: column;
+      flex-direction: row; /* Horizontal side-by-side layout */
+      justify-content: space-between;
       align-items: center;
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 15px !important;
+    }
+    .logo {
+      font-size: 1.3rem; /* Scale down logo to fit elegantly beside links */
     }
     .navbar ul {
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 10px;
+      flex-direction: row; /* Single horizontal line for links */
+      gap: 15px;
+      margin-top: 0;
     }
+
     .about {
       flex-direction: column;
       text-align: center;
@@ -261,6 +507,18 @@ body {
     }
     .join-form {
       padding: 30px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo {
+      font-size: 1.1rem; /* Highly compact logo */
+    }
+    .navbar ul {
+      gap: 10px; /* Tighter links gap */
+    }
+    .navbar a {
+      font-size: 0.85rem; /* Clean, slightly smaller text link sizing */
     }
   }
   
@@ -331,5 +589,82 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   font-size: 1rem;
+}
+
+/* ==================== Stats Section ==================== */
+.stats-section {
+    background-color: #fffafb;
+    padding: 80px 0;
+    text-align: center;
+    max-width: 100% !important;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #fce4e4;
+    border-radius: 20px;
+    padding: 35px 25px;
+    box-shadow: 0 10px 30px rgba(230, 0, 0, 0.02);
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(230, 0, 0, 0.06);
+    border-color: #f8c2c2;
+}
+
+.stat-icon {
+    font-size: 2.2rem;
+    color: #e60000;
+    margin-bottom: 15px;
+    display: inline-block;
+    transition: transform 0.4s ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #7f8c8d;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Join form mobile collapses */
+@media (max-width: 768px) {
+    .join-form {
+        grid-template-columns: 1fr !important;
+        padding: 35px 20px !important;
+        gap: 18px !important;
+    }
+    
+    .join-form .input-group:nth-last-child(2) {
+        grid-column: span 1 !important;
+    }
+    
+    .join-form button {
+        grid-column: span 1 !important;
+    }
 }
 

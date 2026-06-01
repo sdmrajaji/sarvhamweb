@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarvham Foundation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
+
 <body>
 
     <!-- Navbar -->
     <header class="navbar">
         <div class="container">
-            <h1 class="logo">Sarvham Foundation</h1>
-            <nav>
+            <h1 class="logo"><a href="index.html">Sarvham <span style="color: #f8a72f;">Foundation</span></a></h1>
+            <nav aria-label="Main navigation">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html" aria-current="page">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
@@ -28,11 +30,14 @@
     <section class="hero" data-aos="fade-up">
         <div class="hero-content">
             <h1>Serving Humanity, Spreading Hope</h1>
-             <p>Together, We Can End Poverty.</p>
-            <a href="about.html" class="hero-btn">Sarvham</a>
-    </div>
-  </section>
-  
+            <p>Together, We Can End Poverty.</p>
+            <div class="hero-buttons">
+                <a href="about.html" class="hero-btn">Sarvham</a>
+                <button id="join-whatsapp-btn" class="hero-btn join-btn"><i class="fab fa-whatsapp"></i> Join</button>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Hero Section
     <section class="hero" data-aos="fade-up">
@@ -41,10 +46,35 @@
     </section> -->
 
     <!-- About Section -->
-    <section class="about" data-aos="fade-right">
-        <div class="container">
-            <h2>About Sarvham Foundation</h2>
-            <p>We have been serving the poor and needy for the past 3 years. Our mission is to kill poverty by providing basic needs, food, blood support during emergencies, and planting trees for a better future.</p>
+    <section class="about-section" data-aos="fade-up">
+        <div class="container split-about">
+            <div class="about-visual" data-aos="zoom-in">
+                <div class="image-wrapper">
+                    <img src="../public/images/sarvham new logo.jpg" alt="Sarvham Foundation Logo" class="floating-logo">
+                </div>
+            </div>
+            <div class="about-text" data-aos="fade-left">
+                <span class="sub-label">Who We Are</span>
+                <h2>Empowering Lives & Spreading Hope</h2>
+                <p class="main-p">For the past three years, Sarvham Foundation has been a beacon of light in Tamil Nadu, dedicated to ending poverty and elevating humanity through direct, impactful actions.</p>
+                <div class="pillars">
+                    <div class="pillar-item">
+                        <div class="pillar-icon"><i class="fas fa-heart"></i></div>
+                        <div>
+                            <h4>Emergency Blood Support</h4>
+                            <p>Rapid emergency donor bridge that matches seekers and voluntary lifesavers.</p>
+                        </div>
+                    </div>
+                    <div class="pillar-item">
+                        <div class="pillar-icon"><i class="fas fa-seedling"></i></div>
+                        <div>
+                            <h4>Environmental Preservation</h4>
+                            <p>Expanding green cover by hosting regular tree plantation drives.</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.html" class="hero-btn read-more-btn">Learn More About Us <i class="fas fa-arrow-right"></i></a>
+            </div>
         </div>
     </section>
 
@@ -53,66 +83,197 @@
         <div class="container">
             <h2>Our Activities</h2>
             <div class="activity-list">
-                <div class="activity-item">🍛 Weekly Food Donation</div>
-                <div class="activity-item">🌳 Tree Plantation Drives</div>
-                <div class="activity-item">🩸 Blood Donation Arrangement</div>
+                <div class="activity-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="activity-icon food-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Weekly Food Donation</h3>
+                    <p>Providing freshly cooked, nutritious meals every single week to feed the homeless, poor, and
+                        underprivileged communities in tamilnadu </p>
+                </div>
+                <div class="activity-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="activity-icon tree-icon">
+                        <i class="fas fa-tree"></i>
+                    </div>
+                    <h3>Tree Plantation Drives</h3>
+                    <p>Rejuvenating nature by hosting massive tree plantation events and encouraging green cover growth
+                        for a healthier and cooler tomorrow.</p>
+                </div>
+                <div class="activity-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="activity-icon blood-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3>Blood Donation Arrangements</h3>
+                    <p>Connecting emergency blood seekers with verified voluntary donors rapidly, bridging the critical
+                        gap to save precious human lives.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Quotes Section -->
-    <section class="quotes" data-aos="fade-up">
-        <h2>Inspirational Quotes</h2>
-        <blockquote>"Hope Begins with Sarvham."</blockquote>
-        <blockquote>"Never underestimate the power of kindness, empathy, and compassion in your interactions with others." - Ratan Tata</blockquote>
-        <blockquote>"The best way to find yourself is to lose yourself in the service of others." - Mahatma Gandhi</blockquote>
+    <section class="quotes-section" data-aos="fade-up">
+        <div class="container">
+            <span class="sub-label">Words of Wisdom</span>
+            <h2>Inspirational Quotes</h2>
+            <div class="quotes-grid">
+                <div class="quote-card" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="quote-text">"Hope Begins with Sarvham."</p>
+                    <h4 class="quote-author">Sarvham Motto</h4>
+                </div>
+                <div class="quote-card" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="quote-text">"Never underestimate the power of kindness, empathy, and compassion in your interactions with others."</p>
+                    <h4 class="quote-author">Ratan Tata</h4>
+                    <span class="author-title">Industrialist & Philanthropist</span>
+                </div>
+                <div class="quote-card" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="quote-text">"The best way to find yourself is to lose yourself in the service of others."</p>
+                    <h4 class="quote-author">Mahatma Gandhi</h4>
+                    <span class="author-title">Father of the Nation</span>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Gallery Section -->
-<section class="gallery" data-aos="fade-up">
-    <h2>Our Moments</h2>
-    <div class="gallery-wrapper">
-      <div class="gallery-track">
-        <img src="../public/images/pho1.jpg" alt="Event 1">
-        <img src="../public/images/pho2.jpg" alt="Event 2">
-        <img src="../public/images/pho3.jpg" alt="Event 3">
-        <img src="../public/images/pho4.PNG" alt="Event 4">
-        <!-- Duplicated for smooth loop -->
-        <img src="../public/images/pho5.png" alt="Event 1">
-        <img src="../public/images/pho1.jpg" alt="Event 2">
-        <img src="../public/images/pho2.jpg" alt="Event 3">
-        <img src="../public/images/pho3.jpg" alt="Event 4">
-        <img src="../public/images/pho4.PNG" alt="Event 4">
-        <!-- Duplicated for smooth loop -->
-        <img src="../public/images/pho5.png" alt="Event 1">
-        <img src="../public/images/pho1.jpg" alt="Event 2">
+    <section class="gallery" data-aos="fade-up">
+        <h2>Our Moments</h2>
+        <div class="gallery-wrapper">
+            <div class="gallery-track">
+                <img src="../public/images/pho1.jpg" alt="Event 1">
+                <img src="../public/images/pho2.jpg" alt="Event 2">
+                <img src="../public/images/pho3.jpg" alt="Event 3">
+                <img src="../public/images/pho4.PNG" alt="Event 4">
+                <!-- Duplicated for smooth loop -->
+                <img src="../public/images/pho5.png" alt="Event 1">
+                <img src="../public/images/pho1.jpg" alt="Event 2">
+                <img src="../public/images/pho2.jpg" alt="Event 3">
+                <img src="../public/images/pho3.jpg" alt="Event 4">
+                <img src="../public/images/pho4.PNG" alt="Event 4">
+                <!-- Duplicated for smooth loop -->
+                <img src="../public/images/pho5.png" alt="Event 1">
+                <img src="../public/images/pho1.jpg" alt="Event 2">
 
-        
-      </div>
-    </div>
-  </section>
-  
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>📍 Coimbatore | 📞 +91 6385842829 | ✉️ sarvhamhelp@gmail.com</p>
-            <p>© 2025 Sarvham Foundation. All rights reserved.</p>
-            <p>Follow us:
-                <a href="https://www.facebook.com/share/1DdRn9s3sg/"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k"><i class="fab fa-instagram"></i></a>
-                <!-- <a href="#"><i class="fab fa-twitter"></i></a> -->
-                <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                
-              </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">Sarvham <span>Foundation</span></h3>
+                <p class="footer-desc">Serving humanity and spreading hope. Together, we can take direct environmental and social action to eliminate poverty and create a healthier, greener, and brighter tomorrow.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/share/1DdRn9s3sg/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamil Nadu, India</p>
+                <p><i class="fas fa-phone-alt"></i> +91 6385842829</p>
+                <p><i class="fas fa-envelope"></i> sarvhamhelp@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Sarvham Foundation. All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
 
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init();
+        AOS.init();
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const joinBtn = document.getElementById("join-whatsapp-btn");
+            if (joinBtn) {
+                joinBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const originalText = joinBtn.innerHTML;
+                    joinBtn.disabled = true;
+                    joinBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+
+                    const phoneNumber = "916385842829";
+                    const message = "Hello Sarvham Team, I would like to join and become a member. Please share the registration process and further details.";
+                    const encodedText = encodeURIComponent(message);
+
+                    setTimeout(() => {
+                        try {
+                            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+                            if (isMobile) {
+                                // Attempt to open native WhatsApp application on mobile devices
+                                const nativeUrl = `whatsapp://send?phone=${phoneNumber}&text=${encodedText}`;
+                                const webUrl = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+
+                                let hasOpened = false;
+
+                                const handleVisibilityChange = () => {
+                                    if (document.hidden) {
+                                        hasOpened = true;
+                                    }
+                                };
+                                document.addEventListener("visibilitychange", handleVisibilityChange);
+
+                                window.location.href = nativeUrl;
+
+                                // Fallback to wa.me landing page if app is not installed or slow to respond
+                                setTimeout(() => {
+                                    document.removeEventListener("visibilitychange", handleVisibilityChange);
+                                    if (!hasOpened) {
+                                        window.location.href = webUrl;
+                                    }
+                                    joinBtn.disabled = false;
+                                    joinBtn.innerHTML = originalText;
+                                }, 2000);
+
+                            } else {
+                                // On Desktop/Web, redirect directly to WhatsApp Web
+                                const webUrl = `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedText}`;
+                                window.open(webUrl, '_blank');
+
+                                joinBtn.disabled = false;
+                                joinBtn.innerHTML = originalText;
+                            }
+                        } catch (error) {
+                            console.error("WhatsApp redirect error:", error);
+                            showErrorPopup("Unable to open WhatsApp automatically. Please contact us directly at +91 6385842829.");
+                            joinBtn.disabled = false;
+                            joinBtn.innerHTML = originalText;
+                        }
+                    }, 800);
+                });
+            }
+
+            function showErrorPopup(msg) {
+                const popup = document.createElement("div");
+                popup.className = "error-popup";
+                popup.innerHTML = `<p><i class="fas fa-exclamation-triangle"></i> ${msg}</p>`;
+                document.body.appendChild(popup);
+                setTimeout(() => popup.remove(), 4000);
+            }
+        });
     </script>
-    
+
 </body>
+
 </html>

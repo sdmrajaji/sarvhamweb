@@ -13,7 +13,7 @@
     <!-- Navbar -->
     <header class="navbar">
         <div class="container">
-            <h1 class="logo">Sarvham Foundation</h1>
+            <h1 class="logo"><a href="index.html">Sarvham <span style="color: #f8a72f;">Foundation</span></a></h1>
             <nav aria-label="Main navigation">
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -29,22 +29,41 @@
         <div class="container">
             <!-- Contact Header -->
             <div class="contact-header animate-fadeIn">
-                <h1>Contact Us</h1>
-                <p>We're here to help. Get in touch with us!</p>
+                <span class="sub-label">Connect With Us</span>
+                <h1>Get In Touch</h1>
+                <p>Have questions or want to volunteer? Drop us a line, and we will get back to you shortly!</p>
             </div>
 
-            <!-- Contact Content -->
-            <div class="contact-content">
-                <!-- Location -->
-                <div class="location animate-slideInLeft">
-                    <h2>Our Location</h2>
-                    <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamil Nadu, India</p>
+            <!-- Contact Cards Grid -->
+            <div class="contact-cards-grid animate-fadeIn">
+                <div class="contact-info-card">
+                    <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Our Location</h3>
+                    <p>Coimbatore, Tamil Nadu, India</p>
+                </div>
+                <a href="tel:+916385842829" class="contact-info-card interactive-card">
+                    <div class="card-icon"><i class="fas fa-phone-alt"></i></div>
+                    <h3>Phone Number</h3>
+                    <p>+91 6385842829</p>
+                </a>
+                <a href="mailto:sarvhamhelp@gmail.com" class="contact-info-card interactive-card">
+                    <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                    <h3>Email Address</h3>
+                    <p>sarvhamhelp@gmail.com</p>
+                </a>
+            </div>
+
+            <!-- Split Map and Form layout -->
+            <div class="contact-split-grid">
+                <!-- Location / Map -->
+                <div class="map-card animate-slideInLeft">
+                    <h3>Find Us On Map</h3>
                     <div class="map-container">
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15667.069987683373!2d76.9559!3d11.0047!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzE2LjkiTiA3NsKwNTcnMjEuMiJF!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin" 
                             width="100%" 
-                            height="300" 
-                            style="border:0;" 
+                            height="450" 
+                            style="border:0; border-radius: 12px;" 
                             allowfullscreen="" 
                             loading="lazy"
                             aria-label="Map showing Sarvham Foundation location in Coimbatore">
@@ -52,62 +71,72 @@
                     </div>
                 </div>
 
-                <!-- Social Media -->
-                <div class="social-media animate-slideInRight">
-                    <h2>Follow Us</h2>
-                    <ul>
-                        <li><a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                        <li><a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i> Instagram</a></li>
-                        <!-- <li><a href="https://x.com" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i> X</a></li> -->
-                        <li><a href="https://youtube.com" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i> YouTube</a></li>
-                    </ul>
+                <!-- Contact Form -->
+                <div class="contact-form-card animate-slideInRight">
+                    <h3>Send Us A Message</h3>
+                    <form id="contact-form" method="post" novalidate>
+                        <div class="input-group">
+                            <label for="contact-name">Your Name</label>
+                            <input type="text" id="contact-name" name="contact-name" placeholder="Enter your name" required aria-required="true">
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="contact-email">Your Email</label>
+                                <input type="email" id="contact-email" name="contact-email" placeholder="Enter your email" required aria-required="true">
+                            </div>
+                            <div class="input-group">
+                                <label for="contact-phone">Phone Number</label>
+                                <input type="tel" id="contact-phone" name="contact-phone" placeholder="Enter 10-digit number" required aria-required="true" pattern="[0-9]{10}">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="contact-message">Your Message</label>
+                            <textarea id="contact-message" name="contact-message" placeholder="Type your message here..." required aria-required="true" rows="5"></textarea>
+                        </div>
+
+                        <button type="submit" class="cta-button">Send Message</button>
+                        <div id="form-feedback" class="form-feedback"></div>
+                    </form>
                 </div>
-            </div>
-
-            <!-- Contact Form -->
-            <div class="contact-form animate-popIn">
-                <h2>Get in Touch</h2>
-                <form id="contact-form" method="post" novalidate>
-                    <div class="input-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" name="contact-name" required aria-required="true">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="contact-email">Your Email</label>
-                        <input type="email" id="contact-email" name="contact-email" required aria-required="true">
-                    </div>
-                    <div class="input-group">
-                        <label for="contact-phone">your phone number</label>
-                        <input type="phone" id="contact-phone" name="contact-phone" required aria-required="true" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
-                    </div>
-
-                    <div class="input-group">
-                        <label for="contact-message">Your Message</label>
-                        <textarea id="contact-message" name="contact-message" required aria-required="true"></textarea>
-                    </div>
-
-                    <button type="submit" class="cta-button">Send Message</button>
-                    <div id="form-feedback" class="form-feedback"></div>
-                </form>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-          <p>📍 Coimbatore | 📞 +91 6385842829 | ✉️ sarvhamhelp@gmail.com</p>
-          <p>© 2025 Sarvham Foundation. All rights reserved.</p>
-          <p>Follow us:
-              <a href="https://www.facebook.com/share/1DdRn9s3sg/"><i class="fab fa-facebook"></i></a>
-              <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k"><i class="fab fa-instagram"></i></a>
-              <!-- <a href="#"><i class="fab fa-twitter"></i></a> -->
-              <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-              
-            </p>
-      </div>
-  </footer>
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">Sarvham <span>Foundation</span></h3>
+                <p class="footer-desc">Serving humanity and spreading hope. Together, we can take direct environmental and social action to eliminate poverty and create a healthier, greener, and brighter tomorrow.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/share/1DdRn9s3sg/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamil Nadu, India</p>
+                <p><i class="fas fa-phone-alt"></i> +91 6385842829</p>
+                <p><i class="fas fa-envelope"></i> sarvhamhelp@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Sarvham Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const form = document.getElementById('contact-form');

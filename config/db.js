@@ -9,8 +9,8 @@ const connectDB = async () => {
     });
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (err) {
-    console.error('MongoDB connection error:', err);
-    process.exit(1); // Exit the process with failure
+    console.error('⚠️ MongoDB connection error (database features disabled):', err.message);
+    // Do not call process.exit(1) so the static Express hosting continues running perfectly
   }
 };
 
