@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 /* ===== Basic Reset ===== */
 * {
     margin: 0;
@@ -13,6 +18,7 @@ body {
     line-height: 1.6;
     background: #ffffff;
     color: #333;
+    overflow-x: hidden;
 }
   
   
@@ -508,6 +514,15 @@ body {
     .join-form {
       padding: 30px 20px;
     }
+    
+    .stats-grid {
+      grid-template-columns: 1fr;
+      padding: 0 10px;
+      gap: 20px;
+    }
+    .stat-card {
+      padding: 25px 15px;
+    }
   }
 
   @media (max-width: 480px) {
@@ -616,6 +631,9 @@ body {
     box-shadow: 0 10px 30px rgba(230, 0, 0, 0.02);
     transition: all 0.4s ease;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .stat-card:hover {
@@ -649,6 +667,7 @@ body {
     font-weight: 600;
     margin: 0;
     line-height: 1.4;
+    flex-grow: 1;
 }
 
 /* Join form mobile collapses */

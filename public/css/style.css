@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
 
-
 html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
 }
+
 /* General Settings */
 * {
     margin: 0;
@@ -117,10 +117,10 @@ body {
 
 .hero {
   background: linear-gradient(rgba(165, 29, 29, 0.5), rgba(0, 0, 0, 0.5)),
-              url('/sarvham-foundation/public/images/hero-bg.jpg') center/cover no-repeat;
+              url('../images/hero-bg.jpg') center/cover no-repeat;
 }
 .hero::before {
-  background: url('/sarvham-foundation/public/images/hero-bg.jpg') center/cover no-repeat;
+  background: url('../images/hero-bg.jpg') center/cover no-repeat;
 }
 
 .hero {
@@ -142,7 +142,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('R:\sarvham-foundation\public\images\hero-bg.jpg') center/cover no-repeat;
+    background: url('../images/hero-bg.jpg') center/cover no-repeat;
     filter: blur(8px); /* Adjust the blur here */
     z-index: 1;
     transform: scale(1.1); /* Optional zoom effect */
@@ -303,6 +303,9 @@ body {
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .activity-card::before {
@@ -393,6 +396,7 @@ body {
     color: #7f8c8d;
     line-height: 1.6;
     margin: 0;
+    flex-grow: 1;
 }
 
 /* Quotes Section */
@@ -553,6 +557,12 @@ footer a:hover {
 
     .activity-card {
         padding: 30px 20px; /* More comfortable padding inside cards */
+    }
+
+    .quotes-grid {
+        grid-template-columns: 1fr;
+        padding: 0 10px;
+        gap: 20px;
     }
 }
 
@@ -788,6 +798,9 @@ footer a:hover {
     position: relative;
     box-shadow: 0 10px 30px rgba(230, 0, 0, 0.02);
     transition: all 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .quote-card:hover {
@@ -810,6 +823,7 @@ footer a:hover {
     line-height: 1.6;
     margin-bottom: 25px;
     font-weight: 500;
+    flex-grow: 1;
 }
 
 .quote-author {

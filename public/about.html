@@ -6,13 +6,11 @@
   <title>About Us | Sarvham Foundation</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="../public/css/about.css" />
+  <link rel="stylesheet" href="css/about.css" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Typed.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
 </head>
 <body>
 
@@ -35,7 +33,7 @@
     <!-- About Section -->
     <section class="about scroll-animate">
       <div class="image">
-        <img src="../public/images/sarvham new logo.jpg" alt="Sarvham Foundation Logo" />
+        <img src="images/sarvham new logo.jpg" alt="Sarvham Foundation Logo" />
       </div>
       <div class="text">
         <h3 id="typewriter"></h3>
@@ -171,9 +169,7 @@
         </div>
     
         <button type="submit" class="cta-button">Join Now</button>
-    </form>
-    
-      
+      </form>
     </section>
   </main>
 
@@ -212,6 +208,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Typewriter
@@ -235,121 +232,9 @@
       document.querySelectorAll(".scroll-animate").forEach((el) => {
         observer.observe(el);
       });
-    
-      // Form submission
-      const joinForm = document.getElementById("joinForm");
-      const submitBtn = joinForm.querySelector("button");
-    
-      // Create loading spinner
-      const loadingSpinner = document.createElement("div");
-      loadingSpinner.classList.add("loading-spinner");
-      loadingSpinner.innerHTML = "Submitting...";
-    
-      joinForm.addEventListener("submit", async function (e) {
-        e.preventDefault();
-    
-        const fullName = document.getElementById("fullname").value.trim();
-        const fatherName = document.getElementById("fatherName").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const whatsapp = document.getElementById("whatsapp").value.trim();
-        const aadhar = document.getElementById("aadhar").value.trim();
-        const dob = document.getElementById("dob").value.trim();
-        const gender = document.getElementById("gender").value.trim();
-        const bloodGroup = document.getElementById("bloodGroup").value.trim();
-        const street = document.getElementById("street").value.trim();
-        const place = document.getElementById("place").value.trim();
-        const district = document.getElementById("district").value.trim();
-        const pincode = document.getElementById("pincode").value.trim();
-        const state = document.getElementById("state").value.trim();
-        const message = document.getElementById("message").value.trim();
-    
-        // Validate the fields
-        if (
-          !fullName ||
-          !fatherName ||
-          !email ||
-          !phone ||
-          !whatsapp ||
-          !aadhar ||
-          !dob ||
-          !gender ||
-          !bloodGroup ||
-          !street ||
-          !place ||
-          !district ||
-          !pincode ||
-          !state ||
-          !message
-        ) {
-          showErrorPopup("Please fill out all fields.");
-          return;
-        }
-    
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Submitting...";
-        document.body.appendChild(loadingSpinner); // Show loading spinner
-    
-        try {
-          const response = await fetch("http://localhost:5000/api/volunteer", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              fullName,
-              fatherName,
-              email,
-              phone,
-              whatsapp,
-              aadhar,
-              dob,
-              gender,
-              bloodGroup,
-              street,
-              place,
-              district,
-              pincode,
-              state,
-              message,
-            }),
-          });
-    
-          const result = await response.json();
-          if (response.ok) {
-            showSuccessPopup(result.message || "Successfully joined!");
-            joinForm.reset();
-          } else {
-            showErrorPopup("Error: " + result.error);
-          }
-        } catch (err) {
-          console.error("Error:", err);
-          showErrorPopup("Something went wrong. Please try again later.");
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Join Now";
-          document.body.removeChild(loadingSpinner); // Remove loading spinner
-        }
-      });
-    
-      // Success message popup
-      function showSuccessPopup(message) {
-        const popup = document.createElement("div");
-        popup.className = "success-popup";
-        popup.innerHTML = `<p>${message}</p>`;
-        document.body.appendChild(popup);
-        setTimeout(() => popup.remove(), 3000);
-      }
-    
-      // Error message popup
-      function showErrorPopup(message) {
-        const popup = document.createElement("div");
-        popup.className = "error-popup";
-        popup.innerHTML = `<p>${message}</p>`;
-        document.body.appendChild(popup);
-        setTimeout(() => popup.remove(), 3000);
-      }
     });
-    
   </script>
+  <script src="js/main.js"></script>
   
 </body>
 </html>

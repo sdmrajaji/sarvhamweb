@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const volunteerSchema = new mongoose.Schema({
+const joinSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   fatherName: { type: String, required: true },
   email: { type: String, required: true },
@@ -18,4 +18,4 @@ const volunteerSchema = new mongoose.Schema({
   message: { type: String, required: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Volunteer', volunteerSchema);
+module.exports = mongoose.model('Join', joinSchema);
