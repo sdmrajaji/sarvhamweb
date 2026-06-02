@@ -26,12 +26,13 @@
         .custom-select-trigger {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
-            color: white;
+            color: #1a1a2e;
             font-size: 1rem;
             font-family: inherit;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,19 +40,23 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
         }
+        .custom-select-trigger.placeholder-active {
+            color: #7f8c8d;
+            font-weight: 400;
+        }
         .custom-select-trigger:hover {
-            border-color: rgba(230, 57, 70, 0.4);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.1);
+            border-color: #e63946;
+            background: #fff8f8;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.12);
         }
         .custom-select-trigger.open {
             border-color: #e63946;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 12px rgba(230, 57, 70, 0.25);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.12);
         }
         .custom-select-trigger .select-arrow {
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: #555;
             transition: transform 0.3s ease;
         }
         .custom-select-trigger.open .select-arrow {
@@ -62,23 +67,29 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            color: inherit;
+        }
+        /* Selected value shown in trigger */
+        .custom-select-trigger:not(.placeholder-active) .trigger-text {
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 1.05rem;
         }
         .custom-options-container {
             position: absolute;
             top: calc(100% + 8px);
             left: 0;
             width: 100%;
-            background: rgba(22, 30, 49, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 100;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            z-index: 200;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px) scale(0.95);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 250px;
+            max-height: 260px;
             overflow-y: auto;
             padding: 8px;
         }
@@ -88,35 +99,42 @@
             transform: translateY(0) scale(1);
         }
         .custom-option {
-            padding: 12px 14px;
-            color: #cbd5e1;
+            padding: 12px 16px;
+            color: #1a1a2e;
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: 500;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
         }
         .custom-option i {
-            font-size: 0.85rem;
-            color: rgba(230, 57, 70, 0.3);
+            font-size: 0.9rem;
+            color: #e63946;
+            opacity: 0.55;
             transition: all 0.2s ease;
         }
         .custom-option:hover {
-            background: rgba(230, 57, 70, 0.12);
-            color: white;
+            background: rgba(230, 57, 70, 0.1);
+            color: #c31432;
         }
         .custom-option:hover i {
             color: #e63946;
+            opacity: 1;
             transform: scale(1.2);
         }
         .custom-option.selected {
-            background: linear-gradient(135deg, #e63946, #c31432);
-            color: white;
+            background: linear-gradient(135deg, #e63946 0%, #c31432 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(230, 57, 70, 0.35);
         }
         .custom-option.selected i {
-            color: white;
+            color: #ffffff;
+            opacity: 1;
         }
         /* Scrollbar styling */
         .custom-options-container::-webkit-scrollbar {
@@ -126,11 +144,11 @@
             background: transparent;
         }
         .custom-options-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.12);
             border-radius: 3px;
         }
         .custom-options-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(230, 57, 70, 0.35);
         }
     </style>
 </head>
@@ -239,7 +257,7 @@
                             <div class="input-group">
                                 <label for="blood-group">Required Blood Group</label>
                                 <div class="custom-select-wrapper">
-                                    <div class="custom-select-trigger" id="blood-group-trigger">
+                                    <div class="custom-select-trigger placeholder-active" id="blood-group-trigger">
                                         <span class="trigger-text"><i class="fas fa-droplet text-red"></i> Select Blood Group</span>
                                         <i class="fas fa-chevron-down select-arrow"></i>
                                     </div>
@@ -332,7 +350,7 @@
         // Set default date to today's date in local time
         document.getElementById('blood-date').valueAsDate = new Date();
 
-        // Custom select dropdown logic
+        // ─── Custom Blood Group Dropdown ──────────────────────────────────────
         const trigger = document.getElementById('blood-group-trigger');
         const optionsContainer = document.getElementById('blood-group-options');
         const optionsList = optionsContainer.querySelectorAll('.custom-option');
@@ -352,21 +370,23 @@
                 e.stopPropagation();
                 const value = this.getAttribute('data-value');
                 hiddenInput.value = value;
-                
-                // Update trigger text with droplet icon
-                triggerText.innerHTML = `<i class="fas fa-droplet text-red animate-pulse"></i> ${value}`;
-                
-                // Update selected option class
+
+                // Update trigger text — show selected blood group prominently
+                triggerText.innerHTML = `<i class="fas fa-droplet text-red"></i> <strong>${value}</strong>`;
+
+                // Remove placeholder styling so text colour goes bold & dark
+                trigger.classList.remove('placeholder-active');
+
+                // Highlight the selected option
                 optionsList.forEach(opt => opt.classList.remove('selected'));
                 this.classList.add('selected');
-                
+
                 // Close dropdown
                 trigger.classList.remove('open');
                 optionsContainer.classList.remove('open');
 
-                // Trigger change event just in case other scripts rely on it
-                const event = new Event('change', { bubbles: true });
-                hiddenInput.dispatchEvent(event);
+                // Dispatch change event for any external listeners
+                hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
             });
         });
 
@@ -374,6 +394,103 @@
         document.addEventListener('click', function() {
             trigger.classList.remove('open');
             optionsContainer.classList.remove('open');
+        });
+
+        // ─── Blood Enquiry Form Submission ────────────────────────────────────
+        const bloodForm = document.getElementById('blood-form');
+        const feedback  = document.getElementById('blood-feedback');
+
+        function showFeedback(type, html) {
+            feedback.className = 'form-feedback ' + type;
+            feedback.innerHTML = html;
+            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        bloodForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // ── Collect field values ──────────────────────────────────────────
+            const patientName       = document.getElementById('blood-patientName').value.trim();
+            const contactName       = document.getElementById('blood-contactName').value.trim();
+            const email             = document.getElementById('blood-email').value.trim();
+            const phone             = document.getElementById('blood-phone').value.trim();
+            const bloodGroup        = document.getElementById('blood-group').value;
+            const unitsRequired     = parseInt(document.getElementById('blood-units').value, 10);
+            const requiredDate      = document.getElementById('blood-date').value;
+            const hospitalName      = document.getElementById('blood-hospitalName').value.trim();
+            const hospitalLocation  = document.getElementById('blood-hospitalLocation').value.trim();
+            const message           = document.getElementById('blood-message').value.trim();
+
+            // ── Client-side validation ────────────────────────────────────────
+            if (!patientName || !contactName || !email || !phone || !bloodGroup ||
+                !unitsRequired || !requiredDate || !hospitalName || !hospitalLocation) {
+                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please fill in all required fields before submitting.');
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please enter a valid email address.');
+                return;
+            }
+            if (!/^\d{10}$/.test(phone)) {
+                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please enter a valid 10-digit phone number.');
+                return;
+            }
+
+            // ── Show processing state ─────────────────────────────────────────
+            const submitBtn = bloodForm.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
+            showFeedback('processing', '<i class="fas fa-spinner fa-spin"></i> Submitting your request, please wait…');
+
+            // ── POST to API ───────────────────────────────────────────────────
+            try {
+                const response = await fetch('/api/blood-enquiry', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patientName,
+                        contactName,
+                        email,
+                        phone,
+                        bloodGroup,
+                        unitsRequired,
+                        requiredDate,
+                        hospitalName,
+                        hospitalLocation,
+                        message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // ── Success ───────────────────────────────────────────────
+                    showFeedback('success',
+                        '<i class="fas fa-circle-check"></i> Your blood request has been submitted successfully! ' +
+                        'Our team will contact you shortly. For urgent needs call <strong>+91 6385842829</strong>.');
+                    bloodForm.reset();
+                    // Reset custom dropdown display
+                    triggerText.innerHTML = '<i class="fas fa-droplet text-red"></i> Select Blood Group';
+                    trigger.classList.add('placeholder-active');
+                    optionsList.forEach(opt => opt.classList.remove('selected'));
+                    hiddenInput.value = '';
+                    // Reset date to today
+                    document.getElementById('blood-date').valueAsDate = new Date();
+                } else {
+                    // ── API returned error ────────────────────────────────────
+                    showFeedback('error',
+                        '<i class="fas fa-circle-xmark"></i> ' +
+                        (data.error || 'Submission failed. Please try again or call us directly.'));
+                }
+            } catch (err) {
+                // ── Network / server unreachable ──────────────────────────────
+                showFeedback('error',
+                    '<i class="fas fa-wifi"></i> Unable to reach the server. Please check your connection or call us at <strong>+91 6385842829</strong>.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            }
         });
     </script>
 </body>
