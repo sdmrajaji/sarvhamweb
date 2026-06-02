@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     const payloadStr = Buffer.from(base64Payload, 'base64').toString('utf8');
     const payload = JSON.parse(payloadStr);
 
-    const secret = process.env.ADMIN_PASSWORD || 'sarvham_secret';
+    const secret = process.env.ADMIN_PASSWORD || 'sarvhamadmin';
     const expectedSignature = crypto.createHmac('sha256', secret).update(payloadStr).digest('hex');
 
     if (signature !== expectedSignature) {
