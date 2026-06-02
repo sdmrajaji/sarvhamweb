@@ -219,10 +219,6 @@
                                 <input type="text" id="contact-phone-input" placeholder="+91 6385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Emergency Helpline</span>
-                                <input type="text" id="contact-helpline-input" placeholder="+91 6385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
                                 <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Email Address</span>
                                 <input type="email" id="contact-email-input" placeholder="sarvhamhelp@gmail.com" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
                             </div>
@@ -254,6 +250,28 @@
                             </div>
                             <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; align-self: flex-start; justify-content: center; padding: 0 30px; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
                                 <i class="fas fa-save"></i> Save WhatsApp Settings
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- ==================== EMERGENCY HELPLINE SETTINGS ==================== -->
+                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                        <h3>Emergency Helpline Settings</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Configure the emergency helpline number used for life-saving assistance queries.</p>
+                        
+                        <form id="helpline-settings-form" style="display: flex; flex-direction: column; gap: 20px;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Helpline Phone Number</span>
+                                    <input type="text" id="helpline-phone-input" placeholder="+91 6385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Direct Redirection</span>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">This phone number will be displayed as the main life-saving contact number on the Blood Enquiry module.</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; align-self: flex-start; justify-content: center; padding: 0 30px; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                                <i class="fas fa-save"></i> Save Helpline Settings
                             </button>
                         </form>
                     </div>

@@ -58,13 +58,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactInfoForm = document.getElementById("contact-info-form");
     const contactAddressInput = document.getElementById("contact-address-input");
     const contactPhoneInput = document.getElementById("contact-phone-input");
-    const contactHelplineInput = document.getElementById("contact-helpline-input");
     const contactEmailInput = document.getElementById("contact-email-input");
 
     // WhatsApp Settings Elements
     const whatsappSettingsForm = document.getElementById("whatsapp-settings-form");
     const whatsappPhoneInput = document.getElementById("whatsapp-phone-input");
     const whatsappTextInput = document.getElementById("whatsapp-text-input");
+
+    // Emergency Helpline Settings Elements
+    const helplineSettingsForm = document.getElementById("helpline-settings-form");
+    const helplinePhoneInput = document.getElementById("helpline-phone-input");
 
     // Local state variables
     let token = localStorage.getItem("sarvham_admin_token") || null;
@@ -257,8 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (contactAddressInput) contactAddressInput.value = data.address || "Coimbatore, Tamil Nadu, India";
                 if (contactPhoneInput) contactPhoneInput.value = data.phone || "+91 6385842829";
-                if (contactHelplineInput) contactHelplineInput.value = data.helplinePhone || "+91 6385842829";
                 if (contactEmailInput) contactEmailInput.value = data.email || "sarvhamhelp@gmail.com";
+                if (helplinePhoneInput) helplinePhoneInput.value = data.helplinePhone || "+91 6385842829";
                 if (whatsappPhoneInput) whatsappPhoneInput.value = data.whatsappPhone || "916385842829";
                 if (whatsappTextInput) whatsappTextInput.value = data.whatsappText || "Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!";
             }
@@ -1988,10 +1991,9 @@ document.addEventListener("DOMContentLoaded", function () {
             
             const address = contactAddressInput.value.trim();
             const phone = contactPhoneInput.value.trim();
-            const helplinePhone = contactHelplineInput ? contactHelplineInput.value.trim() : "";
             const email = contactEmailInput.value.trim();
             
-            if (!address || !phone || !email || !helplinePhone) {
+            if (!address || !phone || !email) {
                 showToast("All contact info fields are required.", "error");
                 return;
             }
@@ -2007,7 +2009,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify({ address, phone, helplinePhone, email })
+                    body: JSON.stringify({ address, phone, email })
                 });
 
                 if (res.ok) {
@@ -2062,6 +2064,46 @@ document.addEventListener("DOMContentLoaded", function () {
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fas fa-save"></i> Save WhatsApp Settings';
+            }
+        });
+    }
+
+    if (helplineSettingsForm) {
+        helplineSettingsForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const helplinePhone = helplinePhoneInput.value.trim();
+            
+            if (!helplinePhone) {
+                showToast("Emergency Helpline phone number is required.", "error");
+                return;
+            }
+
+            const saveBtn = helplineSettingsForm.querySelector("button");
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch("/api/stats", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ helplinePhone })
+                });
+
+                if (res.ok) {
+                    showToast("Emergency Helpline settings saved successfully!", "success");
+                } else {
+                    const err = await res.json();
+                    showToast(err.error || "Failed to save Helpline settings", "error");
+                }
+            } catch (err) {
+                handleApiError(err);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Helpline Settings';
             }
         });
     }
