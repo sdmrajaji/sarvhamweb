@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactInfoForm = document.getElementById("contact-info-form");
     const contactAddressInput = document.getElementById("contact-address-input");
     const contactPhoneInput = document.getElementById("contact-phone-input");
+    const contactHelplineInput = document.getElementById("contact-helpline-input");
     const contactEmailInput = document.getElementById("contact-email-input");
 
     // WhatsApp Settings Elements
@@ -256,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (contactAddressInput) contactAddressInput.value = data.address || "Coimbatore, Tamil Nadu, India";
                 if (contactPhoneInput) contactPhoneInput.value = data.phone || "+91 6385842829";
+                if (contactHelplineInput) contactHelplineInput.value = data.helplinePhone || "+91 6385842829";
                 if (contactEmailInput) contactEmailInput.value = data.email || "sarvhamhelp@gmail.com";
                 if (whatsappPhoneInput) whatsappPhoneInput.value = data.whatsappPhone || "916385842829";
                 if (whatsappTextInput) whatsappTextInput.value = data.whatsappText || "Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!";
@@ -1986,9 +1988,10 @@ document.addEventListener("DOMContentLoaded", function () {
             
             const address = contactAddressInput.value.trim();
             const phone = contactPhoneInput.value.trim();
+            const helplinePhone = contactHelplineInput ? contactHelplineInput.value.trim() : "";
             const email = contactEmailInput.value.trim();
             
-            if (!address || !phone || !email) {
+            if (!address || !phone || !email || !helplinePhone) {
                 showToast("All contact info fields are required.", "error");
                 return;
             }
@@ -2004,7 +2007,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${token}`
                     },
-                    body: JSON.stringify({ address, phone, email })
+                    body: JSON.stringify({ address, phone, helplinePhone, email })
                 });
 
                 if (res.ok) {

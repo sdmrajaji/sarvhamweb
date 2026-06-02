@@ -32,6 +32,10 @@ const statSchema = new mongoose.Schema({
   whatsappText: {
     type: String,
     default: 'Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!'
+  },
+  helplinePhone: {
+    type: String,
+    default: '+91 6385842829'
   }
 });
 

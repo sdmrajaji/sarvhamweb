@@ -6,11 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (data) {
                 const helplineLink = document.getElementById("emergency-helpline-link");
                 const helplineText = document.getElementById("emergency-helpline-text");
-                if (helplineLink && data.phone) {
-                    helplineLink.href = `tel:${data.phone.replace(/\s+/g, '')}`;
+                const helplinePhone = data.helplinePhone || data.phone;
+                if (helplineLink && helplinePhone) {
+                    helplineLink.href = `tel:${helplinePhone.replace(/\s+/g, '')}`;
                 }
-                if (helplineText && data.phone) {
-                    helplineText.textContent = data.phone;
+                if (helplineText && helplinePhone) {
+                    helplineText.textContent = helplinePhone;
                 }
 
                 const supportEmailLink = document.getElementById("support-email-link");

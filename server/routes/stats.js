@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
         phone: '+91 6385842829',
         email: 'sarvhamhelp@gmail.com',
         whatsappPhone: '916385842829',
-        whatsappText: 'Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!'
+        whatsappText: 'Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!',
+        helplinePhone: '+91 6385842829'
       });
       await stat.save();
     }
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
 // PUT /api/stats (Admin protected)
 router.put('/', auth, async (req, res) => {
   try {
-    const { mealsDonated, treesPlanted, bloodBridges, address, phone, email, whatsappPhone, whatsappText } = req.body;
+    const { mealsDonated, treesPlanted, bloodBridges, address, phone, email, whatsappPhone, whatsappText, helplinePhone } = req.body;
     
     let stat = await Stat.findOne();
     if (!stat) {
@@ -45,6 +46,7 @@ router.put('/', auth, async (req, res) => {
     stat.email = email !== undefined ? email : stat.email;
     stat.whatsappPhone = whatsappPhone !== undefined ? whatsappPhone : stat.whatsappPhone;
     stat.whatsappText = whatsappText !== undefined ? whatsappText : stat.whatsappText;
+    stat.helplinePhone = helplinePhone !== undefined ? helplinePhone : stat.helplinePhone;
 
     await stat.save();
     res.json({ message: 'Stats and contact info updated successfully', data: stat });
