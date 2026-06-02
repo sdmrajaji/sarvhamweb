@@ -1081,3 +1081,59 @@ tbody tr:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==================== VOLUNTEER STATUS BADGES & SORT STYLING ==================== */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-pending {
+    background-color: rgba(248, 167, 47, 0.12);
+    border: 1px solid rgba(248, 167, 47, 0.25);
+    color: var(--color-orange);
+}
+
+.status-verified {
+    background-color: rgba(46, 204, 113, 0.12);
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    color: var(--color-green);
+}
+
+.status-rejected {
+    background-color: rgba(230, 57, 70, 0.12);
+    border: 1px solid rgba(230, 57, 70, 0.25);
+    color: var(--color-red);
+}
+
+/* Dropdown Sort Styling */
+.table-sort select {
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.table-sort select:hover,
+.table-sort select:focus {
+    border-color: var(--color-orange);
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.table-sort select option {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}

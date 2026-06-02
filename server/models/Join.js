@@ -15,7 +15,12 @@ const joinSchema = new mongoose.Schema({
   district: { type: String, required: true },
   pincode: { type: String, required: true },
   state: { type: String, required: true },
-  message: { type: String, required: true }
+  message: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ['pending', 'verified', 'rejected'],
+    default: 'pending'
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Join', joinSchema);

@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tbody = document.getElementById("volunteers-tbody");
         
         if (!silent) {
-            tbody.innerHTML = `<tr><td colspan="8" class="table-loader-row"><i class="fas fa-spinner"></i><p>Loading applications...</p></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="table-loader-row"><i class="fas fa-spinner"></i><p>Loading applications...</p></td></tr>`;
         }
 
         try {
@@ -395,7 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (res.status === 401) { showLogin(); return; }
             volunteersList = await res.json();
-            renderVolunteers(volunteersList);
+            applyFiltersAndSort();
         } catch (err) {
             handleApiError(err);
         }
@@ -406,12 +406,12 @@ document.addEventListener("DOMContentLoaded", function () {
         tbody.innerHTML = "";
 
         if (!Array.isArray(data)) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure MONGO_URI is set on your server.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure MONGO_URI is set on your server.</td></tr>`;
             return;
         }
 
         if (data.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted" style="padding:40px;">No volunteer applications found.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted" style="padding:40px;">No volunteer applications found.</td></tr>`;
             return;
         }
 
@@ -428,6 +428,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     </a>
                 </td>
                 <td>${escapeHTML(item.district)}, ${escapeHTML(item.state)}</td>
+                <td class="text-center">
+                    <span class="badge-status status-${item.status || 'pending'}">${escapeHTML(item.status ? (item.status === 'verified' ? 'Verified' : item.status === 'rejected' ? 'Rejected' : 'Pending') : 'Pending')}</span>
+                </td>
                 <td class="text-center">
                     <button class="action-btn btn-view view-dossier-btn" data-id="${item._id}">
                         <i class="fas fa-user-tag"></i>
@@ -483,20 +486,46 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Dynamic Search Volunteers
-    document.getElementById("search-volunteers").addEventListener("input", function (e) {
-        const query = e.target.value.toLowerCase().trim();
-        const filtered = volunteersList.filter(item => 
+    // Dynamic Filter & Sort Handler
+    function applyFiltersAndSort() {
+        const query = document.getElementById("search-volunteers").value.toLowerCase().trim();
+        const sortVal = document.getElementById("sort-volunteers").value;
+        
+        let filtered = volunteersList.filter(item => 
             item.fullName.toLowerCase().includes(query) ||
             item.fatherName.toLowerCase().includes(query) ||
             item.email.toLowerCase().includes(query) ||
             item.phone.includes(query) ||
             item.bloodGroup.toLowerCase().includes(query) ||
             item.district.toLowerCase().includes(query) ||
-            item.state.toLowerCase().includes(query)
+            item.state.toLowerCase().includes(query) ||
+            (item.status || "pending").toLowerCase().includes(query)
         );
+
+        // Apply Sorting
+        if (sortVal === "newest") {
+            filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortVal === "oldest") {
+            filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        } else if (sortVal === "name-asc") {
+            filtered.sort((a, b) => a.fullName.localeCompare(b.fullName));
+        } else if (sortVal === "name-desc") {
+            filtered.sort((a, b) => b.fullName.localeCompare(a.fullName));
+        } else if (sortVal === "status") {
+            const statusWeight = { verified: 1, pending: 2, rejected: 3 };
+            filtered.sort((a, b) => {
+                const weightA = statusWeight[a.status || 'pending'] || 2;
+                const weightB = statusWeight[b.status || 'pending'] || 2;
+                return weightA - weightB;
+            });
+        }
+
         renderVolunteers(filtered);
-    });
+    }
+
+    // Dynamic Search & Sort Listeners
+    document.getElementById("search-volunteers").addEventListener("input", applyFiltersAndSort);
+    document.getElementById("sort-volunteers").addEventListener("change", applyFiltersAndSort);
 
     // Dossier Modal Generator
     function showDossierModal(v) {
@@ -558,9 +587,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">WhatsApp:</span>
                             <input type="text" id="edit-vol-whatsapp" value="${escapeHTML(v.whatsapp)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
-                        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 10px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 5px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Application Status:</span>
+                            <select id="edit-vol-status" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                                <option value="pending" ${v.status === 'pending' || !v.status ? 'selected' : ''}>Pending</option>
+                                <option value="verified" ${v.status === 'verified' ? 'selected' : ''}>Verified (Approved)</option>
+                                <option value="rejected" ${v.status === 'rejected' ? 'selected' : ''}>Rejected</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 5px;">
                             <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Joined Timestamp:</span>
-                            <span style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; padding: 8px 4px;">${formattedDate}</span>
+                            <span style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; padding: 4px 4px;">${formattedDate}</span>
                         </div>
                     </div>
                 </div>
@@ -627,9 +664,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const district = document.getElementById("edit-vol-district").value.trim();
         const pincode = document.getElementById("edit-vol-pincode").value.trim();
         const state = document.getElementById("edit-vol-state").value.trim();
+        const status = document.getElementById("edit-vol-status").value;
 
         if (!fullName || !fatherName || !email || !phone || !whatsapp || !aadhar || !dob || !gender ||
-            !bloodGroup || !street || !place || !district || !pincode || !state) {
+            !bloodGroup || !street || !place || !district || !pincode || !state || !status) {
             showToast("All profile fields are required.", "error");
             return;
         }
@@ -647,7 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({
                     fullName, fatherName, dob, gender, bloodGroup, aadhar,
-                    email, phone, whatsapp, street, place, district, pincode, state
+                    email, phone, whatsapp, street, place, district, pincode, state, status
                 })
             });
 

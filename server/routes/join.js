@@ -98,7 +98,8 @@ router.put('/:id', auth, async (req, res) => {
       place,
       district,
       pincode,
-      state
+      state,
+      status
     } = req.body;
 
     const updatedJoin = await Join.findByIdAndUpdate(
@@ -117,7 +118,8 @@ router.put('/:id', auth, async (req, res) => {
         place,
         district,
         pincode,
-        state
+        state,
+        status
       },
       { new: true, runValidators: true }
     );

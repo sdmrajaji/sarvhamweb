@@ -224,6 +224,15 @@
                                 <button id="refresh-volunteers-btn" title="Refresh Volunteers" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: rgba(248, 167, 47, 0.08); border: 1px solid rgba(248, 167, 47, 0.15); color: var(--color-orange); border-radius: 10px; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem;">
                                     <i class="fas fa-arrows-rotate"></i>
                                 </button>
+                                <div class="table-sort" style="position: relative; display: flex; align-items: center;">
+                                    <select id="sort-volunteers" title="Sort Volunteers">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
+                                        <option value="status">By Status</option>
+                                    </select>
+                                </div>
                                 <div class="table-search">
                                     <i class="fas fa-search"></i>
                                     <input type="text" id="search-volunteers" placeholder="Search volunteers by name, district, blood...">
@@ -240,13 +249,14 @@
                                         <th>Phone</th>
                                         <th>WhatsApp</th>
                                         <th>District & State</th>
+                                        <th class="text-center">Status</th>
                                         <th class="text-center">Profile</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="volunteers-tbody">
                                     <!-- Dynamic rows loaded here -->
-                                    <tr><td colspan="8" class="text-center">Fetching applications...</td></tr>
+                                    <tr><td colspan="9" class="text-center">Fetching applications...</td></tr>
                                 </tbody>
                             </table>
                         </div>
