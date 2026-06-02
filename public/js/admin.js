@@ -660,9 +660,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchBloodEl) searchBloodEl.addEventListener("input", applyBloodFiltersAndSort);
     if (sortBloodEl) sortBloodEl.addEventListener("change", applyBloodFiltersAndSort);
 
-        });
-    }
-
     // ==================== BLOOD DONORS HANDLING ====================
 
     async function loadDonors(silent = false) {
