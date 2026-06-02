@@ -396,102 +396,14 @@
             optionsContainer.classList.remove('open');
         });
 
-        // ─── Blood Enquiry Form Submission ────────────────────────────────────
-        const bloodForm = document.getElementById('blood-form');
-        const feedback  = document.getElementById('blood-feedback');
-
-        function showFeedback(type, html) {
-            feedback.className = 'form-feedback ' + type;
-            feedback.innerHTML = html;
-            feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        bloodForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            // ── Collect field values ──────────────────────────────────────────
-            const patientName       = document.getElementById('blood-patientName').value.trim();
-            const contactName       = document.getElementById('blood-contactName').value.trim();
-            const email             = document.getElementById('blood-email').value.trim();
-            const phone             = document.getElementById('blood-phone').value.trim();
-            const bloodGroup        = document.getElementById('blood-group').value;
-            const unitsRequired     = parseInt(document.getElementById('blood-units').value, 10);
-            const requiredDate      = document.getElementById('blood-date').value;
-            const hospitalName      = document.getElementById('blood-hospitalName').value.trim();
-            const hospitalLocation  = document.getElementById('blood-hospitalLocation').value.trim();
-            const message           = document.getElementById('blood-message').value.trim();
-
-            // ── Client-side validation ────────────────────────────────────────
-            if (!patientName || !contactName || !email || !phone || !bloodGroup ||
-                !unitsRequired || !requiredDate || !hospitalName || !hospitalLocation) {
-                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please fill in all required fields before submitting.');
-                return;
-            }
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please enter a valid email address.');
-                return;
-            }
-            if (!/^\d{10}$/.test(phone)) {
-                showFeedback('error', '<i class="fas fa-circle-exclamation"></i> Please enter a valid 10-digit phone number.');
-                return;
-            }
-
-            // ── Show processing state ─────────────────────────────────────────
-            const submitBtn = bloodForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
-            showFeedback('processing', '<i class="fas fa-spinner fa-spin"></i> Submitting your request, please wait…');
-
-            // ── POST to API ───────────────────────────────────────────────────
-            try {
-                const response = await fetch('/api/blood-enquiry', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        patientName,
-                        contactName,
-                        email,
-                        phone,
-                        bloodGroup,
-                        unitsRequired,
-                        requiredDate,
-                        hospitalName,
-                        hospitalLocation,
-                        message
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // ── Success ───────────────────────────────────────────────
-                    showFeedback('success',
-                        '<i class="fas fa-circle-check"></i> Your blood request has been submitted successfully! ' +
-                        'Our team will contact you shortly. For urgent needs call <strong>+91 6385842829</strong>.');
-                    bloodForm.reset();
-                    // Reset custom dropdown display
-                    triggerText.innerHTML = '<i class="fas fa-droplet text-red"></i> Select Blood Group';
-                    trigger.classList.add('placeholder-active');
-                    optionsList.forEach(opt => opt.classList.remove('selected'));
-                    hiddenInput.value = '';
-                    // Reset date to today
-                    document.getElementById('blood-date').valueAsDate = new Date();
-                } else {
-                    // ── API returned error ────────────────────────────────────
-                    showFeedback('error',
-                        '<i class="fas fa-circle-xmark"></i> ' +
-                        (data.error || 'Submission failed. Please try again or call us directly.'));
-                }
-            } catch (err) {
-                // ── Network / server unreachable ──────────────────────────────
-                showFeedback('error',
-                    '<i class="fas fa-wifi"></i> Unable to reach the server. Please check your connection or call us at <strong>+91 6385842829</strong>.');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-            }
-        });
+        // Form submission is handled by main.js (section 5.5)
+        // Dropdown reset after success is coordinated via window.bloodDropdownReset
+        window.bloodDropdownReset = function() {
+            triggerText.innerHTML = '<i class="fas fa-droplet text-red"></i> Select Blood Group';
+            trigger.classList.add('placeholder-active');
+            optionsList.forEach(opt => opt.classList.remove('selected'));
+            hiddenInput.value = '';
+        };
     </script>
 </body>
 

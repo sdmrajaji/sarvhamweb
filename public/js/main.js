@@ -394,18 +394,26 @@ document.addEventListener("DOMContentLoaded", function () {
                 const result = await response.json();
 
                 if (response.ok) {
-                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Emergency request submitted successfully!';
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Emergency request submitted successfully! Our team will contact you shortly.';
                     feedback.className = 'form-feedback success';
                     bloodForm.reset();
                     document.getElementById('blood-date').valueAsDate = new Date();
+                    // Reset the custom blood-group dropdown UI (defined in blood-enquiry.html inline script)
+                    if (typeof window.bloodDropdownReset === 'function') {
+                        window.bloodDropdownReset();
+                    }
                     showSuccessToast("Emergency request submitted successfully!");
                 } else {
                     throw new Error(result.error || 'Failed to submit request.');
                 }
             } catch (err) {
-                feedback.innerHTML = `<i class="fas fa-times-circle"></i> ${err.message}`;
+                // Show friendly message for DB timeout errors
+                const userMsg = (err.message && (err.message.includes('buffering') || err.message.includes('Server error')))
+                    ? 'Database is unavailable. Please call +91 6385842829 for immediate assistance.'
+                    : (err.message || 'Something went wrong. Please try again.');
+                feedback.innerHTML = `<i class="fas fa-times-circle"></i> ${userMsg}`;
                 feedback.className = 'form-feedback error';
-                showErrorToast(err.message);
+                showErrorToast(userMsg);
             } finally {
                 submitBtn.disabled = false;
                 setTimeout(() => {
