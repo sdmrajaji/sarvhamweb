@@ -70,7 +70,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let contactsList = [];
     let volunteersList = [];
     let galleryList = [];
+    let bloodList = [];
     let activeVolunteerId = null;
+    let activeBloodId = null;
+
+    // Blood Modal elements
+    const bloodModal = document.getElementById("blood-modal");
+    const closeBloodModalBtn = document.getElementById("close-blood-modal");
+    const closeBloodModalBtn2 = document.getElementById("close-blood-modal-btn");
+    const bloodModalContent = document.getElementById("blood-modal-content");
+    const saveBloodProfileBtn = document.getElementById("save-blood-profile-btn");
 
     // Initialize application state
     if (token) {
@@ -187,6 +196,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 workspaceSubtitle.textContent = "View and manage feedback requests submitted by the public.";
                 loadContacts();
                 break;
+            case "blood":
+                workspaceTitle.textContent = "Blood Inquiries";
+                workspaceSubtitle.textContent = "Coordinate and verify urgent emergency blood requests.";
+                loadBloodEnquiries();
+                break;
             case "volunteers":
                 workspaceTitle.textContent = "Volunteer Registrations";
                 workspaceSubtitle.textContent = "Process applications submitted to join the Sarvamates family.";
@@ -209,6 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
         // Populate standard table arrays in background
         loadContacts(true);
+        loadBloodEnquiries(true);
         loadVolunteers(true);
         loadGallery(true);
     }
@@ -247,6 +262,14 @@ document.addEventListener("DOMContentLoaded", function () {
             let contacts = await contactsRes.json();
             statContacts.textContent = Array.isArray(contacts) ? contacts.length : 0;
 
+            // Fetch blood enquiries
+            let bloodRes = await fetch("/api/blood-enquiry", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            let bloodReqs = await bloodRes.json();
+            const statBloodEl = document.getElementById("stat-blood-count");
+            if (statBloodEl) statBloodEl.textContent = Array.isArray(bloodReqs) ? bloodReqs.length : 0;
+
             // Fetch volunteers
             let volunteersRes = await fetch("/api/join", {
                 headers: { "Authorization": `Bearer ${token}` }
@@ -284,7 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (res.status === 401) { showLogin(); return; }
             contactsList = await res.json();
-            renderContacts(contactsList);
+            applyContactsFiltersAndSort();
         } catch (err) {
             handleApiError(err);
         }
@@ -382,17 +405,313 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Dynamic Search Contacts
-    document.getElementById("search-contacts").addEventListener("input", function (e) {
-        const query = e.target.value.toLowerCase().trim();
-        const filtered = contactsList.filter(item => 
+    // Dynamic Filter & Sort Handler for Contacts
+    function applyContactsFiltersAndSort() {
+        const searchInput = document.getElementById("search-contacts");
+        const sortInput = document.getElementById("sort-contacts");
+        if (!searchInput || !sortInput) return;
+
+        const query = searchInput.value.toLowerCase().trim();
+        const sortVal = sortInput.value;
+        
+        let filtered = contactsList.filter(item => 
             item.name.toLowerCase().includes(query) ||
             item.email.toLowerCase().includes(query) ||
             item.phone.includes(query) ||
             item.message.toLowerCase().includes(query)
         );
+
+        // Apply Sorting
+        if (sortVal === "newest") {
+            filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortVal === "oldest") {
+            filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        } else if (sortVal === "name-asc") {
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+        } else if (sortVal === "name-desc") {
+            filtered.sort((a, b) => b.name.localeCompare(a.name));
+        } else if (sortVal === "email-asc") {
+            filtered.sort((a, b) => a.email.localeCompare(b.email));
+        } else if (sortVal === "email-desc") {
+            filtered.sort((a, b) => b.email.localeCompare(a.email));
+        }
+
         renderContacts(filtered);
-    });
+    }
+
+    // Dynamic Search & Sort Listeners for Contacts
+    const searchContactsEl = document.getElementById("search-contacts");
+    const sortContactsEl = document.getElementById("sort-contacts");
+    if (searchContactsEl) searchContactsEl.addEventListener("input", applyContactsFiltersAndSort);
+    if (sortContactsEl) sortContactsEl.addEventListener("change", applyContactsFiltersAndSort);
+
+
+    // ==================== BLOOD INQUIRIES HANDLING ====================
+
+    async function loadBloodEnquiries(silent = false) {
+        if (!token) return;
+        const tbody = document.getElementById("blood-tbody");
+        
+        if (!silent) {
+            tbody.innerHTML = `<tr><td colspan="8" class="table-loader-row"><i class="fas fa-spinner"></i><p>Loading blood inquiries...</p></td></tr>`;
+        }
+
+        try {
+            const res = await fetch("/api/blood-enquiry", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.status === 401) { showLogin(); return; }
+            bloodList = await res.json();
+            applyBloodFiltersAndSort();
+        } catch (err) {
+            handleApiError(err);
+        }
+    }
+
+    function renderBloodEnquiries(data) {
+        const tbody = document.getElementById("blood-tbody");
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(data)) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure server is running.</td></tr>`;
+            return;
+        }
+
+        if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted" style="padding:40px;">No blood inquiries found.</td></tr>`;
+            return;
+        }
+
+        data.forEach(item => {
+            const formattedDate = new Date(item.requiredDate).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            });
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td style="font-weight:700;">${escapeHTML(item.patientName)}</td>
+                <td>
+                    <span style="display:block; font-weight:600; color:var(--text-primary);">${escapeHTML(item.contactName)}</span>
+                    <a href="tel:${escapeHTML(item.phone)}" style="font-size:0.85rem; color:var(--text-secondary); text-decoration:none;">${escapeHTML(item.phone)}</a>
+                </td>
+                <td><span class="badge-blood">${escapeHTML(item.bloodGroup)}</span></td>
+                <td style="font-weight:700; color:var(--color-orange);">${escapeHTML(item.unitsRequired)} Units</td>
+                <td>${formattedDate}</td>
+                <td>
+                    <span style="display:block; font-weight:600;">${escapeHTML(item.hospitalName)}</span>
+                    <span style="font-size:0.85rem; color:var(--text-secondary);">${escapeHTML(item.hospitalLocation)}</span>
+                </td>
+                <td class="text-center">
+                    <span class="badge-status status-${item.status || 'pending'}">${escapeHTML(item.status ? (item.status === 'verified' ? 'Verified' : item.status === 'resolved' ? 'Resolved' : item.status === 'cancelled' ? 'Cancelled' : 'Pending') : 'Pending')}</span>
+                </td>
+                <td class="text-center">
+                    <div class="action-btns">
+                        <button class="action-btn btn-view view-blood-btn" data-id="${item._id}" title="View Details">
+                            <i class="fas fa-comment-medical"></i>
+                        </button>
+                        <button class="action-btn btn-delete delete-blood-btn" data-id="${item._id}" title="Delete request">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Attach actions
+        document.querySelectorAll(".view-blood-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const id = this.getAttribute("data-id");
+                const profile = bloodList.find(b => b._id === id);
+                if (profile) {
+                    showBloodDossierModal(profile);
+                }
+            });
+        });
+
+        document.querySelectorAll(".delete-blood-btn").forEach(btn => {
+            btn.addEventListener("click", async function () {
+                const id = this.getAttribute("data-id");
+                if (confirm("Are you sure you want to permanently delete this blood enquiry request?")) {
+                    await deleteBloodEnquiry(id);
+                }
+            });
+        });
+    }
+
+    async function deleteBloodEnquiry(id) {
+        try {
+            const res = await fetch(`/api/blood-enquiry/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                showToast("Blood enquiry deleted successfully.", "success");
+                loadBloodEnquiries();
+                fetchCounters();
+            } else {
+                const result = await res.json();
+                showToast(result.error || "Failed to delete blood enquiry.", "error");
+            }
+        } catch (err) {
+            handleApiError(err);
+        }
+    }
+
+    function applyBloodFiltersAndSort() {
+        const searchInput = document.getElementById("search-blood");
+        const sortInput = document.getElementById("sort-blood");
+        if (!searchInput || !sortInput) return;
+
+        const query = searchInput.value.toLowerCase().trim();
+        const sortVal = sortInput.value;
+        
+        let filtered = bloodList.filter(item => 
+            item.patientName.toLowerCase().includes(query) ||
+            item.contactName.toLowerCase().includes(query) ||
+            item.bloodGroup.toLowerCase().includes(query) ||
+            item.hospitalName.toLowerCase().includes(query) ||
+            item.hospitalLocation.toLowerCase().includes(query) ||
+            (item.phone || '').includes(query) ||
+            (item.message || '').toLowerCase().includes(query) ||
+            (item.status || 'pending').toLowerCase().includes(query)
+        );
+
+        // Apply Sorting
+        if (sortVal === "newest") {
+            filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        } else if (sortVal === "oldest") {
+            filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        } else if (sortVal === "patient-asc") {
+            filtered.sort((a, b) => a.patientName.localeCompare(b.patientName));
+        } else if (sortVal === "patient-desc") {
+            filtered.sort((a, b) => b.patientName.localeCompare(a.patientName));
+        } else if (sortVal === "units-desc") {
+            filtered.sort((a, b) => b.unitsRequired - a.unitsRequired);
+        } else if (sortVal === "units-asc") {
+            filtered.sort((a, b) => a.unitsRequired - b.unitsRequired);
+        } else if (sortVal === "status") {
+            const statusWeight = { resolved: 1, verified: 2, pending: 3, cancelled: 4 };
+            filtered.sort((a, b) => {
+                const weightA = statusWeight[a.status || 'pending'] || 3;
+                const weightB = statusWeight[b.status || 'pending'] || 3;
+                return weightA - weightB;
+            });
+        }
+
+        renderBloodEnquiries(filtered);
+    }
+
+    // Dynamic Search & Sort Listeners for Blood Inquiries
+    const searchBloodEl = document.getElementById("search-blood");
+    const sortBloodEl = document.getElementById("sort-blood");
+    if (searchBloodEl) searchBloodEl.addEventListener("input", applyBloodFiltersAndSort);
+    if (sortBloodEl) sortBloodEl.addEventListener("change", applyBloodFiltersAndSort);
+
+    // Refresh Button Handling for Blood
+    const refreshBloodBtn = document.getElementById("refresh-blood-btn");
+    if (refreshBloodBtn) {
+        refreshBloodBtn.addEventListener("click", function () {
+            const icon = this.querySelector("i");
+            icon.classList.add("fa-spin");
+            loadBloodEnquiries().finally(() => {
+                setTimeout(() => icon.classList.remove("fa-spin"), 800);
+            });
+        });
+    }
+
+    function showBloodDossierModal(b) {
+        activeBloodId = b._id;
+        const formattedDate = new Date(b.createdAt).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+        const requiredByDate = new Date(b.requiredDate).toISOString().split('T')[0];
+
+        bloodModalContent.innerHTML = `
+            <div class="dossier-grid">
+                <!-- Section 1: Patient & Request Profile -->
+                <div class="dossier-section">
+                    <h4>Request Profile</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Patient Name:</span>
+                            <input type="text" id="edit-blood-patientName" value="${escapeHTML(b.patientName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Required Blood Group:</span>
+                            <input type="text" id="edit-blood-group" value="${escapeHTML(b.bloodGroup)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Units Required:</span>
+                            <input type="number" id="edit-blood-units" value="${b.unitsRequired}" min="1" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Required By Date:</span>
+                            <input type="date" id="edit-blood-date" value="${requiredByDate}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Contact & Status -->
+                <div class="dossier-section">
+                    <h4>Contact & Coordination</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Contact Person:</span>
+                            <input type="text" id="edit-blood-contactName" value="${escapeHTML(b.contactName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Phone Number:</span>
+                            <input type="text" id="edit-blood-phone" value="${escapeHTML(b.phone)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Email Address:</span>
+                            <input type="email" id="edit-blood-email" value="${escapeHTML(b.email)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Inquiry Status:</span>
+                            <select id="edit-blood-status" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                                <option value="pending" ${b.status === 'pending' || !b.status ? 'selected' : ''}>Pending</option>
+                                <option value="verified" ${b.status === 'verified' ? 'selected' : ''}>Verified</option>
+                                <option value="resolved" ${b.status === 'resolved' ? 'selected' : ''}>Resolved (Success)</option>
+                                <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Hospital Information -->
+                <div class="dossier-section dossier-full-section">
+                    <h4>Clinical Target Location</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px; grid-column: span 2;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Hospital Name:</span>
+                            <input type="text" id="edit-blood-hospitalName" value="${escapeHTML(b.hospitalName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; grid-column: span 2;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Hospital Location:</span>
+                            <input type="text" id="edit-blood-hospitalLocation" value="${escapeHTML(b.hospitalLocation)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Clinical Notes -->
+                <div class="dossier-section dossier-full-section">
+                    <h4>Clinical / Emergency Notes</h4>
+                    <textarea id="edit-blood-message" rows="3" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.95rem; font-family: inherit; resize: vertical;">${escapeHTML(b.message || '')}</textarea>
+                </div>
+            </div>
+        `;
+        bloodModal.style.display = "flex";
+    }
 
 
     // ==================== VOLUNTEERS APPLICATIONS HANDLING ====================
@@ -711,6 +1030,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 volunteerModal.style.display = "none";
                 loadVolunteers(); // Refresh table
                 fetchCounters(); // Refresh stats
+            } else {
+                const errResult = await res.json();
+                showToast(errResult.error || "Failed to update profile.", "error");
+            }
+        } catch (err) {
+            handleApiError(err);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
+    });
+
+    // Blood Modal Close Triggers
+    closeBloodModalBtn.addEventListener("click", () => bloodModal.style.display = "none");
+    closeBloodModalBtn2.addEventListener("click", () => bloodModal.style.display = "none");
+    bloodModal.addEventListener("click", (e) => {
+        if (e.target === bloodModal) bloodModal.style.display = "none";
+    });
+
+    // Save Blood Profile changes
+    document.getElementById("save-blood-profile-btn").addEventListener("click", async function () {
+        if (!activeBloodId) return;
+
+        const patientName = document.getElementById("edit-blood-patientName").value.trim();
+        const bloodGroup = document.getElementById("edit-blood-group").value.trim();
+        const unitsRequired = parseInt(document.getElementById("edit-blood-units").value.trim(), 10);
+        const requiredDate = document.getElementById("edit-blood-date").value.trim();
+        const contactName = document.getElementById("edit-blood-contactName").value.trim();
+        const phone = document.getElementById("edit-blood-phone").value.trim();
+        const email = document.getElementById("edit-blood-email").value.trim();
+        const status = document.getElementById("edit-blood-status").value;
+        const hospitalName = document.getElementById("edit-blood-hospitalName").value.trim();
+        const hospitalLocation = document.getElementById("edit-blood-hospitalLocation").value.trim();
+        const message = document.getElementById("edit-blood-message").value.trim();
+
+        if (!patientName || !bloodGroup || !unitsRequired || !requiredDate || !contactName || !phone || !email || !status || !hospitalName || !hospitalLocation) {
+            showToast("All coordination fields are required.", "error");
+            return;
+        }
+
+        const saveBtn = this;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        try {
+            const res = await fetch(`/api/blood-enquiry/${activeBloodId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    patientName, bloodGroup, unitsRequired, requiredDate,
+                    contactName, phone, email, status, hospitalName, hospitalLocation, message
+                })
+            });
+
+            if (res.ok) {
+                showToast("Blood inquiry updated successfully!", "success");
+                bloodModal.style.display = "none";
+                loadBloodEnquiries(); // Refresh table
+                fetchCounters(); // Refresh overview count
             } else {
                 const errResult = await res.json();
                 showToast(errResult.error || "Failed to update profile.", "error");

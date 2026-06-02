@@ -328,6 +328,94 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => toast.remove(), 4000);
     }
 
+    // 5.5. AJAX Blood Enquiry Form Submission
+    const bloodForm = document.getElementById("blood-form");
+    if (bloodForm) {
+        const feedback = document.getElementById("blood-feedback");
+        const submitBtn = bloodForm.querySelector("button");
+        const phoneInput = document.getElementById("blood-phone");
+
+        if (phoneInput) {
+            phoneInput.addEventListener("input", (e) => {
+                e.target.value = e.target.value.replace(/\D/g, "");
+            });
+        }
+
+        bloodForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            feedback.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting emergency request...';
+            feedback.className = 'form-feedback processing';
+            submitBtn.disabled = true;
+
+            const patientName = document.getElementById("blood-patientName").value.trim();
+            const contactName = document.getElementById("blood-contactName").value.trim();
+            const email = document.getElementById("blood-email").value.trim();
+            const phone = document.getElementById("blood-phone").value.trim();
+            const bloodGroup = document.getElementById("blood-group").value.trim();
+            const unitsRequired = parseInt(document.getElementById("blood-units").value.trim(), 10);
+            const requiredDate = document.getElementById("blood-date").value.trim();
+            const hospitalName = document.getElementById("blood-hospitalName").value.trim();
+            const hospitalLocation = document.getElementById("blood-hospitalLocation").value.trim();
+            const message = document.getElementById("blood-message").value.trim();
+
+            if (!patientName || !contactName || !email || !phone || !bloodGroup || !unitsRequired || !requiredDate || !hospitalName || !hospitalLocation) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill out all required fields.';
+                feedback.className = 'form-feedback error';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Phone number must be exactly 10 digits.';
+                feedback.className = 'form-feedback error';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/blood-enquiry", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        patientName,
+                        contactName,
+                        email,
+                        phone,
+                        bloodGroup,
+                        unitsRequired,
+                        requiredDate,
+                        hospitalName,
+                        hospitalLocation,
+                        message
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    feedback.innerHTML = '<i class="fas fa-check-circle"></i> Emergency request submitted successfully!';
+                    feedback.className = 'form-feedback success';
+                    bloodForm.reset();
+                    document.getElementById('blood-date').valueAsDate = new Date();
+                    showSuccessToast("Emergency request submitted successfully!");
+                } else {
+                    throw new Error(result.error || 'Failed to submit request.');
+                }
+            } catch (err) {
+                feedback.innerHTML = `<i class="fas fa-times-circle"></i> ${err.message}`;
+                feedback.className = 'form-feedback error';
+                showErrorToast(err.message);
+            } finally {
+                submitBtn.disabled = false;
+                setTimeout(() => {
+                    feedback.textContent = '';
+                    feedback.className = 'form-feedback';
+                }, 5000);
+            }
+        });
+    }
+
     // 6. Dynamic Contact Details Loader
     fetch("/api/stats")
         .then(res => res.json())

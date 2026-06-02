@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Emergency Blood Request - Request emergency blood support from the verified donor database of Sarvham Foundation.">
+    <title>Emergency Blood Request - Sarvham Foundation</title>
+    <link rel="stylesheet" href="css/contactpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Extra custom micro-animations and enhancements for blood group request styling */
+        .blood-card-accent {
+            border-top: 4px solid var(--color-red, #e63946);
+        }
+        .text-red {
+            color: #e63946 !important;
+        }
+        select.input-select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        select.input-select:focus {
+            border-color: #f8a72f;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 10px rgba(248, 167, 47, 0.25);
+        }
+        select.input-select option {
+            background-color: #161e31;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container">
+            <h1 class="logo"><a href="index.html">Sarvham <span style="color: #f8a72f;">Foundation</span></a></h1>
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="blood-enquiry.html" aria-current="page">Blood Enquiry</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contact Section / Reused for Blood Enquiry -->
+    <main class="contact">
+        <div class="container">
+            <!-- Header -->
+            <div class="contact-header animate-fadeIn">
+                <span class="sub-label text-red">Life-Saving Assistance</span>
+                <h1>Blood Donation Arrangement</h1>
+                <p>Facing a medical emergency? Submit your request details below. Our team connects seekers with verified voluntary donors immediately.</p>
+            </div>
+
+            <!-- Emergency Cards Grid -->
+            <div class="contact-cards-grid animate-fadeIn">
+                <div class="contact-info-card blood-card-accent">
+                    <div class="card-icon" style="background: rgba(230, 57, 70, 0.12); color: #e63946;"><i class="fas fa-heartbeat"></i></div>
+                    <h3>Immediate Assistance</h3>
+                    <p>Verified Donor Networking</p>
+                </div>
+                <a href="tel:+916385842829" class="contact-info-card interactive-card blood-card-accent">
+                    <div class="card-icon" style="background: rgba(230, 57, 70, 0.12); color: #e63946;"><i class="fas fa-phone-alt"></i></div>
+                    <h3>Emergency Helpline</h3>
+                    <p>+91 6385842829</p>
+                </a>
+                <a href="mailto:sarvhamhelp@gmail.com" class="contact-info-card interactive-card blood-card-accent">
+                    <div class="card-icon" style="background: rgba(230, 57, 70, 0.12); color: #e63946;"><i class="fas fa-envelope"></i></div>
+                    <h3>Support Mailbox</h3>
+                    <p>sarvhamhelp@gmail.com</p>
+                </a>
+            </div>
+
+            <!-- Split Map and Form layout -->
+            <div class="contact-split-grid">
+                <!-- Emergency Instructions / Info -->
+                <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
+                    <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-shield-heart text-red"></i> Guidelines for Blood Seekers
+                    </h3>
+                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                            <span><strong>Accurate Information:</strong> Double-check the contact details of the requester and make sure phone lines are active.</span>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                            <span><strong>Emergency Target:</strong> State the exact hospital name and specific ward number for rapid local coordination.</span>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                            <span><strong>No Charges:</strong> Sarvham Foundation connects voluntary donors entirely free of cost. Never pay anyone for blood donation.</span>
+                        </li>
+                        <li style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                            <span><strong>Immediate Support:</strong> For ultra-critical requirements needing immediate action under 2 hours, please call our emergency support directly instead of only submitting forms.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Blood Request Form -->
+                <div class="contact-form-card animate-slideInRight">
+                    <h3>Submit Blood Request</h3>
+                    <form id="blood-form" method="post" novalidate>
+                        
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="blood-patientName">Patient Name</label>
+                                <input type="text" id="blood-patientName" name="blood-patientName" placeholder="Enter patient name" required aria-required="true">
+                            </div>
+                            <div class="input-group">
+                                <label for="blood-contactName">Contact Person Name</label>
+                                <input type="text" id="blood-contactName" name="blood-contactName" placeholder="Enter contact name" required aria-required="true">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="blood-email">Your Email</label>
+                                <input type="email" id="blood-email" name="blood-email" placeholder="Enter contact email" required aria-required="true">
+                            </div>
+                            <div class="input-group">
+                                <label for="blood-phone">10-Digit Contact Phone</label>
+                                <input type="tel" id="blood-phone" name="blood-phone" placeholder="Enter mobile number" required aria-required="true" pattern="[0-9]{10}" maxlength="10">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="blood-group">Required Blood Group</label>
+                                <select id="blood-group" name="blood-group" class="input-select" required aria-required="true">
+                                    <option value="" disabled selected>Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="input-row-sub" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 15px; width: 100%;">
+                                <div class="input-group">
+                                    <label for="blood-units">Units Required</label>
+                                    <input type="number" id="blood-units" name="blood-units" value="1" min="1" required aria-required="true">
+                                </div>
+                                <div class="input-group">
+                                    <label for="blood-date">Required By Date</label>
+                                    <input type="date" id="blood-date" name="blood-date" required aria-required="true">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="blood-hospitalName">Hospital Name</label>
+                                <input type="text" id="blood-hospitalName" name="blood-hospitalName" placeholder="e.g. KG Hospital" required aria-required="true">
+                            </div>
+                            <div class="input-group">
+                                <label for="blood-hospitalLocation">Hospital Location / District</label>
+                                <input type="text" id="blood-hospitalLocation" name="blood-hospitalLocation" placeholder="e.g. Coimbatore" required aria-required="true">
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="blood-message">Clinical Notes / Additional Details</label>
+                            <textarea id="blood-message" name="blood-message" placeholder="Provide any other specific requirements or medical details..." rows="3"></textarea>
+                        </div>
+
+                        <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Submit Emergency Request</button>
+                        <div id="blood-feedback" class="form-feedback"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-col">
+                <h3 class="footer-logo">Sarvham <span>Foundation</span></h3>
+                <p class="footer-desc">Serving humanity and spreading hope. Together, we can take direct environmental and social action to eliminate poverty and create a healthier, greener, and brighter tomorrow.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/share/1DdRn9s3sg/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/sarvham_foundation?igsh=aTNkazNmZmw4eW5k" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/@sarvhamfoundation?si=cqt7vTCYb-5wf3tg" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                    <li><a href="blood-enquiry.html"><i class="fas fa-chevron-right"></i> Blood Enquiry</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Coimbatore, Tamil Nadu, India</p>
+                <p><i class="fas fa-phone-alt"></i> +91 6385842829</p>
+                <p><i class="fas fa-envelope"></i> sarvhamhelp@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Sarvham Foundation. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Set default date to today's date in local time
+        document.getElementById('blood-date').valueAsDate = new Date();
+    </script>
+</body>
+
+</html>

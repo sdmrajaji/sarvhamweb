@@ -64,6 +64,10 @@
                     <i class="fas fa-envelope-open-text"></i>
                     <span>Contact Queries</span>
                 </button>
+                <button class="menu-item" data-tab="blood">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Blood Inquiries</span>
+                </button>
                 <button class="menu-item" data-tab="volunteers">
                     <i class="fas fa-users-cog"></i>
                     <span>Volunteers</span>
@@ -111,6 +115,15 @@
                                 <span class="trend-up"><i class="fas fa-arrow-trend-up"></i> Received queries</span>
                             </div>
                             <div class="stat-icon bg-orange"><i class="fas fa-comments"></i></div>
+                        </div>
+
+                        <div class="stat-card border-red">
+                            <div class="stat-info">
+                                <h3>Blood Requests</h3>
+                                <p id="stat-blood-count" class="count-value">-</p>
+                                <span class="trend-up"><i class="fas fa-arrow-trend-up"></i> Urgent requests</span>
+                            </div>
+                            <div class="stat-icon bg-red" style="background: linear-gradient(135deg, var(--color-red), #b31624);"><i class="fas fa-heartbeat"></i></div>
                         </div>
                         
                         <div class="stat-card border-red">
@@ -238,6 +251,16 @@
                                 <button id="refresh-contacts-btn" title="Refresh Messages" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: rgba(248, 167, 47, 0.08); border: 1px solid rgba(248, 167, 47, 0.15); color: var(--color-orange); border-radius: 10px; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem;">
                                     <i class="fas fa-arrows-rotate"></i>
                                 </button>
+                                <div class="table-sort" style="position: relative; display: flex; align-items: center;">
+                                    <select id="sort-contacts" title="Sort Contacts">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="name-asc">Name (A - Z)</option>
+                                        <option value="name-desc">Name (Z - A)</option>
+                                        <option value="email-asc">Email (A - Z)</option>
+                                        <option value="email-desc">Email (Z - A)</option>
+                                    </select>
+                                </div>
                                 <div class="table-search">
                                     <i class="fas fa-search"></i>
                                     <input type="text" id="search-contacts" placeholder="Search inquiries...">
@@ -259,6 +282,54 @@
                                 <tbody id="contacts-tbody">
                                     <!-- Dynamic rows loaded here -->
                                     <tr><td colspan="6" class="text-center">Fetching records...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2.5. BLOOD INQUIRIES TAB -->
+                <section id="tab-blood" class="tab-section">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Blood Inquiries</h3>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <button id="refresh-blood-btn" title="Refresh Blood Inquiries" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: rgba(230, 57, 70, 0.08); border: 1px solid rgba(230, 57, 70, 0.15); color: var(--color-red); border-radius: 10px; cursor: pointer; transition: all 0.3s ease; font-size: 0.95rem;">
+                                    <i class="fas fa-arrows-rotate"></i>
+                                </button>
+                                <div class="table-sort" style="position: relative; display: flex; align-items: center;">
+                                    <select id="sort-blood" title="Sort Blood Inquiries">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                        <option value="patient-asc">Patient (A - Z)</option>
+                                        <option value="patient-desc">Patient (Z - A)</option>
+                                        <option value="units-desc">Units (High to Low)</option>
+                                        <option value="units-asc">Units (Low to High)</option>
+                                        <option value="status">By Status</option>
+                                    </select>
+                                </div>
+                                <div class="table-search">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="search-blood" placeholder="Search blood requests...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="blood-table">
+                                <thead>
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>Contact Person</th>
+                                        <th>Blood Group</th>
+                                        <th>Units</th>
+                                        <th>Required Date</th>
+                                        <th>Hospital & Location</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="blood-tbody">
+                                    <tr><td colspan="8" class="text-center">Fetching blood inquiries...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -344,6 +415,23 @@
             <footer class="modal-footer">
                 <button class="modal-action-btn close-btn" id="close-volunteer-modal-btn">Dismiss</button>
                 <button class="modal-action-btn submit-btn" id="save-volunteer-profile-btn"><i class="fas fa-save"></i> Save Changes</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ==================== BLOOD INQUIRY DETAIL MODAL ==================== -->
+    <div id="blood-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-card dossier-modal">
+            <header class="modal-header">
+                <h3><i class="fas fa-heartbeat text-red"></i> Blood Enquiry Detail</h3>
+                <button class="modal-close" id="close-blood-modal">&times;</button>
+            </header>
+            <div class="modal-body" id="blood-modal-content" style="max-height: 65vh;">
+                <!-- Loaded dynamically -->
+            </div>
+            <footer class="modal-footer">
+                <button class="modal-action-btn close-btn" id="close-blood-modal-btn">Dismiss</button>
+                <button class="modal-action-btn submit-btn" id="save-blood-profile-btn" style="background: linear-gradient(135deg, var(--color-red), #b31624); box-shadow: 0 4px 10px rgba(230, 57, 70, 0.2);"><i class="fas fa-save"></i> Save Changes</button>
             </footer>
         </div>
     </div>
