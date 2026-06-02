@@ -12,6 +12,7 @@ body {
     line-height: 1.6;
     background: #ffffff;
     color: #333;
+    overflow-x: hidden;
 }
 
 /* Container */
