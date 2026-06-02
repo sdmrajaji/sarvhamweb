@@ -30,12 +30,14 @@ const contactRoutes = require('./routes/contact');
 const joinRoutes = require('./routes/join');
 const galleryRoutes = require('./routes/gallery');
 const authRoutes = require('./routes/auth');
+const statsRoutes = require('./routes/stats');
 
 // Use Routes
 app.use('/api/contact', contactRoutes);
 app.use('/api/join', joinRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/stats', statsRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

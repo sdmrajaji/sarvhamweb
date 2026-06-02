@@ -48,17 +48,17 @@
       <div class="container stats-grid">
         <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
           <div class="stat-icon"><i class="fas fa-utensils"></i></div>
-          <h3 class="stat-number">5,000+</h3>
+          <h3 class="stat-number" id="stat-meals">5,000+</h3>
           <p class="stat-label">Meals Donated</p>
         </div>
         <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
           <div class="stat-icon"><i class="fas fa-tree"></i></div>
-          <h3 class="stat-number">500+</h3>
+          <h3 class="stat-number" id="stat-trees">500+</h3>
           <p class="stat-label">Trees Planted</p>
         </div>
         <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
           <div class="stat-icon"><i class="fas fa-tint"></i></div>
-          <h3 class="stat-number">400+</h3>
+          <h3 class="stat-number" id="stat-blood">400+</h3>
           <p class="stat-label">Emergency Blood Bridges</p>
         </div>
       </div>
@@ -211,6 +211,18 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // Fetch dynamic stats from backend API
+      fetch('/api/stats')
+        .then(res => res.json())
+        .then(data => {
+          if (data) {
+            document.getElementById('stat-meals').textContent = data.mealsDonated || '5,000+';
+            document.getElementById('stat-trees').textContent = data.treesPlanted || '500+';
+            document.getElementById('stat-blood').textContent = data.bloodBridges || '400+';
+          }
+        })
+        .catch(err => console.error('Failed to fetch stats:', err));
+
       // Typewriter
       new Typed("#typewriter", {
         strings: ["Who We Are"],

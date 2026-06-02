@@ -47,6 +47,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileInput = document.getElementById("file-upload-input");
     const removeSelectedImgBtn = document.getElementById("remove-selected-img-btn");
     let uploadedImageBase64 = null;
+    
+    // Stats Form Elements
+    const statsForm = document.getElementById("stats-counters-form");
+    const statsMealsInput = document.getElementById("stats-meals-input");
+    const statsTreesInput = document.getElementById("stats-trees-input");
+    const statsBloodInput = document.getElementById("stats-blood-input");
 
     // Local state variables
     let token = localStorage.getItem("sarvham_admin_token") || null;
@@ -188,11 +194,27 @@ document.addEventListener("DOMContentLoaded", function () {
     function initializeDashboardData() {
         // Trigger overview stats fetch first
         fetchCounters();
+        loadStatsCounters();
         
         // Populate standard table arrays in background
         loadContacts(true);
         loadVolunteers(true);
         loadGallery(true);
+    }
+
+    async function loadStatsCounters() {
+        if (!token) return;
+        try {
+            const res = await fetch("/api/stats");
+            const data = await res.json();
+            if (data) {
+                statsMealsInput.value = data.mealsDonated || "5,000+";
+                statsTreesInput.value = data.treesPlanted || "500+";
+                statsBloodInput.value = data.bloodBridges || "400+";
+            }
+        } catch (err) {
+            console.error("Failed to load counters stats:", err);
+        }
     }
 
     // Overview counters fetch
@@ -1080,6 +1102,48 @@ document.addEventListener("DOMContentLoaded", function () {
             toast.style.animation = "slideOutRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards";
             setTimeout(() => toast.remove(), 400);
         }, 4000);
+    }
+
+    if (statsForm) {
+        statsForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const mealsDonated = statsMealsInput.value.trim();
+            const treesPlanted = statsTreesInput.value.trim();
+            const bloodBridges = statsBloodInput.value.trim();
+            
+            if (!mealsDonated || !treesPlanted || !bloodBridges) {
+                showToast("All counter stats fields are required.", "error");
+                return;
+            }
+
+            const saveBtn = statsForm.querySelector("button");
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch("/api/stats", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ mealsDonated, treesPlanted, bloodBridges })
+                });
+
+                if (res.ok) {
+                    showToast("Public counters saved successfully!", "success");
+                } else {
+                    const err = await res.json();
+                    showToast(err.error || "Failed to save counters", "error");
+                }
+            } catch (err) {
+                handleApiError(err);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Counters';
+            }
+        });
     }
 
     // Inject Toast and Drag animations
