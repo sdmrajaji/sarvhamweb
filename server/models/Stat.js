@@ -24,6 +24,14 @@ const statSchema = new mongoose.Schema({
   email: {
     type: String,
     default: 'sarvhamhelp@gmail.com'
+  },
+  whatsappPhone: {
+    type: String,
+    default: '916385842829'
+  },
+  whatsappText: {
+    type: String,
+    default: 'Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!'
   }
 });
 

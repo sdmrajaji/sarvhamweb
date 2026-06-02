@@ -201,6 +201,32 @@
                             </button>
                         </form>
                     </div>
+
+                    <!-- ==================== WHATSAPP REDIRECTION MANAGER ==================== -->
+                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                        <h3>WhatsApp Redirection Settings</h3>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Configure the target phone number and prefilled message template when redirected to WhatsApp.</p>
+                        
+                        <form id="whatsapp-settings-form" style="display: flex; flex-direction: column; gap: 20px;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                                <div style="display: flex; flex-direction: column; gap: 6px;">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Redirect Phone Number</span>
+                                    <input type="text" id="whatsapp-phone-input" placeholder="916385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Message Formatting</span>
+                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">The volunteer's name, contact information, and dossier answers will be formatted and automatically appended to your message!</span>
+                                </div>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Prefilled Message Text</span>
+                                <textarea id="whatsapp-text-input" rows="3" placeholder="Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit; resize: vertical;"></textarea>
+                            </div>
+                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; align-self: flex-start; justify-content: center; padding: 0 30px; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                                <i class="fas fa-save"></i> Save WhatsApp Settings
+                            </button>
+                        </form>
+                    </div>
                 </section>
 
                 <!-- 2. CONTACT QUERIES TAB -->

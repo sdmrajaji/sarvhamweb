@@ -60,6 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactPhoneInput = document.getElementById("contact-phone-input");
     const contactEmailInput = document.getElementById("contact-email-input");
 
+    // WhatsApp Settings Elements
+    const whatsappSettingsForm = document.getElementById("whatsapp-settings-form");
+    const whatsappPhoneInput = document.getElementById("whatsapp-phone-input");
+    const whatsappTextInput = document.getElementById("whatsapp-text-input");
+
     // Local state variables
     let token = localStorage.getItem("sarvham_admin_token") || null;
     let contactsList = [];
@@ -221,6 +226,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (contactAddressInput) contactAddressInput.value = data.address || "Coimbatore, Tamil Nadu, India";
                 if (contactPhoneInput) contactPhoneInput.value = data.phone || "+91 6385842829";
                 if (contactEmailInput) contactEmailInput.value = data.email || "sarvhamhelp@gmail.com";
+                if (whatsappPhoneInput) whatsappPhoneInput.value = data.whatsappPhone || "916385842829";
+                if (whatsappTextInput) whatsappTextInput.value = data.whatsappText || "Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!";
             }
         } catch (err) {
             console.error("Failed to load counters stats:", err);
@@ -1232,6 +1239,47 @@ document.addEventListener("DOMContentLoaded", function () {
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Contact Info';
+            }
+        });
+    }
+
+    if (whatsappSettingsForm) {
+        whatsappSettingsForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const whatsappPhone = whatsappPhoneInput.value.trim();
+            const whatsappText = whatsappTextInput.value.trim();
+            
+            if (!whatsappPhone || !whatsappText) {
+                showToast("All WhatsApp redirection settings fields are required.", "error");
+                return;
+            }
+
+            const saveBtn = whatsappSettingsForm.querySelector("button");
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch("/api/stats", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ whatsappPhone, whatsappText })
+                });
+
+                if (res.ok) {
+                    showToast("WhatsApp redirection settings saved successfully!", "success");
+                } else {
+                    const err = await res.json();
+                    showToast(err.error || "Failed to save WhatsApp settings", "error");
+                }
+            } catch (err) {
+                handleApiError(err);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save WhatsApp Settings';
             }
         });
     }

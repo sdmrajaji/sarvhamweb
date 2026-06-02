@@ -251,13 +251,30 @@ document.addEventListener("DOMContentLoaded", function () {
                     showSuccessToast(result.message || "Successfully submitted!");
                     joinForm.reset();
 
-                    // Redirect to WhatsApp with a prefilled message
-                    const whatsappMsg = `Hello Sarvham Foundation, I have successfully submitted my volunteer application under the name ${encodeURIComponent(fullName)}. Looking forward to joining!`;
-                    const waUrl = `https://wa.me/916385842829?text=${whatsappMsg}`;
+                    // Fetch the dynamic WhatsApp config and append formatted data
+                    try {
+                        const statsRes = await fetch("/api/stats");
+                        const config = await statsRes.json();
+                        
+                        const waPhone = config.whatsappPhone || "916385842829";
+                        const waBaseText = config.whatsappText || "Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!";
+                        
+                        const dataSummary = `\n\n--- Volunteer Registration Dossier ---\n• Name: ${fullName}\n• Father's Name: ${fatherName}\n• Email: ${email}\n• Phone: ${phone}\n• WhatsApp: ${whatsapp}\n• Aadhar ID: ${aadhar}\n• Date of Birth: ${dob}\n• Gender: ${gender}\n• Blood Group: ${bloodGroup}\n• Address: ${street}, ${place}, ${district}, ${state} - ${pincode}\n• Why join: ${message}`;
+                        
+                        const finalMessage = waBaseText + dataSummary;
+                        const waUrl = `https://wa.me/${waPhone}?text=${encodeURIComponent(finalMessage)}`;
 
-                    setTimeout(() => {
-                        window.open(waUrl, "_blank");
-                    }, 1500);
+                        setTimeout(() => {
+                            window.open(waUrl, "_blank");
+                        }, 1500);
+                    } catch (configErr) {
+                        console.error("Failed to load WhatsApp redirect config, using defaults:", configErr);
+                        const backupMsg = `Hello Sarvham Foundation, I have successfully submitted my volunteer application under the name ${fullName}. Looking forward to joining!`;
+                        const backupUrl = `https://wa.me/916385842829?text=${encodeURIComponent(backupMsg)}`;
+                        setTimeout(() => {
+                            window.open(backupUrl, "_blank");
+                        }, 1500);
+                    }
                 } else {
                     showErrorToast("Error: " + result.error);
                 }

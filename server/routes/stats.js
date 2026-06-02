@@ -14,7 +14,9 @@ router.get('/', async (req, res) => {
         bloodBridges: '400+',
         address: 'Coimbatore, Tamil Nadu, India',
         phone: '+91 6385842829',
-        email: 'sarvhamhelp@gmail.com'
+        email: 'sarvhamhelp@gmail.com',
+        whatsappPhone: '916385842829',
+        whatsappText: 'Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!'
       });
       await stat.save();
     }
@@ -28,7 +30,7 @@ router.get('/', async (req, res) => {
 // PUT /api/stats (Admin protected)
 router.put('/', auth, async (req, res) => {
   try {
-    const { mealsDonated, treesPlanted, bloodBridges, address, phone, email } = req.body;
+    const { mealsDonated, treesPlanted, bloodBridges, address, phone, email, whatsappPhone, whatsappText } = req.body;
     
     let stat = await Stat.findOne();
     if (!stat) {
@@ -41,6 +43,8 @@ router.put('/', auth, async (req, res) => {
     stat.address = address !== undefined ? address : stat.address;
     stat.phone = phone !== undefined ? phone : stat.phone;
     stat.email = email !== undefined ? email : stat.email;
+    stat.whatsappPhone = whatsappPhone !== undefined ? whatsappPhone : stat.whatsappPhone;
+    stat.whatsappText = whatsappText !== undefined ? whatsappText : stat.whatsappText;
 
     await stat.save();
     res.json({ message: 'Stats and contact info updated successfully', data: stat });
