@@ -5,8 +5,8 @@ const crypto = require('crypto');
 router.post('/login', (req, res) => {
   try {
     const { username, password } = req.body;
-    const adminUser = process.env.ADMIN_USERNAME || 'admin';
-    const adminPass = process.env.ADMIN_PASSWORD || 'sarvhamadmin';
+    const adminUser = (process.env.ADMIN_USERNAME || 'admin').trim();
+    const adminPass = (process.env.ADMIN_PASSWORD || 'sarvhamadmin').trim();
 
     if (username === adminUser && password === adminPass) {
       const secret = adminPass;
@@ -27,3 +27,4 @@ router.post('/login', (req, res) => {
 });
 
 module.exports = router;
+

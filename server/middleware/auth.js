@@ -30,7 +30,7 @@ module.exports = (req, res, next) => {
       return res.status(401).json({ error: 'Unauthorized: Invalid token payload' });
     }
 
-    const secret = process.env.ADMIN_PASSWORD || 'sarvhamadmin';
+    const secret = (process.env.ADMIN_PASSWORD || 'sarvhamadmin').trim();
     const expectedSignature = crypto.createHmac('sha256', secret).update(payloadStr).digest('hex');
 
     if (signature !== expectedSignature) {
