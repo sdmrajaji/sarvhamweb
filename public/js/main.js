@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (helplineLink && helplinePhone) {
                     helplineLink.href = `tel:${helplinePhone.replace(/\s+/g, '')}`;
                 }
-                if (helplineText && data.phone) {
-                    helplineText.textContent = data.phone;
+                if (helplineText && helplinePhone) {
+                    helplineText.textContent = helplinePhone;
                 }
 
                 const supportEmailLink = document.getElementById("support-email-link");
