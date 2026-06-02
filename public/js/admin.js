@@ -41,6 +41,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const imgUrlInput = document.getElementById("img-url");
     const imgPreview = document.getElementById("img-preview");
     const imgPreviewPlaceholder = document.getElementById("img-preview-placeholder");
+    
+    // Drag & Drop Elements
+    const dropZone = document.getElementById("image-drop-zone");
+    const fileInput = document.getElementById("file-upload-input");
+    const removeSelectedImgBtn = document.getElementById("remove-selected-img-btn");
+    let uploadedImageBase64 = null;
 
     // Local state variables
     let token = localStorage.getItem("sarvham_admin_token") || null;
@@ -906,7 +912,85 @@ document.addEventListener("DOMContentLoaded", function () {
         imgPreview.src = "";
         imgPreview.style.display = "none";
         imgPreviewPlaceholder.style.display = "flex";
-        imgPreviewPlaceholder.innerHTML = `<i class="fas fa-image"></i><p>Insert a valid Image URL above to see a preview here.</p>`;
+        imgPreviewPlaceholder.innerHTML = `<i class="fas fa-image"></i><p>Insert an image to see a preview here.</p>`;
+        
+        uploadedImageBase64 = null;
+        if (imgUrlInput) {
+            imgUrlInput.disabled = false;
+            imgUrlInput.placeholder = "e.g. images/pho7.png or absolute URL";
+            imgUrlInput.value = "";
+        }
+        if (removeSelectedImgBtn) {
+            removeSelectedImgBtn.style.display = "none";
+        }
+    }
+
+    // Drag & Drop File Upload Bindings
+    if (dropZone && fileInput) {
+        // Clicking on drop zone triggers file input click
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        // File input changed (user browsed and chose a file)
+        fileInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (file) handleImageUpload(file);
+        });
+
+        // Drag and Drop Event listeners
+        dropZone.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            this.style.borderColor = "var(--color-orange)";
+            this.style.background = "rgba(248, 167, 47, 0.08)";
+        });
+
+        dropZone.addEventListener("dragenter", function (e) {
+            e.preventDefault();
+            this.style.borderColor = "var(--color-orange)";
+            this.style.background = "rgba(248, 167, 47, 0.08)";
+        });
+
+        dropZone.addEventListener("dragleave", function () {
+            this.style.borderColor = "rgba(248, 167, 47, 0.2)";
+            this.style.background = "rgba(248, 167, 47, 0.02)";
+        });
+
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            this.style.borderColor = "rgba(248, 167, 47, 0.2)";
+            this.style.background = "rgba(248, 167, 47, 0.02)";
+
+            const file = e.dataTransfer.files[0];
+            if (file) handleImageUpload(file);
+        });
+    }
+
+    function handleImageUpload(file) {
+        if (!file.type.match("image.*")) {
+            showToast("Invalid file type. Please upload an image.", "error");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            uploadedImageBase64 = event.target.result;
+
+            imgPreview.src = uploadedImageBase64;
+            imgPreview.style.display = "block";
+            imgPreviewPlaceholder.style.display = "none";
+            removeSelectedImgBtn.style.display = "flex";
+
+            imgUrlInput.value = "";
+            imgUrlInput.disabled = true;
+            imgUrlInput.placeholder = `[Local Upload: ${file.name}]`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    if (removeSelectedImgBtn) {
+        removeSelectedImgBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            resetImagePreview();
+        });
     }
 
     // Modal submit action
@@ -914,12 +998,12 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         
         const title = document.getElementById("img-title").value.trim();
-        const imageUrl = imgUrlInput.value.trim();
+        const imageUrl = uploadedImageBase64 ? uploadedImageBase64 : imgUrlInput.value.trim();
         const description = document.getElementById("img-desc").value.trim();
         const submitBtn = galleryForm.querySelector("button[type='submit']");
 
         if (!title || !imageUrl) {
-            showToast("Required fields are missing.", "error");
+            showToast("Required fields are missing (Title or Image).", "error");
             return;
         }
 

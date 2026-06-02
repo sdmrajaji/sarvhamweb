@@ -311,25 +311,41 @@
                         <label for="img-title">Image Title <span class="required">*</span></label>
                         <input type="text" id="img-title" placeholder="e.g. Tree Plantation Drive" required>
                     </div>
+                    <!-- Drag & Drop Upload Zone -->
                     <div class="form-group">
-                        <label for="img-url">Image URL / Path <span class="required">*</span></label>
-                        <input type="text" id="img-url" placeholder="e.g. images/pho7.png or absolute URL" required>
+                        <label>Image Upload / Drag-and-Drop</label>
+                        <div id="image-drop-zone" style="border: 2px dashed rgba(248, 167, 47, 0.2); background: rgba(248, 167, 47, 0.02); border-radius: 12px; padding: 25px 20px; text-align: center; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
+                            <i class="fas fa-cloud-arrow-up" style="font-size: 2.2rem; color: var(--color-orange); transition: transform 0.3s ease;"></i>
+                            <span style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">Drag & Drop an image file here</span>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">or click to browse your computer (JPEG, PNG, GIF)</span>
+                            <input type="file" id="file-upload-input" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="img-url">Or Paste Image URL / Local Path</label>
+                        <input type="text" id="img-url" placeholder="e.g. images/pho7.png or absolute URL">
                         <p class="form-tip">You can use local files inside the images directory (e.g. images/pho1.jpg) or absolute web URLs.</p>
                     </div>
+                    
                     <div class="form-group">
                         <label for="img-desc">Brief Description</label>
                         <textarea id="img-desc" rows="3" placeholder="Provide a summary of the activity..."></textarea>
                     </div>
                     
                     <!-- Live Preview Panel -->
-                    <div class="image-live-preview">
-                        <span>Image Preview:</span>
-                        <div class="preview-box">
-                            <img id="img-preview" src="" alt="Live Preview Frame" style="display: none;">
+                    <div class="image-live-preview" style="margin-top: 20px;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 8px;">Selected Image Preview:</span>
+                        <div class="preview-box" style="height: 160px; background-color: rgba(0,0,0,0.3); border: 1px dashed rgba(255,255,255,0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                            <img id="img-preview" src="" alt="Live Preview Frame" style="display: none; width: 100%; height: 100%; object-fit: contain;">
                             <div id="img-preview-placeholder" class="preview-placeholder">
                                 <i class="fas fa-image"></i>
-                                <p>Insert a valid Image URL above to see a preview here.</p>
+                                <p>Insert an image to see a preview here.</p>
                             </div>
+                            <!-- Remove image floating button -->
+                            <button type="button" id="remove-selected-img-btn" style="display: none; position: absolute; top: 10px; right: 10px; background: rgba(230, 57, 70, 0.85); border: none; color: white; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; align-items: center; justify-content: center; transition: all 0.25s ease;">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
