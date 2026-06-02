@@ -46,6 +46,9 @@
     <!-- ==================== MAIN DASHBOARD LAYOUT ==================== -->
     <div id="dashboard-container" class="dashboard-wrapper" style="display: none;">
         
+        <!-- Sidebar Backdrop Overlay on Mobile -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+        
         <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-brand">
@@ -91,6 +94,17 @@
 
         <!-- Main Workspace Area -->
         <main class="workspace">
+            
+            <!-- Mobile Floating Top Bar -->
+            <div class="mobile-top-bar">
+                <button id="mobile-sidebar-toggle" class="mobile-toggle-btn" title="Toggle Navigation Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="mobile-logo-area">
+                    <img src="images/sarvham new logo.jpg" alt="Logo">
+                    <span>Sarvham Console</span>
+                </div>
+            </div>
             
             <!-- Dashboard Top Header Bar -->
             <header class="workspace-header">
@@ -181,96 +195,96 @@
                     </div>
 
                     <!-- ==================== PUBLIC COUNTERS MANAGER ==================== -->
-                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                    <div class="recent-activity-panel dashboard-panel">
                         <h3>Public About Page Counters Manager</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Modify the live counter statistics displayed on the public About page.</p>
+                        <p class="panel-desc">Modify the live counter statistics displayed on the public About page.</p>
                         
-                        <form id="stats-counters-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: flex-end;">
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Meals Donated</span>
-                                <input type="text" id="stats-meals-input" placeholder="5,000+" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                        <form id="stats-counters-form" class="panel-form grid-3-col">
+                            <div class="form-group-item">
+                                <label for="stats-meals-input">Meals Donated</label>
+                                <input type="text" id="stats-meals-input" placeholder="5,000+" class="form-input">
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Trees Planted</span>
-                                <input type="text" id="stats-trees-input" placeholder="500+" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                            <div class="form-group-item">
+                                <label for="stats-trees-input">Trees Planted</label>
+                                <input type="text" id="stats-trees-input" placeholder="500+" class="form-input">
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Blood Bridges</span>
-                                <input type="text" id="stats-blood-input" placeholder="400+" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                            <div class="form-group-item">
+                                <label for="stats-blood-input">Blood Bridges</label>
+                                <input type="text" id="stats-blood-input" placeholder="400+" class="form-input">
                             </div>
-                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; justify-content: center; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                            <button type="submit" class="add-image-btn panel-submit-btn">
                                 <i class="fas fa-save"></i> Save Counters
                             </button>
                         </form>
                     </div>
 
                     <!-- ==================== GET IN TOUCH MANAGER ==================== -->
-                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                    <div class="recent-activity-panel dashboard-panel">
                         <h3>Public "Get in Touch" Info Manager</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Modify the live contact information displayed on the website pages (Footer and Contact cards).</p>
+                        <p class="panel-desc">Modify the live contact information displayed on the website pages (Footer and Contact cards).</p>
                         
-                        <form id="contact-info-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; align-items: flex-end;">
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Location Address</span>
-                                <input type="text" id="contact-address-input" placeholder="Coimbatore, Tamil Nadu, India" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                        <form id="contact-info-form" class="panel-form grid-3-col">
+                            <div class="form-group-item">
+                                <label for="contact-address-input">Location Address</label>
+                                <input type="text" id="contact-address-input" placeholder="Coimbatore, Tamil Nadu, India" class="form-input">
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Phone Number</span>
-                                <input type="text" id="contact-phone-input" placeholder="+91 6385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                            <div class="form-group-item">
+                                <label for="contact-phone-input">Phone Number</label>
+                                <input type="text" id="contact-phone-input" placeholder="+91 6385842829" class="form-input">
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Email Address</span>
-                                <input type="email" id="contact-email-input" placeholder="sarvhamhelp@gmail.com" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                            <div class="form-group-item">
+                                <label for="contact-email-input">Email Address</label>
+                                <input type="email" id="contact-email-input" placeholder="sarvhamhelp@gmail.com" class="form-input">
                             </div>
-                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; justify-content: center; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                            <button type="submit" class="add-image-btn panel-submit-btn">
                                 <i class="fas fa-save"></i> Save Contact Info
                             </button>
                         </form>
                     </div>
 
                     <!-- ==================== WHATSAPP REDIRECTION MANAGER ==================== -->
-                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                    <div class="recent-activity-panel dashboard-panel">
                         <h3>WhatsApp Redirection Settings</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Configure the target phone number and prefilled message template when redirected to WhatsApp.</p>
+                        <p class="panel-desc">Configure the target phone number and prefilled message template when redirected to WhatsApp.</p>
                         
-                        <form id="whatsapp-settings-form" style="display: flex; flex-direction: column; gap: 20px;">
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                                <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Redirect Phone Number</span>
-                                    <input type="text" id="whatsapp-phone-input" placeholder="916385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                        <form id="whatsapp-settings-form" class="panel-form flex-col">
+                            <div class="panel-form grid-2-col-info">
+                                <div class="form-group-item">
+                                    <label for="whatsapp-phone-input">Redirect Phone Number</label>
+                                    <input type="text" id="whatsapp-phone-input" placeholder="916385842829" class="form-input">
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
-                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Message Formatting</span>
-                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">The volunteer's name, contact information, and dossier answers will be formatted and automatically appended to your message!</span>
+                                <div class="info-text-container">
+                                    <span class="info-label">Message Formatting</span>
+                                    <p class="info-description">The volunteer's name, contact information, and dossier answers will be formatted and automatically appended to your message!</p>
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-                                <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Prefilled Message Text</span>
-                                <textarea id="whatsapp-text-input" rows="3" placeholder="Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit; resize: vertical;"></textarea>
+                            <div class="form-group-item full-width-group">
+                                <label for="whatsapp-text-input">Prefilled Message Text</label>
+                                <textarea id="whatsapp-text-input" rows="3" placeholder="Hello Sarvham Foundation, I have successfully submitted my volunteer application. Looking forward to joining!" class="form-input form-textarea"></textarea>
                             </div>
-                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; align-self: flex-start; justify-content: center; padding: 0 30px; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                            <button type="submit" class="add-image-btn panel-submit-btn align-start">
                                 <i class="fas fa-save"></i> Save WhatsApp Settings
                             </button>
                         </form>
                     </div>
 
                     <!-- ==================== EMERGENCY HELPLINE SETTINGS ==================== -->
-                    <div class="recent-activity-panel" style="margin-top: 24px;">
+                    <div class="recent-activity-panel dashboard-panel">
                         <h3>Emergency Helpline Settings</h3>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px;">Configure the emergency helpline number used for life-saving assistance queries.</p>
+                        <p class="panel-desc">Configure the emergency helpline number used for life-saving assistance queries.</p>
                         
-                        <form id="helpline-settings-form" style="display: flex; flex-direction: column; gap: 20px;">
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-                                <div style="display: flex; flex-direction: column; gap: 6px;">
-                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Helpline Phone Number</span>
-                                    <input type="text" id="helpline-phone-input" placeholder="+91 6385842829" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: white; outline: none; font-size: 0.95rem; font-family: inherit;">
+                        <form id="helpline-settings-form" class="panel-form flex-col">
+                            <div class="panel-form grid-2-col-info">
+                                <div class="form-group-item">
+                                    <label for="helpline-phone-input">Helpline Phone Number</label>
+                                    <input type="text" id="helpline-phone-input" placeholder="+91 6385842829" class="form-input">
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 6px; justify-content: center;">
-                                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Direct Redirection</span>
-                                    <span style="font-size: 0.85rem; color: var(--text-secondary);">This phone number will be displayed as the main life-saving contact number on the Blood Enquiry module.</span>
+                                <div class="info-text-container">
+                                    <span class="info-label">Direct Redirection</span>
+                                    <p class="info-description">This phone number will be displayed as the main life-saving contact number on the Blood Enquiry module.</p>
                                 </div>
                             </div>
-                            <button type="submit" class="add-image-btn" style="height: 48px; border-radius: 10px; font-size: 0.95rem; margin: 0; align-self: flex-start; justify-content: center; padding: 0 30px; box-shadow: 0 4px 12px rgba(248, 167, 47, 0.2);">
+                            <button type="submit" class="add-image-btn panel-submit-btn align-start">
                                 <i class="fas fa-save"></i> Save Helpline Settings
                             </button>
                         </form>

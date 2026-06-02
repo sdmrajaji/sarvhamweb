@@ -376,12 +376,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td style="font-weight:700;">${escapeHTML(item.name)}</td>
-                <td><a href="mailto:${escapeHTML(item.email)}" style="color:var(--color-orange); text-decoration:none;">${escapeHTML(item.email)}</a></td>
-                <td><a href="tel:${escapeHTML(item.phone)}" style="color:var(--text-primary); text-decoration:none;">${escapeHTML(item.phone)}</a></td>
-                <td title="${escapeHTML(item.message)}">${escapeHTML(item.message)}</td>
-                <td>${formattedDate}</td>
-                <td class="text-center">
+                <td data-label="Name" style="font-weight:700;">${escapeHTML(item.name)}</td>
+                <td data-label="Email"><a href="mailto:${escapeHTML(item.email)}" style="color:var(--color-orange); text-decoration:none;">${escapeHTML(item.email)}</a></td>
+                <td data-label="Phone"><a href="tel:${escapeHTML(item.phone)}" style="color:var(--text-primary); text-decoration:none;">${escapeHTML(item.phone)}</a></td>
+                <td data-label="Message" title="${escapeHTML(item.message)}">${escapeHTML(item.message)}</td>
+                <td data-label="Received Date">${formattedDate}</td>
+                <td data-label="Actions" class="text-center">
                     <div class="action-btns">
                         <button class="action-btn btn-view view-contact-btn" 
                                 data-msg="${escapeHTML(item.message)}" 
@@ -545,22 +545,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td style="font-weight:700;">${escapeHTML(item.patientName)}</td>
-                <td>
+                <td data-label="Patient Name" style="font-weight:700;">${escapeHTML(item.patientName)}</td>
+                <td data-label="Contact Person">
                     <span style="display:block; font-weight:600; color:var(--text-primary);">${escapeHTML(item.contactName)}</span>
                     <a href="tel:${escapeHTML(item.phone)}" style="font-size:0.85rem; color:var(--text-secondary); text-decoration:none;">${escapeHTML(item.phone)}</a>
                 </td>
-                <td><span class="badge-blood">${escapeHTML(item.bloodGroup)}</span></td>
-                <td style="font-weight:700; color:var(--color-orange);">${escapeHTML(item.unitsRequired)} Units</td>
-                <td>${formattedDate}</td>
-                <td>
+                <td data-label="Blood Group"><span class="badge-blood">${escapeHTML(item.bloodGroup)}</span></td>
+                <td data-label="Units" style="font-weight:700; color:var(--color-orange);">${escapeHTML(item.unitsRequired)} Units</td>
+                <td data-label="Required Date">${formattedDate}</td>
+                <td data-label="Hospital & Location">
                     <span style="display:block; font-weight:600;">${escapeHTML(item.hospitalName)}</span>
                     <span style="font-size:0.85rem; color:var(--text-secondary);">${escapeHTML(item.hospitalLocation)}</span>
                 </td>
-                <td class="text-center">
+                <td data-label="Status" class="text-center">
                     <span class="badge-status status-${item.status || 'pending'}">${escapeHTML(item.status ? (item.status === 'verified' ? 'Verified' : item.status === 'resolved' ? 'Resolved' : item.status === 'cancelled' ? 'Cancelled' : 'Pending') : 'Pending')}</span>
                 </td>
-                <td class="text-center">
+                <td data-label="Actions" class="text-center">
                     <div class="action-btns">
                         <button class="action-btn btn-view view-blood-btn" data-id="${item._id}" title="View Details">
                             <i class="fas fa-comment-medical"></i>
@@ -710,19 +710,19 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(item => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td style="font-weight:700;">${escapeHTML(item.fullName)}</td>
-                <td>
+                <td data-label="Full Name" style="font-weight:700;">${escapeHTML(item.fullName)}</td>
+                <td data-label="Contact Details">
                     <span style="display:block; font-weight:600; color:var(--text-primary);">${escapeHTML(item.phone)}</span>
                     <span style="font-size:0.85rem; color:var(--text-secondary);">${escapeHTML(item.email || 'No email')}</span>
                 </td>
-                <td><span class="badge-blood" style="background-color:rgba(58, 134, 255, 0.12); color:#3a86ff; border-color:rgba(58, 134, 255, 0.25);">${escapeHTML(item.bloodGroup)}</span></td>
-                <td style="font-weight:600; color:var(--text-primary);">${escapeHTML(item.age)} Years / ${escapeHTML(item.gender)}</td>
-                <td style="font-weight:700; color:var(--text-primary);">${escapeHTML(item.city)}</td>
-                <td style="font-size:0.85rem; color:var(--text-secondary); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(item.address)}">${escapeHTML(item.address)}</td>
-                <td class="text-center">
+                <td data-label="Blood Group"><span class="badge-blood" style="background-color:rgba(58, 134, 255, 0.12); color:#3a86ff; border-color:rgba(58, 134, 255, 0.25);">${escapeHTML(item.bloodGroup)}</span></td>
+                <td data-label="Age / Gender" style="font-weight:600; color:var(--text-primary);">${escapeHTML(item.age)} Years / ${escapeHTML(item.gender)}</td>
+                <td data-label="City / District" style="font-weight:700; color:var(--text-primary);">${escapeHTML(item.city)}</td>
+                <td data-label="Full Address" style="font-size:0.85rem; color:var(--text-secondary); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(item.address)}">${escapeHTML(item.address)}</td>
+                <td data-label="Availability" class="text-center">
                     <span class="badge-status status-${item.availability === 'available' ? 'verified' : 'rejected'}" style="text-transform: capitalize;">${escapeHTML(item.availability)}</span>
                 </td>
-                <td class="text-center">
+                <td data-label="Actions" class="text-center">
                     <div class="action-btns">
                         <button class="action-btn btn-view view-donor-btn" data-id="${item._id}" title="View Dossier">
                             <i class="fas fa-id-card"></i>
@@ -1090,25 +1090,25 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(item => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td style="font-weight:700;">${escapeHTML(item.fullName)}</td>
-                <td><span class="badge-blood">${escapeHTML(item.bloodGroup)}</span></td>
-                <td><a href="mailto:${escapeHTML(item.email)}" style="color:var(--color-orange); text-decoration:none;">${escapeHTML(item.email)}</a></td>
-                <td><a href="tel:${escapeHTML(item.phone)}" style="color:var(--text-primary); text-decoration:none;">${escapeHTML(item.phone)}</a></td>
-                <td>
+                <td data-label="Name" style="font-weight:700;">${escapeHTML(item.fullName)}</td>
+                <td data-label="Blood Group"><span class="badge-blood">${escapeHTML(item.bloodGroup)}</span></td>
+                <td data-label="Contact Email"><a href="mailto:${escapeHTML(item.email)}" style="color:var(--color-orange); text-decoration:none;">${escapeHTML(item.email)}</a></td>
+                <td data-label="Phone"><a href="tel:${escapeHTML(item.phone)}" style="color:var(--text-primary); text-decoration:none;">${escapeHTML(item.phone)}</a></td>
+                <td data-label="WhatsApp">
                     <a href="https://wa.me/${escapeHTML(item.whatsapp)}" target="_blank" style="color:var(--color-green); text-decoration:none; font-weight:bold;">
                         <i class="fab fa-whatsapp"></i> Chat
                     </a>
                 </td>
-                <td>${escapeHTML(item.district)}, ${escapeHTML(item.state)}</td>
-                <td class="text-center">
+                <td data-label="District & State">${escapeHTML(item.district)}, ${escapeHTML(item.state)}</td>
+                <td data-label="Status" class="text-center">
                     <span class="badge-status status-${item.status || 'pending'}">${escapeHTML(item.status ? (item.status === 'verified' ? 'Verified' : item.status === 'rejected' ? 'Rejected' : 'Pending') : 'Pending')}</span>
                 </td>
-                <td class="text-center">
+                <td data-label="Profile" class="text-center">
                     <button class="action-btn btn-view view-dossier-btn" data-id="${item._id}">
                         <i class="fas fa-user-tag"></i>
                     </button>
                 </td>
-                <td class="text-center">
+                <td data-label="Action" class="text-center">
                     <button class="action-btn btn-delete delete-volunteer-btn" data-id="${item._id}">
                         <i class="fas fa-trash-can"></i>
                     </button>
@@ -2137,4 +2137,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     `;
     document.head.appendChild(styleSheet);
+
+    // Mobile Sidebar Drawer Toggle Logic
+    const mobileToggleBtn = document.getElementById("mobile-sidebar-toggle");
+    const sidebarElement = document.querySelector(".sidebar");
+    const sidebarBackdrop = document.getElementById("sidebar-backdrop");
+
+    if (mobileToggleBtn && sidebarElement && sidebarBackdrop) {
+        // Toggle Sidebar Open state
+        mobileToggleBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            sidebarElement.classList.add("sidebar-open");
+            sidebarBackdrop.classList.add("active");
+        });
+
+        // Close sidebar when clicking the backdrop overlay
+        sidebarBackdrop.addEventListener("click", function() {
+            sidebarElement.classList.remove("sidebar-open");
+            sidebarBackdrop.classList.remove("active");
+        });
+
+        // Close sidebar when clicking any menu button on mobile
+        document.querySelectorAll(".sidebar-menu .menu-item").forEach(item => {
+            item.addEventListener("click", function() {
+                sidebarElement.classList.remove("sidebar-open");
+                sidebarBackdrop.classList.remove("active");
+            });
+        });
+        
+        // Also close on logout button click
+        const mobileLogoutBtn = document.getElementById("logout-btn");
+        if (mobileLogoutBtn) {
+            mobileLogoutBtn.addEventListener("click", function() {
+                sidebarElement.classList.remove("sidebar-open");
+                sidebarBackdrop.classList.remove("active");
+            });
+        }
+    }
 });
