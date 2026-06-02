@@ -192,22 +192,25 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             if (contactsRes.status === 401) { showLogin(); return; }
             let contacts = await contactsRes.json();
-            statContacts.textContent = contacts.length;
+            statContacts.textContent = Array.isArray(contacts) ? contacts.length : 0;
 
             // Fetch volunteers
             let volunteersRes = await fetch("/api/join", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             let volunteers = await volunteersRes.json();
-            statVolunteers.textContent = volunteers.length;
+            statVolunteers.textContent = Array.isArray(volunteers) ? volunteers.length : 0;
 
             // Fetch gallery
             let galleryRes = await fetch("/api/gallery");
             let gallery = await galleryRes.json();
-            statGallery.textContent = gallery.length;
+            statGallery.textContent = Array.isArray(gallery) ? gallery.length : 0;
 
         } catch (err) {
             console.error("Failed to load overview counts:", err);
+            statContacts.textContent = 0;
+            statVolunteers.textContent = 0;
+            statGallery.textContent = 0;
         }
     }
 
@@ -237,6 +240,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderContacts(data) {
         const tbody = document.getElementById("contacts-tbody");
         tbody.innerHTML = "";
+
+        if (!Array.isArray(data)) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure MONGO_URI is set on your server.</td></tr>`;
+            return;
+        }
 
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:40px;">No contact inquiries found.</td></tr>`;
@@ -351,6 +359,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderVolunteers(data) {
         const tbody = document.getElementById("volunteers-tbody");
         tbody.innerHTML = "";
+
+        if (!Array.isArray(data)) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure MONGO_URI is set on your server.</td></tr>`;
+            return;
+        }
 
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted" style="padding:40px;">No volunteer applications found.</td></tr>`;
@@ -571,6 +584,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderGallery(data) {
         const grid = document.getElementById("gallery-manager-grid");
         grid.innerHTML = "";
+
+        if (!Array.isArray(data)) {
+            grid.innerHTML = `<div class="text-center text-danger" style="grid-column:1/-1; padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure MONGO_URI is set on your server.</div>`;
+            return;
+        }
 
         if (data.length === 0) {
             grid.innerHTML = `<div class="text-center text-muted" style="grid-column:1/-1; padding:40px;">No gallery assets present in database.</div>`;
