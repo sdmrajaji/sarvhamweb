@@ -484,11 +484,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         data.forEach(item => {
-            const formattedDate = new Date(item.requiredDate).toLocaleDateString("en-IN", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            });
+            let formattedDate = "N/A";
+            try {
+                if (item.requiredDate) {
+                    const d = new Date(item.requiredDate);
+                    if (!isNaN(d.getTime())) {
+                        formattedDate = d.toLocaleDateString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        });
+                    }
+                }
+            } catch (dateErr) {
+                console.error("Date formatting error for item:", item, dateErr);
+            }
 
             const tr = document.createElement("tr");
             tr.innerHTML = `
@@ -626,14 +636,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showBloodDossierModal(b) {
         activeBloodId = b._id;
-        const formattedDate = new Date(b.createdAt).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-        const requiredByDate = new Date(b.requiredDate).toISOString().split('T')[0];
+        let formattedDate = "N/A";
+        try {
+            if (b.createdAt) {
+                const d = new Date(b.createdAt);
+                if (!isNaN(d.getTime())) {
+                    formattedDate = d.toLocaleDateString("en-IN", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+                }
+            }
+        } catch (err) {
+            console.error("Date formatting failed for createdAt:", b.createdAt, err);
+        }
+
+        let requiredByDate = "";
+        try {
+            if (b.requiredDate) {
+                const d = new Date(b.requiredDate);
+                if (!isNaN(d.getTime())) {
+                    requiredByDate = d.toISOString().split('T')[0];
+                }
+            }
+        } catch (err) {
+            console.error("ISO conversion failed for requiredDate:", b.requiredDate, err);
+        }
 
         bloodModalContent.innerHTML = `
             <div class="dossier-grid">
@@ -1500,8 +1531,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Clean escaping for protection
     function escapeHTML(str) {
-        if (!str) return "";
-        return str.replace(/[&<>'"]/g, 
+        if (str === null || str === undefined) return "";
+        const s = String(str);
+        return s.replace(/[&<>'"]/g, 
             tag => ({
                 '&': '&amp;',
                 '<': '&lt;',
