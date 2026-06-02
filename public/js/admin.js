@@ -71,8 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let volunteersList = [];
     let galleryList = [];
     let bloodList = [];
+    let donorsList = [];
     let activeVolunteerId = null;
     let activeBloodId = null;
+    let activeDonorId = null;
+    const statDonors = document.getElementById("stat-donors-count");
 
     // Blood Modal elements
     const bloodModal = document.getElementById("blood-modal");
@@ -80,6 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeBloodModalBtn2 = document.getElementById("close-blood-modal-btn");
     const bloodModalContent = document.getElementById("blood-modal-content");
     const saveBloodProfileBtn = document.getElementById("save-blood-profile-btn");
+
+    // Donor Modal elements
+    const donorModal = document.getElementById("donor-modal");
+    const closeDonorModalBtn = document.getElementById("close-donor-modal");
+    const closeDonorModalBtn2 = document.getElementById("close-donor-modal-btn");
+    const donorModalContent = document.getElementById("donor-modal-content");
+    const saveDonorProfileBtn = document.getElementById("save-donor-profile-btn");
 
     // Initialize application state
     if (token) {
@@ -211,6 +221,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 workspaceSubtitle.textContent = "Add, preview, or remove visual moment assets on the homepage.";
                 loadGallery();
                 break;
+            case "donors":
+                workspaceTitle.textContent = "Blood Donors";
+                workspaceSubtitle.textContent = "Search, filter, and manage voluntary blood donors.";
+                loadDonors();
+                break;
         }
     }
 
@@ -226,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
         loadBloodEnquiries(true);
         loadVolunteers(true);
         loadGallery(true);
+        loadDonors(true);
     }
 
     async function loadStatsCounters() {
@@ -281,6 +297,13 @@ document.addEventListener("DOMContentLoaded", function () {
             let galleryRes = await fetch("/api/gallery");
             let gallery = await galleryRes.json();
             statGallery.textContent = Array.isArray(gallery) ? gallery.length : 0;
+            
+            // Fetch donors
+            let donorsRes = await fetch("/api/donor", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            let donors = await donorsRes.json();
+            if (statDonors) statDonors.textContent = Array.isArray(donors) ? donors.length : 0;
 
         } catch (err) {
             console.error("Failed to load overview counts:", err);
@@ -622,16 +645,271 @@ document.addEventListener("DOMContentLoaded", function () {
     if (searchBloodEl) searchBloodEl.addEventListener("input", applyBloodFiltersAndSort);
     if (sortBloodEl) sortBloodEl.addEventListener("change", applyBloodFiltersAndSort);
 
-    // Refresh Button Handling for Blood
-    const refreshBloodBtn = document.getElementById("refresh-blood-btn");
-    if (refreshBloodBtn) {
-        refreshBloodBtn.addEventListener("click", function () {
+        });
+    }
+
+    // ==================== BLOOD DONORS HANDLING ====================
+
+    async function loadDonors(silent = false) {
+        if (!token) return;
+        const tbody = document.getElementById("donors-tbody");
+        
+        if (!silent) {
+            tbody.innerHTML = `<tr><td colspan="8" class="table-loader-row"><i class="fas fa-spinner"></i><p>Loading voluntary donors...</p></td></tr>`;
+        }
+
+        try {
+            const res = await fetch("/api/donor", {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.status === 401) { showLogin(); return; }
+            donorsList = await res.json();
+            applyDonorFiltersAndSort();
+        } catch (err) {
+            handleApiError(err);
+        }
+    }
+
+    function renderDonors(data) {
+        const tbody = document.getElementById("donors-tbody");
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(data)) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger" style="padding:40px; font-weight:700;"><i class="fas fa-triangle-exclamation" style="margin-right:8px;"></i>Database Connection Error: Ensure server is running.</td></tr>`;
+            return;
+        }
+
+        if (data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted" style="padding:40px;">No registered donors found.</td></tr>`;
+            return;
+        }
+
+        data.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td style="font-weight:700;">${escapeHTML(item.fullName)}</td>
+                <td>
+                    <span style="display:block; font-weight:600; color:var(--text-primary);">${escapeHTML(item.phone)}</span>
+                    <span style="font-size:0.85rem; color:var(--text-secondary);">${escapeHTML(item.email || 'No email')}</span>
+                </td>
+                <td><span class="badge-blood" style="background-color:rgba(58, 134, 255, 0.12); color:#3a86ff; border-color:rgba(58, 134, 255, 0.25);">${escapeHTML(item.bloodGroup)}</span></td>
+                <td style="font-weight:600; color:var(--text-primary);">${escapeHTML(item.age)} Years / ${escapeHTML(item.gender)}</td>
+                <td style="font-weight:700; color:var(--text-primary);">${escapeHTML(item.city)}</td>
+                <td style="font-size:0.85rem; color:var(--text-secondary); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${escapeHTML(item.address)}">${escapeHTML(item.address)}</td>
+                <td class="text-center">
+                    <span class="badge-status status-${item.availability === 'available' ? 'verified' : 'rejected'}" style="text-transform: capitalize;">${escapeHTML(item.availability)}</span>
+                </td>
+                <td class="text-center">
+                    <div class="action-btns">
+                        <button class="action-btn btn-view view-donor-btn" data-id="${item._id}" title="View Dossier">
+                            <i class="fas fa-id-card"></i>
+                        </button>
+                        <button class="action-btn btn-delete delete-donor-btn" data-id="${item._id}" title="Delete donor">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Attach action events
+        document.querySelectorAll(".view-donor-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const id = this.getAttribute("data-id");
+                const profile = donorsList.find(d => d._id === id);
+                if (profile) {
+                    showDonorDossierModal(profile);
+                }
+            });
+        });
+
+        document.querySelectorAll(".delete-donor-btn").forEach(btn => {
+            btn.addEventListener("click", async function () {
+                const id = this.getAttribute("data-id");
+                if (confirm("Are you sure you want to permanently delete this donor registration?")) {
+                    await deleteDonor(id);
+                }
+            });
+        });
+    }
+
+    async function deleteDonor(id) {
+        try {
+            const res = await fetch(`/api/donor/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                showToast("Donor registration deleted successfully.", "success");
+                loadDonors();
+                fetchCounters();
+            } else {
+                const result = await res.json();
+                showToast(result.error || "Failed to delete donor.", "error");
+            }
+        } catch (err) {
+            handleApiError(err);
+        }
+    }
+
+    function applyDonorFiltersAndSort() {
+        const searchInput = document.getElementById("search-donors");
+        const groupFilter = document.getElementById("filter-donor-group");
+        const availabilityFilter = document.getElementById("filter-donor-availability");
+        
+        if (!searchInput || !groupFilter || !availabilityFilter) return;
+
+        const query = searchInput.value.toLowerCase().trim();
+        const groupVal = groupFilter.value;
+        const availVal = availabilityFilter.value;
+
+        let filtered = donorsList.filter(item => {
+            // Text Search filter
+            const matchesSearch = 
+                item.fullName.toLowerCase().includes(query) ||
+                item.city.toLowerCase().includes(query) ||
+                item.address.toLowerCase().includes(query) ||
+                item.phone.includes(query) ||
+                (item.email || '').toLowerCase().includes(query);
+            
+            // Blood Group filter
+            const matchesGroup = groupVal === "all" || item.bloodGroup === groupVal;
+
+            // Availability filter
+            const matchesAvailability = availVal === "all" || item.availability === availVal;
+
+            return matchesSearch && matchesGroup && matchesAvailability;
+        });
+
+        renderDonors(filtered);
+    }
+
+    // Dynamic Filter & Search Listeners for Donors
+    const searchDonorsEl = document.getElementById("search-donors");
+    const groupDonorsEl = document.getElementById("filter-donor-group");
+    const availDonorsEl = document.getElementById("filter-donor-availability");
+    if (searchDonorsEl) searchDonorsEl.addEventListener("input", applyDonorFiltersAndSort);
+    if (groupDonorsEl) groupDonorsEl.addEventListener("change", applyDonorFiltersAndSort);
+    if (availDonorsEl) availDonorsEl.addEventListener("change", applyDonorFiltersAndSort);
+
+    // Refresh Button Handling for Donors
+    const refreshDonorsBtn = document.getElementById("refresh-donors-btn");
+    if (refreshDonorsBtn) {
+        refreshDonorsBtn.addEventListener("click", function () {
             const icon = this.querySelector("i");
             icon.classList.add("fa-spin");
-            loadBloodEnquiries().finally(() => {
+            loadDonors().finally(() => {
                 setTimeout(() => icon.classList.remove("fa-spin"), 800);
             });
         });
+    }
+
+    function showDonorDossierModal(d) {
+        activeDonorId = d._id;
+        const formattedDate = new Date(d.createdAt).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+        
+        let lastDonationVal = "";
+        if (d.lastDonationDate) {
+            try {
+                const dateObj = new Date(d.lastDonationDate);
+                if (!isNaN(dateObj.getTime())) {
+                    lastDonationVal = dateObj.toISOString().split('T')[0];
+                }
+            } catch (err) {
+                console.error("Failed to format last donation date:", d.lastDonationDate, err);
+            }
+        }
+
+        donorModalContent.innerHTML = `
+            <div class="dossier-grid">
+                <!-- Section 1: Donor Profile -->
+                <div class="dossier-section">
+                    <h4>Donor Personal Profile</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Full Name:</span>
+                            <input type="text" id="edit-donor-fullName" value="${escapeHTML(d.fullName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Blood Group:</span>
+                            <input type="text" id="edit-donor-bloodGroup" value="${escapeHTML(d.bloodGroup)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Age:</span>
+                            <input type="number" id="edit-donor-age" value="${d.age}" min="18" max="65" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Gender:</span>
+                            <select id="edit-donor-gender" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                                <option value="Male" ${d.gender === 'Male' ? 'selected' : ''}>Male</option>
+                                <option value="Female" ${d.gender === 'Female' ? 'selected' : ''}>Female</option>
+                                <option value="Other" ${d.gender === 'Other' ? 'selected' : ''}>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Contact Details -->
+                <div class="dossier-section">
+                    <h4>Contact & Availability</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Mobile Number:</span>
+                            <input type="text" id="edit-donor-phone" value="${escapeHTML(d.phone)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Email Address:</span>
+                            <input type="email" id="edit-donor-email" value="${escapeHTML(d.email || '')}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Availability Status:</span>
+                            <select id="edit-donor-availability" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                                <option value="available" ${d.availability === 'available' ? 'selected' : ''}>Available</option>
+                                <option value="unavailable" ${d.availability === 'unavailable' ? 'selected' : ''}>Not Available</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Consent Contact Status:</span>
+                            <select id="edit-donor-consent" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit; cursor: pointer;">
+                                <option value="true" ${d.consent === true ? 'selected' : ''}>Agreed</option>
+                                <option value="false" ${d.consent === false ? 'selected' : ''}>Refused</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Donation & Location details -->
+                <div class="dossier-section dossier-full-section">
+                    <h4>Last Donation & Regional Location</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">City / District:</span>
+                            <input type="text" id="edit-donor-city" value="${escapeHTML(d.city)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Last Blood Donation Date:</span>
+                            <input type="date" id="edit-donor-lastDonationDate" value="${lastDonationVal}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Address Details -->
+                <div class="dossier-section dossier-full-section">
+                    <h4>Residential Address Details</h4>
+                    <textarea id="edit-donor-address" rows="2" style="width: 100%; padding: 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.95rem; font-family: inherit; resize: vertical;">${escapeHTML(d.address)}</textarea>
+                </div>
+            </div>
+        `;
+        donorModal.style.display = "flex";
     }
 
     function showBloodDossierModal(b) {
@@ -1122,6 +1400,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 showToast("Blood inquiry updated successfully!", "success");
                 bloodModal.style.display = "none";
                 loadBloodEnquiries(); // Refresh table
+                fetchCounters(); // Refresh overview count
+            } else {
+                const errResult = await res.json();
+                showToast(errResult.error || "Failed to update profile.", "error");
+            }
+        } catch (err) {
+            handleApiError(err);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
+    });
+
+    // Donor Modal Close Triggers
+    closeDonorModalBtn.addEventListener("click", () => donorModal.style.display = "none");
+    closeDonorModalBtn2.addEventListener("click", () => donorModal.style.display = "none");
+    donorModal.addEventListener("click", (e) => {
+        if (e.target === donorModal) donorModal.style.display = "none";
+    });
+
+    // Save Donor Profile changes
+    document.getElementById("save-donor-profile-btn").addEventListener("click", async function () {
+        if (!activeDonorId) return;
+
+        const fullName = document.getElementById("edit-donor-fullName").value.trim();
+        const bloodGroup = document.getElementById("edit-donor-bloodGroup").value.trim();
+        const age = parseInt(document.getElementById("edit-donor-age").value.trim(), 10);
+        const gender = document.getElementById("edit-donor-gender").value;
+        const phone = document.getElementById("edit-donor-phone").value.trim();
+        const email = document.getElementById("edit-donor-email").value.trim();
+        const availability = document.getElementById("edit-donor-availability").value;
+        const consent = document.getElementById("edit-donor-consent").value === "true";
+        const city = document.getElementById("edit-donor-city").value.trim();
+        const lastDonationDate = document.getElementById("edit-donor-lastDonationDate").value.trim();
+        const address = document.getElementById("edit-donor-address").value.trim();
+
+        if (!fullName || !bloodGroup || !age || !gender || !phone || !city || !address) {
+            showToast("All profile fields are required.", "error");
+            return;
+        }
+
+        const saveBtn = this;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        try {
+            const res = await fetch(`/api/donor/${activeDonorId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    fullName, bloodGroup, age, gender, phone, email,
+                    availability, consent, city, lastDonationDate, address
+                })
+            });
+
+            if (res.ok) {
+                showToast("Donor profile updated successfully!", "success");
+                donorModal.style.display = "none";
+                loadDonors(); // Refresh table
                 fetchCounters(); // Refresh overview count
             } else {
                 const errResult = await res.json();

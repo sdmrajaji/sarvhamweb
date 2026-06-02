@@ -32,6 +32,7 @@ const galleryRoutes = require('./routes/gallery');
 const authRoutes = require('./routes/auth');
 const statsRoutes = require('./routes/stats');
 const bloodEnquiryRoutes = require('./routes/bloodEnquiry');
+const donorRoutes = require('./routes/donor');
 
 // Use Routes
 app.use('/api/contact', contactRoutes);
@@ -40,6 +41,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/blood-enquiry', bloodEnquiryRoutes);
+app.use('/api/donor', donorRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;

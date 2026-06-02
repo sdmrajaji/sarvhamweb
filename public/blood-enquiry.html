@@ -150,6 +150,52 @@
         .custom-options-container::-webkit-scrollbar-thumb:hover {
             background: rgba(230, 57, 70, 0.35);
         }
+
+        /* Premium Tab System CSS */
+        .blood-tabs-wrapper {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 25px 0;
+            gap: 16px;
+        }
+        .blood-tab-button {
+            padding: 14px 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .blood-tab-button:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+        .blood-tab-button.active {
+            background: linear-gradient(135deg, #e63946 0%, #b31624 100%);
+            border-color: #e63946;
+            color: #ffffff;
+            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.3);
+            transform: translateY(0);
+        }
+        .blood-tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .blood-tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 
@@ -199,112 +245,260 @@
                 </a>
             </div>
 
-            <!-- Split Map and Form layout -->
-            <div class="contact-split-grid">
-                <!-- Emergency Instructions / Info -->
-                <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
-                    <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-shield-heart text-red"></i> Guidelines for Blood Seekers
-                    </h3>
-                    <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
-                            <span><strong>Accurate Information:</strong> Double-check the contact details of the requester and make sure phone lines are active.</span>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
-                            <span><strong>Emergency Target:</strong> State the exact hospital name and specific ward number for rapid local coordination.</span>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
-                            <span><strong>No Charges:</strong> Sarvham Foundation connects voluntary donors entirely free of cost. Never pay anyone for blood donation.</span>
-                        </li>
-                        <li style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
-                            <span><strong>Immediate Support:</strong> For ultra-critical requirements needing immediate action under 2 hours, please call our emergency support directly instead of only submitting forms.</span>
-                        </li>
-                    </ul>
-                </div>
+            <!-- Premium Glassmorphic Tab switcher -->
+            <div class="blood-tabs-wrapper animate-fadeIn">
+                <button class="blood-tab-button active">
+                    <i class="fas fa-heartbeat"></i> Request Emergency Blood
+                </button>
+                <button class="blood-tab-button">
+                    <i class="fas fa-hand-holding-medical"></i> Become a Blood Donor
+                </button>
+            </div>
 
-                <!-- Blood Request Form -->
-                <div class="contact-form-card animate-slideInRight">
-                    <h3>Submit Blood Request</h3>
-                    <form id="blood-form" method="post" novalidate>
-                        
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="blood-patientName">Patient Name</label>
-                                <input type="text" id="blood-patientName" name="blood-patientName" placeholder="Enter patient name" required aria-required="true">
-                            </div>
-                            <div class="input-group">
-                                <label for="blood-contactName">Contact Person Name</label>
-                                <input type="text" id="blood-contactName" name="blood-contactName" placeholder="Enter contact name" required aria-required="true">
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="blood-email">Your Email</label>
-                                <input type="email" id="blood-email" name="blood-email" placeholder="Enter contact email" required aria-required="true">
-                            </div>
-                            <div class="input-group">
-                                <label for="blood-phone">10-Digit Contact Phone</label>
-                                <input type="tel" id="blood-phone" name="blood-phone" placeholder="Enter mobile number" required aria-required="true" pattern="[0-9]{10}" maxlength="10">
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="blood-group">Required Blood Group</label>
-                                <div class="custom-select-wrapper">
-                                    <div class="custom-select-trigger placeholder-active" id="blood-group-trigger">
-                                        <span class="trigger-text"><i class="fas fa-droplet text-red"></i> Select Blood Group</span>
-                                        <i class="fas fa-chevron-down select-arrow"></i>
-                                    </div>
-                                    <div class="custom-options-container" id="blood-group-options">
-                                        <div class="custom-option" data-value="A+"><i class="fas fa-droplet"></i> A+</div>
-                                        <div class="custom-option" data-value="A-"><i class="fas fa-droplet"></i> A-</div>
-                                        <div class="custom-option" data-value="B+"><i class="fas fa-droplet"></i> B+</div>
-                                        <div class="custom-option" data-value="B-"><i class="fas fa-droplet"></i> B-</div>
-                                        <div class="custom-option" data-value="O+"><i class="fas fa-droplet"></i> O+</div>
-                                        <div class="custom-option" data-value="O-"><i class="fas fa-droplet"></i> O-</div>
-                                        <div class="custom-option" data-value="AB+"><i class="fas fa-droplet"></i> AB+</div>
-                                        <div class="custom-option" data-value="AB-"><i class="fas fa-droplet"></i> AB-</div>
-                                    </div>
-                                    <input type="hidden" id="blood-group" name="blood-group" required aria-required="true">
+            <!-- Tab 1: Seeker Content -->
+            <div id="tab-seeker-content" class="blood-tab-content active">
+                <div class="contact-split-grid">
+                    <!-- Emergency Instructions / Info -->
+                    <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
+                        <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-shield-heart text-red"></i> Guidelines for Blood Seekers
+                        </h3>
+                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Accurate Information:</strong> Double-check the contact details of the requester and make sure phone lines are active.</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Emergency Target:</strong> State the exact hospital name and specific ward number for rapid local coordination.</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>No Charges:</strong> Sarvham Foundation connects voluntary donors entirely free of cost. Never pay anyone for blood donation.</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Immediate Support:</strong> For ultra-critical requirements needing immediate action under 2 hours, please call our emergency support directly instead of only submitting forms.</span>
+                            </li>
+                        </ul>
+                    </div>
+    
+                    <!-- Blood Request Form -->
+                    <div class="contact-form-card animate-slideInRight">
+                        <h3>Submit Blood Request</h3>
+                        <form id="blood-form" method="post" novalidate>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="blood-patientName">Patient Name</label>
+                                    <input type="text" id="blood-patientName" name="blood-patientName" placeholder="Enter patient name" required aria-required="true">
+                                </div>
+                                <div class="input-group">
+                                    <label for="blood-contactName">Contact Person Name</label>
+                                    <input type="text" id="blood-contactName" name="blood-contactName" placeholder="Enter contact name" required aria-required="true">
                                 </div>
                             </div>
-                            <div class="input-row-sub" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 15px; width: 100%;">
+    
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="blood-email">Your Email</label>
+                                    <input type="email" id="blood-email" name="blood-email" placeholder="Enter contact email" required aria-required="true">
+                                </div>
+                                <div class="input-group">
+                                    <label for="blood-phone">Contact Mobile</label>
+                                    <input type="tel" id="blood-phone" name="blood-phone" placeholder="Enter 10-digit mobile" required aria-required="true" maxlength="10">
+                                </div>
+                            </div>
+    
+                            <div class="input-row">
                                 <div class="input-group">
                                     <label for="blood-units">Units Required</label>
-                                    <input type="number" id="blood-units" name="blood-units" value="1" min="1" required aria-required="true">
+                                    <input type="number" id="blood-units" name="blood-units" placeholder="e.g. 2" required aria-required="true" min="1">
                                 </div>
                                 <div class="input-group">
-                                    <label for="blood-date">Required By Date</label>
-                                    <input type="date" id="blood-date" name="blood-date" required aria-required="true">
+                                    <label for="blood-group">Blood Group</label>
+                                    <div class="custom-select-wrapper">
+                                        <input type="hidden" id="blood-group" name="blood-group" required>
+                                        <div id="blood-group-trigger" class="custom-select-trigger placeholder-active">
+                                            <span class="trigger-text"><i class="fas fa-droplet text-red"></i> Select Blood Group</span>
+                                            <i class="fas fa-chevron-down trigger-arrow"></i>
+                                        </div>
+                                        <div id="blood-group-options" class="custom-options-container">
+                                            <div class="custom-option" data-value="A+"><i class="fas fa-droplet"></i> A+</div>
+                                            <div class="custom-option" data-value="A-"><i class="fas fa-droplet"></i> A-</div>
+                                            <div class="custom-option" data-value="B+"><i class="fas fa-droplet"></i> B+</div>
+                                            <div class="custom-option" data-value="B-"><i class="fas fa-droplet"></i> B-</div>
+                                            <div class="custom-option" data-value="O+"><i class="fas fa-droplet"></i> O+</div>
+                                            <div class="custom-option" data-value="O-"><i class="fas fa-droplet"></i> O-</div>
+                                            <div class="custom-option" data-value="AB+"><i class="fas fa-droplet"></i> AB+</div>
+                                            <div class="custom-option" data-value="AB-"><i class="fas fa-droplet"></i> AB-</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="blood-hospitalName">Hospital Name</label>
-                                <input type="text" id="blood-hospitalName" name="blood-hospitalName" placeholder="e.g. KG Hospital" required aria-required="true">
+    
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="blood-date">Required Date</label>
+                                    <input type="date" id="blood-date" name="blood-date" required aria-required="true">
+                                </div>
+                                <div class="input-group">
+                                    <label for="blood-hospitalName">Hospital Name</label>
+                                    <input type="text" id="blood-hospitalName" name="blood-hospitalName" placeholder="e.g. KG Hospital" required aria-required="true">
+                                </div>
                             </div>
-                            <div class="input-group">
-                                <label for="blood-hospitalLocation">Hospital Location / District</label>
-                                <input type="text" id="blood-hospitalLocation" name="blood-hospitalLocation" placeholder="e.g. Coimbatore" required aria-required="true">
+    
+                            <div class="input-row">
+                                <div class="input-group" style="grid-column: span 2;">
+                                    <label for="blood-hospitalLocation">Hospital Location (City/Area)</label>
+                                    <input type="text" id="blood-hospitalLocation" name="blood-hospitalLocation" placeholder="e.g. Ramanathapuram, Coimbatore" required aria-required="true">
+                                </div>
                             </div>
-                        </div>
+    
+                            <div class="input-group">
+                                <label for="blood-message">Clinical Notes / Additional Details</label>
+                                <textarea id="blood-message" name="blood-message" placeholder="Provide any other specific requirements or medical details..." rows="3"></textarea>
+                            </div>
+    
+                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Submit Emergency Request</button>
+                            <div id="blood-feedback" class="form-feedback"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-                        <div class="input-group">
-                            <label for="blood-message">Clinical Notes / Additional Details</label>
-                            <textarea id="blood-message" name="blood-message" placeholder="Provide any other specific requirements or medical details..." rows="3"></textarea>
+            <!-- Tab 2: Donor Content -->
+            <div id="tab-donor-content" class="blood-tab-content">
+                <div class="contact-split-grid">
+                    <!-- Guidelines for Blood Donors -->
+                    <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
+                        <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-hand-holding-drop text-red"></i> Guidelines for Blood Donors
+                        </h3>
+                        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Age Criteria:</strong> Donors must be between 18 and 65 years old.</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Weight limit:</strong> Donors must weigh at least 45 kg.</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Donation Interval:</strong> Standard safe gap between two donations is at least 3 months (90 days).</span>
+                            </li>
+                            <li style="display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fas fa-circle-check text-red" style="margin-top: 4px;"></i>
+                                <span><strong>Health & Hygiene:</strong> Do not donate if you are suffering from acute illnesses, taking strong antibiotics, or have recently gotten a tattoo/piercing in the last 6 months.</span>
+                            </li>
+                        </ul>
+                        <div style="margin-top: 30px; padding: 20px; background: rgba(230, 57, 70, 0.08); border-left: 4px solid #e63946; border-radius: 8px;">
+                            <p style="font-size: 0.9rem; margin: 0; color: #cbd5e1; font-style: italic;">
+                                "To give blood is to give another birthday, another anniversary, another day at the beach, another laugh, another hug, another chance."
+                            </p>
                         </div>
-
-                        <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Submit Emergency Request</button>
-                        <div id="blood-feedback" class="form-feedback"></div>
-                    </form>
+                    </div>
+    
+                    <!-- Donor Registration Form -->
+                    <div class="contact-form-card animate-slideInRight">
+                        <h3>Become a Blood Donor</h3>
+                        <form id="donor-form" method="post" novalidate>
+                            
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="donor-fullName">Full Name</label>
+                                    <input type="text" id="donor-fullName" name="donor-fullName" placeholder="Enter your full name" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="donor-phone">Mobile Number</label>
+                                    <input type="tel" id="donor-phone" name="donor-phone" placeholder="Enter 10-digit mobile" required maxlength="10">
+                                </div>
+                            </div>
+    
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="donor-email">Email Address <span style="font-size:0.8rem; color:var(--text-muted);">(Optional)</span></label>
+                                    <input type="email" id="donor-email" name="donor-email" placeholder="Enter email address">
+                                </div>
+                                <div class="input-group">
+                                    <label for="donor-age">Donor Age</label>
+                                    <input type="number" id="donor-age" name="donor-age" placeholder="Min 18 - Max 65" min="18" max="65" required>
+                                </div>
+                            </div>
+    
+                            <div class="input-row">
+                                <div class="input-group" style="position: relative;">
+                                    <label for="donor-gender">Gender</label>
+                                    <select id="donor-gender" name="donor-gender" required style="width: 100%; padding: 14px 16px; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 12px; color: #1a1a2e; font-size: 1rem; font-family: inherit; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;">
+                                        <option value="" disabled selected>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                    <span style="position: absolute; right: 18px; bottom: 15px; color: #7f8c8d; pointer-events: none;"><i class="fas fa-chevron-down"></i></span>
+                                </div>
+                                <div class="input-group">
+                                    <label for="donor-group">Blood Group</label>
+                                    <div class="custom-select-wrapper">
+                                        <input type="hidden" id="donor-group" name="donor-group" required>
+                                        <div id="donor-group-trigger" class="custom-select-trigger placeholder-active">
+                                            <span class="trigger-text"><i class="fas fa-droplet text-red"></i> Select Blood Group</span>
+                                            <i class="fas fa-chevron-down trigger-arrow"></i>
+                                        </div>
+                                        <div id="donor-group-options" class="custom-options-container">
+                                            <div class="custom-option" data-value="A+"><i class="fas fa-droplet"></i> A+</div>
+                                            <div class="custom-option" data-value="A-"><i class="fas fa-droplet"></i> A-</div>
+                                            <div class="custom-option" data-value="B+"><i class="fas fa-droplet"></i> B+</div>
+                                            <div class="custom-option" data-value="B-"><i class="fas fa-droplet"></i> B-</div>
+                                            <div class="custom-option" data-value="O+"><i class="fas fa-droplet"></i> O+</div>
+                                            <div class="custom-option" data-value="O-"><i class="fas fa-droplet"></i> O-</div>
+                                            <div class="custom-option" data-value="AB+"><i class="fas fa-droplet"></i> AB+</div>
+                                            <div class="custom-option" data-value="AB-"><i class="fas fa-droplet"></i> AB-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="donor-city">City / District</label>
+                                    <input type="text" id="donor-city" name="donor-city" placeholder="e.g. Coimbatore" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="donor-lastDonationDate">Last Donation Date <span style="font-size:0.8rem; color:var(--text-muted);">(Optional)</span></label>
+                                    <input type="date" id="donor-lastDonationDate" name="donor-lastDonationDate">
+                                </div>
+                            </div>
+    
+                            <div class="input-row">
+                                <div class="input-group" style="grid-column: span 2;">
+                                    <label for="donor-address">Full Address</label>
+                                    <textarea id="donor-address" name="donor-address" placeholder="Enter your full address details..." rows="2" required></textarea>
+                                </div>
+                            </div>
+    
+                            <div class="input-row" style="margin-bottom: 20px;">
+                                <div class="input-group" style="position: relative;">
+                                    <label for="donor-availability">Availability Status</label>
+                                    <select id="donor-availability" name="donor-availability" style="width: 100%; padding: 14px 16px; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 12px; color: #1a1a2e; font-size: 1rem; font-family: inherit; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;">
+                                        <option value="available" selected>Available</option>
+                                        <option value="unavailable">Not Available</option>
+                                    </select>
+                                    <span style="position: absolute; right: 18px; bottom: 15px; color: #7f8c8d; pointer-events: none;"><i class="fas fa-chevron-down"></i></span>
+                                </div>
+                                <div class="input-group" style="display: flex; align-items: center; padding-top: 25px;">
+                                    <label class="checkbox-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; font-size: 0.9rem; color: #cbd5e1; font-weight: 500;">
+                                        <input type="checkbox" id="donor-consent" name="donor-consent" checked required style="width: 20px; height: 20px; accent-color: #e63946; cursor: pointer;">
+                                        Agree to be contacted for donation
+                                    </label>
+                                </div>
+                            </div>
+    
+                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Register as Blood Donor</button>
+                            <div id="donor-feedback" class="form-feedback"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -348,9 +542,40 @@
     <script src="js/main.js"></script>
     <script>
         // Set default date to today's date in local time
-        document.getElementById('blood-date').valueAsDate = new Date();
+        if (document.getElementById('blood-date')) {
+            document.getElementById('blood-date').valueAsDate = new Date();
+        }
 
-        // ─── Custom Blood Group Dropdown ──────────────────────────────────────
+        // ─── Tab Switching Logic ──────────────────────────────────────────────
+        const tabButtons = document.querySelectorAll('.blood-tab-button');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const isDonor = this.innerHTML.includes('Become');
+                const seekerContent = document.getElementById('tab-seeker-content');
+                const donorContent = document.getElementById('tab-donor-content');
+
+                if (isDonor) {
+                    seekerContent.classList.remove('active');
+                    setTimeout(() => {
+                        seekerContent.style.display = 'none';
+                        donorContent.style.display = 'block';
+                        setTimeout(() => donorContent.classList.add('active'), 50);
+                    }, 300);
+                } else {
+                    donorContent.classList.remove('active');
+                    setTimeout(() => {
+                        donorContent.style.display = 'none';
+                        seekerContent.style.display = 'block';
+                        setTimeout(() => seekerContent.classList.add('active'), 50);
+                    }, 300);
+                }
+            });
+        });
+
+        // ─── Custom Blood Group Dropdown (Seeker) ──────────────────────────────
         const trigger = document.getElementById('blood-group-trigger');
         const optionsContainer = document.getElementById('blood-group-options');
         const optionsList = optionsContainer.querySelectorAll('.custom-option');
@@ -390,10 +615,44 @@
             });
         });
 
+        // ─── Custom Blood Group Dropdown (Donor) ───────────────────────────────
+        const dTrigger = document.getElementById('donor-group-trigger');
+        const dOptionsContainer = document.getElementById('donor-group-options');
+        const dOptionsList = dOptionsContainer.querySelectorAll('.custom-option');
+        const dHiddenInput = document.getElementById('donor-group');
+        const dTriggerText = dTrigger.querySelector('.trigger-text');
+
+        // Toggle dropdown open state
+        dTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dTrigger.classList.toggle('open');
+            dOptionsContainer.classList.toggle('open');
+        });
+
+        // Select option
+        dOptionsList.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const value = this.getAttribute('data-value');
+                dHiddenInput.value = value;
+
+                // Update trigger text
+                dTriggerText.innerHTML = `<i class="fas fa-droplet text-red"></i> <strong>${value}</strong>`;
+                dTrigger.classList.remove('placeholder-active');
+                dOptionsList.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                dTrigger.classList.remove('open');
+                dOptionsContainer.classList.remove('open');
+                dHiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
         // Close dropdown when clicking outside
         document.addEventListener('click', function() {
             trigger.classList.remove('open');
             optionsContainer.classList.remove('open');
+            dTrigger.classList.remove('open');
+            dOptionsContainer.classList.remove('open');
         });
 
         // Form submission is handled by main.js (section 5.5)
@@ -403,6 +662,13 @@
             trigger.classList.add('placeholder-active');
             optionsList.forEach(opt => opt.classList.remove('selected'));
             hiddenInput.value = '';
+        };
+
+        window.donorDropdownReset = function() {
+            dTriggerText.innerHTML = '<i class="fas fa-droplet text-red"></i> Select Blood Group';
+            dTrigger.classList.add('placeholder-active');
+            dOptionsList.forEach(opt => opt.classList.remove('selected'));
+            dHiddenInput.value = '';
         };
     </script>
 </body>

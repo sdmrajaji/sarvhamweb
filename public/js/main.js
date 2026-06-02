@@ -424,6 +424,108 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // 5.6 Become a Blood Donor Form Submission
+    const donorForm = document.getElementById("donor-form");
+    if (donorForm) {
+        const dFeedback = document.getElementById("donor-feedback");
+        const dSubmitBtn = donorForm.querySelector("button[type='submit']");
+
+        donorForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            dFeedback.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering donor profile...';
+            dFeedback.className = 'form-feedback processing';
+            dSubmitBtn.disabled = true;
+
+            const fullName = document.getElementById("donor-fullName").value.trim();
+            const phone = document.getElementById("donor-phone").value.trim();
+            const email = document.getElementById("donor-email").value.trim();
+            const age = parseInt(document.getElementById("donor-age").value.trim(), 10);
+            const gender = document.getElementById("donor-gender").value;
+            const bloodGroup = document.getElementById("donor-group").value.trim();
+            const city = document.getElementById("donor-city").value.trim();
+            const lastDonationDate = document.getElementById("donor-lastDonationDate").value.trim();
+            const address = document.getElementById("donor-address").value.trim();
+            const availability = document.getElementById("donor-availability").value;
+            const consent = document.getElementById("donor-consent").checked;
+
+            if (!fullName || !phone || !age || !gender || !bloodGroup || !city || !address) {
+                dFeedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill out all required fields.';
+                dFeedback.className = 'form-feedback error';
+                dSubmitBtn.disabled = false;
+                return;
+            }
+
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                dFeedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Mobile number must be exactly 10 digits.';
+                dFeedback.className = 'form-feedback error';
+                dSubmitBtn.disabled = false;
+                return;
+            }
+
+            if (age < 18 || age > 65) {
+                dFeedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Age must be between 18 and 65 years.';
+                dFeedback.className = 'form-feedback error';
+                dSubmitBtn.disabled = false;
+                return;
+            }
+
+            if (!consent) {
+                dFeedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> You must agree to be contacted for blood donation requests.';
+                dFeedback.className = 'form-feedback error';
+                dSubmitBtn.disabled = false;
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/donor", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        fullName,
+                        phone,
+                        email,
+                        age,
+                        gender,
+                        bloodGroup,
+                        city,
+                        lastDonationDate,
+                        address,
+                        availability,
+                        consent
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    dFeedback.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! Registered successfully as a voluntary blood donor.';
+                    dFeedback.className = 'form-feedback success';
+                    donorForm.reset();
+                    if (typeof window.donorDropdownReset === 'function') {
+                        window.donorDropdownReset();
+                    }
+                    showSuccessToast("Thank you for registering as a blood donor!");
+                } else {
+                    throw new Error(result.error || 'Failed to register as donor.');
+                }
+            } catch (err) {
+                const userMsg = (err.message && (err.message.includes('buffering') || err.message.includes('Server error')))
+                    ? 'Database is unavailable. Please try again later.'
+                    : (err.message || 'Something went wrong. Please try again.');
+                dFeedback.innerHTML = `<i class="fas fa-times-circle"></i> ${userMsg}`;
+                dFeedback.className = 'form-feedback error';
+                showErrorToast(userMsg);
+            } finally {
+                dSubmitBtn.disabled = false;
+                setTimeout(() => {
+                    dFeedback.textContent = '';
+                    dFeedback.className = 'form-feedback';
+                }, 5000);
+            }
+        });
+    }
+
     // 6. Dynamic Contact Details Loader
     fetch("/api/stats")
         .then(res => res.json())
