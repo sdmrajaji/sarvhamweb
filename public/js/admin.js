@@ -24,6 +24,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeVolModalBtn2 = document.getElementById("close-volunteer-modal-btn");
     const volModalContent = document.getElementById("volunteer-modal-content");
     
+    const contactModal = document.getElementById("contact-message-modal");
+    const closeContactModalBtn = document.getElementById("close-contact-modal");
+    const closeContactModalBtn2 = document.getElementById("close-contact-modal-btn");
+    const contactModalName = document.getElementById("contact-modal-name");
+    const contactModalDetails = document.getElementById("contact-modal-details");
+    const contactModalBody = document.getElementById("contact-modal-body");
+    
     const galleryModal = document.getElementById("gallery-modal");
     const openGalModalBtn = document.getElementById("open-add-image-modal");
     const closeGalModalBtn = document.getElementById("close-gallery-modal");
@@ -269,7 +276,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <td>${formattedDate}</td>
                 <td class="text-center">
                     <div class="action-btns">
-                        <button class="action-btn btn-view view-contact-btn" data-msg="${escapeHTML(item.message)}" data-name="${escapeHTML(item.name)}" title="Read Message">
+                        <button class="action-btn btn-view view-contact-btn" 
+                                data-msg="${escapeHTML(item.message)}" 
+                                data-name="${escapeHTML(item.name)}" 
+                                data-email="${escapeHTML(item.email)}"
+                                data-phone="${escapeHTML(item.phone)}"
+                                data-date="${formattedDate}"
+                                title="Read Message">
                             <i class="fas fa-comment-dots"></i>
                         </button>
                         <button class="action-btn btn-delete delete-contact-btn" data-id="${item._id}" title="Delete Query">
@@ -285,8 +298,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".view-contact-btn").forEach(btn => {
             btn.addEventListener("click", function () {
                 const name = this.getAttribute("data-name");
+                const email = this.getAttribute("data-email");
+                const phone = this.getAttribute("data-phone");
+                const date = this.getAttribute("data-date");
                 const msg = this.getAttribute("data-msg");
-                alert(`Message from ${name}:\n\n"${msg}"`);
+                showContactModal(name, email, phone, date, msg);
             });
         });
 
@@ -560,6 +576,33 @@ document.addEventListener("DOMContentLoaded", function () {
     volunteerModal.addEventListener("click", (e) => {
         if (e.target === volunteerModal) volunteerModal.style.display = "none";
     });
+
+    // Contact Modal Close Triggers
+    closeContactModalBtn.addEventListener("click", () => contactModal.style.display = "none");
+    closeContactModalBtn2.addEventListener("click", () => contactModal.style.display = "none");
+    contactModal.addEventListener("click", (e) => {
+        if (e.target === contactModal) contactModal.style.display = "none";
+    });
+
+    function showContactModal(name, email, phone, date, msg) {
+        contactModalName.textContent = `Inquiry from ${name}`;
+        contactModalDetails.innerHTML = `
+            <div class="dossier-field">
+                <span class="d-lbl">Email Address:</span>
+                <span class="d-val"><a href="mailto:${escapeHTML(email)}" style="color:var(--color-orange);">${escapeHTML(email)}</a></span>
+            </div>
+            <div class="dossier-field">
+                <span class="d-lbl">Phone Number:</span>
+                <span class="d-val"><a href="tel:${escapeHTML(phone)}" style="color:white; text-decoration:none;">${escapeHTML(phone)}</a></span>
+            </div>
+            <div class="dossier-field">
+                <span class="d-lbl">Received Date:</span>
+                <span class="d-val" style="font-size:0.8rem; color:var(--text-secondary);">${escapeHTML(date)}</span>
+            </div>
+        `;
+        contactModalBody.textContent = msg;
+        contactModal.style.display = "flex";
+    }
 
 
     // ==================== GALLERY MANAGEMENT HANDLING ====================
