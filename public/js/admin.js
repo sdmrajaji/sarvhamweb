@@ -1518,7 +1518,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toast.style.position = "fixed";
         toast.style.bottom = "30px";
         toast.style.right = "30px";
-        toast.style.backgroundColor = type === "success" ? "var(--color-green)" : "var(--color-red)";
+        toast.style.backgroundColor = type === "success" ? "var(--color-green)" : "var(--color-orange)";
         toast.style.color = "white";
         toast.style.padding = "14px 28px";
         toast.style.borderRadius = "12px";

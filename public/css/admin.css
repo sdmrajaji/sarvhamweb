@@ -594,6 +594,13 @@ tbody tr:hover {
 
 /* Badge values */
 .badge-blood {
+    background-color: rgba(248, 167, 47, 0.12);
+    border: 1px solid rgba(248, 167, 47, 0.25);
+    color: var(--color-orange);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.8rem;
     background-color: rgba(230, 57, 70, 0.12);
     border: 1px solid rgba(230, 57, 70, 0.25);
     color: var(--color-red);
