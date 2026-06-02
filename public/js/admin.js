@@ -274,7 +274,12 @@ document.addEventListener("DOMContentLoaded", function () {
             let contactsRes = await fetch("/api/contact", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
-            if (contactsRes.status === 401) { showLogin(); return; }
+            if (contactsRes.status === 401) {
+                const errResult = await contactsRes.json().catch(() => ({ error: "Unknown authentication issue" }));
+                console.error("Auth rejected during fetchCounters:", errResult.error || "Invalid token");
+                showLogin();
+                return;
+            }
             let contacts = await contactsRes.json();
             statContacts.textContent = Array.isArray(contacts) ? contacts.length : 0;
 
@@ -328,7 +333,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (res.status === 401) { showLogin(); return; }
+            if (res.status === 401) {
+                const errResult = await res.json().catch(() => ({ error: "Unknown authentication issue" }));
+                console.error("Auth rejected during loadContacts:", errResult.error || "Invalid token");
+                showLogin();
+                return;
+            }
             contactsList = await res.json();
             applyContactsFiltersAndSort();
         } catch (err) {
@@ -484,7 +494,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (res.status === 401) { showLogin(); return; }
+            if (res.status === 401) {
+                const errResult = await res.json().catch(() => ({ error: "Unknown authentication issue" }));
+                console.error("Auth rejected during loadBloodEnquiries:", errResult.error || "Invalid token");
+                showLogin();
+                return;
+            }
             bloodList = await res.json();
             applyBloodFiltersAndSort();
         } catch (err) {
@@ -663,7 +678,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (res.status === 401) { showLogin(); return; }
+            if (res.status === 401) {
+                const errResult = await res.json().catch(() => ({ error: "Unknown authentication issue" }));
+                console.error("Auth rejected during loadDonors:", errResult.error || "Invalid token");
+                showLogin();
+                return;
+            }
             donorsList = await res.json();
             applyDonorFiltersAndSort();
         } catch (err) {
@@ -1038,7 +1058,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
-            if (res.status === 401) { showLogin(); return; }
+            if (res.status === 401) {
+                const errResult = await res.json().catch(() => ({ error: "Unknown authentication issue" }));
+                console.error("Auth rejected during loadVolunteers:", errResult.error || "Invalid token");
+                showLogin();
+                return;
+            }
             volunteersList = await res.json();
             applyFiltersAndSort();
         } catch (err) {
