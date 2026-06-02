@@ -1,4 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // 0. Dynamic Helpline & Contact Loading
+    fetch("/api/stats")
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                const helplineLink = document.getElementById("emergency-helpline-link");
+                const helplineText = document.getElementById("emergency-helpline-text");
+                if (helplineLink && data.phone) {
+                    helplineLink.href = `tel:${data.phone.replace(/\s+/g, '')}`;
+                }
+                if (helplineText && data.phone) {
+                    helplineText.textContent = data.phone;
+                }
+
+                const supportEmailLink = document.getElementById("support-email-link");
+                const supportEmailText = document.getElementById("support-email-text");
+                if (supportEmailLink && data.email) {
+                    supportEmailLink.href = `mailto:${data.email}`;
+                }
+                if (supportEmailText && data.email) {
+                    supportEmailText.textContent = data.email;
+                }
+            }
+        })
+        .catch(err => console.error("Failed to dynamically load contact info:", err));
+
     // 1. Dynamic Active Class for Navigation Links
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll(".navbar nav ul li a");
