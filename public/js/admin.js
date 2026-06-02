@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let contactsList = [];
     let volunteersList = [];
     let galleryList = [];
+    let activeVolunteerId = null;
 
     // Initialize application state
     if (token) {
@@ -471,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Dossier Modal Generator
     function showDossierModal(v) {
+        activeVolunteerId = v._id;
         const formattedDate = new Date(v.createdAt).toLocaleDateString("en-IN", {
             day: "2-digit",
             month: "long",
@@ -479,57 +481,59 @@ document.addEventListener("DOMContentLoaded", function () {
             minute: "2-digit"
         });
 
-        const formattedAadhar = v.aadhar.replace(/(\d{4})(\d{4})(\d{4})/, "$1-$2-$3");
-
         volModalContent.innerHTML = `
             <div class="dossier-grid">
                 <!-- Section 1: Personal Details -->
                 <div class="dossier-section">
                     <h4>Personal Profile</h4>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Full Name:</span>
-                        <span class="d-val">${escapeHTML(v.fullName)}</span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Father's Name:</span>
-                        <span class="d-val">${escapeHTML(v.fatherName)}</span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Date of Birth:</span>
-                        <span class="d-val">${escapeHTML(v.dob)}</span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Gender:</span>
-                        <span class="d-val">${escapeHTML(v.gender)}</span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Blood Group:</span>
-                        <span class="d-val"><span class="badge-blood">${escapeHTML(v.bloodGroup)}</span></span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Aadhar ID:</span>
-                        <span class="d-val" style="font-family:monospace; letter-spacing:0.5px;">${escapeHTML(formattedAadhar)}</span>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Full Name:</span>
+                            <input type="text" id="edit-vol-fullName" value="${escapeHTML(v.fullName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Father's Name:</span>
+                            <input type="text" id="edit-vol-fatherName" value="${escapeHTML(v.fatherName)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Date of Birth:</span>
+                            <input type="text" id="edit-vol-dob" value="${escapeHTML(v.dob)}" placeholder="DD/MM/YYYY" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Gender:</span>
+                            <input type="text" id="edit-vol-gender" value="${escapeHTML(v.gender)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Blood Group:</span>
+                            <input type="text" id="edit-vol-bloodGroup" value="${escapeHTML(v.bloodGroup)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Aadhar ID:</span>
+                            <input type="text" id="edit-vol-aadhar" value="${escapeHTML(v.aadhar)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
                     </div>
                 </div>
 
                 <!-- Section 2: Contact Info -->
                 <div class="dossier-section">
                     <h4>Contact Channels</h4>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Email Address:</span>
-                        <span class="d-val"><a href="mailto:${escapeHTML(v.email)}" style="color:var(--color-orange);">${escapeHTML(v.email)}</a></span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Phone Number:</span>
-                        <span class="d-val"><a href="tel:${escapeHTML(v.phone)}" style="color:white; text-decoration:none;">${escapeHTML(v.phone)}</a></span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">WhatsApp:</span>
-                        <span class="d-val"><a href="https://wa.me/${escapeHTML(v.whatsapp)}" target="_blank" style="color:var(--color-green); font-weight:bold;"><i class="fab fa-whatsapp"></i> Native Chat</a></span>
-                    </div>
-                    <div class="dossier-field">
-                        <span class="d-lbl">Joined Timestamp:</span>
-                        <span class="d-val" style="font-size:0.8rem; color:var(--text-secondary);">${formattedDate}</span>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Email Address:</span>
+                            <input type="email" id="edit-vol-email" value="${escapeHTML(v.email)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Phone Number:</span>
+                            <input type="text" id="edit-vol-phone" value="${escapeHTML(v.phone)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">WhatsApp:</span>
+                            <input type="text" id="edit-vol-whatsapp" value="${escapeHTML(v.whatsapp)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 10px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Joined Timestamp:</span>
+                            <span style="font-size: 0.9rem; color: var(--text-secondary); font-weight: 600; padding: 8px 4px;">${formattedDate}</span>
+                        </div>
                     </div>
                 </div>
 
@@ -537,25 +541,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="dossier-section dossier-full-section">
                     <h4>Residential Address</h4>
                     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
-                        <div class="dossier-field">
-                            <span class="d-lbl">Street:</span>
-                            <span class="d-val">${escapeHTML(v.street)}</span>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Street:</span>
+                            <input type="text" id="edit-vol-street" value="${escapeHTML(v.street)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
-                        <div class="dossier-field">
-                            <span class="d-lbl">Area/Place:</span>
-                            <span class="d-val">${escapeHTML(v.place)}</span>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Area/Place:</span>
+                            <input type="text" id="edit-vol-place" value="${escapeHTML(v.place)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
-                        <div class="dossier-field">
-                            <span class="d-lbl">District:</span>
-                            <span class="d-val">${escapeHTML(v.district)}</span>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">District:</span>
+                            <input type="text" id="edit-vol-district" value="${escapeHTML(v.district)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
-                        <div class="dossier-field">
-                            <span class="d-lbl">Pincode:</span>
-                            <span class="d-val" style="font-family:monospace;">${escapeHTML(v.pincode)}</span>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">Pincode:</span>
+                            <input type="text" id="edit-vol-pincode" value="${escapeHTML(v.pincode)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
-                        <div class="dossier-field" style="grid-column: span 2;">
-                            <span class="d-lbl">State:</span>
-                            <span class="d-val">${escapeHTML(v.state)}</span>
+                        <div style="display: flex; flex-direction: column; gap: 4px; grid-column: span 2;">
+                            <span class="d-lbl" style="font-size: 0.8rem; font-weight: 700;">State:</span>
+                            <input type="text" id="edit-vol-state" value="${escapeHTML(v.state)}" style="width: 100%; padding: 8px 12px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; outline: none; font-size: 0.9rem; font-family: inherit;">
                         </div>
                     </div>
                 </div>
@@ -563,7 +567,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <!-- Section 4: Statement of Intent -->
                 <div class="dossier-section dossier-full-section">
                     <h4>Why do you want to join Sarvham Foundation?</h4>
-                    <div class="dossier-essay">${escapeHTML(v.message)}</div>
+                    <div class="dossier-essay" style="background-color: rgba(0,0,0,0.15); border: 1px dashed rgba(255,255,255,0.08); color: var(--text-secondary); cursor: not-allowed; user-select: none;">${escapeHTML(v.message)}</div>
                 </div>
             </div>
         `;
@@ -575,6 +579,65 @@ document.addEventListener("DOMContentLoaded", function () {
     closeVolModalBtn2.addEventListener("click", () => volunteerModal.style.display = "none");
     volunteerModal.addEventListener("click", (e) => {
         if (e.target === volunteerModal) volunteerModal.style.display = "none";
+    });
+
+    // Save Volunteer Profile Changes
+    document.getElementById("save-volunteer-profile-btn").addEventListener("click", async function () {
+        if (!activeVolunteerId) return;
+
+        const fullName = document.getElementById("edit-vol-fullName").value.trim();
+        const fatherName = document.getElementById("edit-vol-fatherName").value.trim();
+        const dob = document.getElementById("edit-vol-dob").value.trim();
+        const gender = document.getElementById("edit-vol-gender").value.trim();
+        const bloodGroup = document.getElementById("edit-vol-bloodGroup").value.trim();
+        const aadhar = document.getElementById("edit-vol-aadhar").value.trim();
+        const email = document.getElementById("edit-vol-email").value.trim();
+        const phone = document.getElementById("edit-vol-phone").value.trim();
+        const whatsapp = document.getElementById("edit-vol-whatsapp").value.trim();
+        const street = document.getElementById("edit-vol-street").value.trim();
+        const place = document.getElementById("edit-vol-place").value.trim();
+        const district = document.getElementById("edit-vol-district").value.trim();
+        const pincode = document.getElementById("edit-vol-pincode").value.trim();
+        const state = document.getElementById("edit-vol-state").value.trim();
+
+        if (!fullName || !fatherName || !email || !phone || !whatsapp || !aadhar || !dob || !gender ||
+            !bloodGroup || !street || !place || !district || !pincode || !state) {
+            showToast("All profile fields are required.", "error");
+            return;
+        }
+
+        const saveBtn = this;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+        try {
+            const res = await fetch(`/api/join/${activeVolunteerId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    fullName, fatherName, dob, gender, bloodGroup, aadhar,
+                    email, phone, whatsapp, street, place, district, pincode, state
+                })
+            });
+
+            if (res.ok) {
+                showToast("Volunteer profile updated successfully!", "success");
+                volunteerModal.style.display = "none";
+                loadVolunteers(); // Refresh table
+                fetchCounters(); // Refresh stats
+            } else {
+                const errResult = await res.json();
+                showToast(errResult.error || "Failed to update profile.", "error");
+            }
+        } catch (err) {
+            handleApiError(err);
+        } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
     });
 
     // Contact Modal Close Triggers

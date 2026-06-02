@@ -81,4 +81,56 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+// PUT /api/join/:id (Admin protected - Edit Profile)
+router.put('/:id', auth, async (req, res) => {
+  try {
+    const {
+      fullName,
+      fatherName,
+      email,
+      phone,
+      whatsapp,
+      aadhar,
+      dob,
+      gender,
+      bloodGroup,
+      street,
+      place,
+      district,
+      pincode,
+      state
+    } = req.body;
+
+    const updatedJoin = await Join.findByIdAndUpdate(
+      req.params.id,
+      {
+        fullName,
+        fatherName,
+        email,
+        phone,
+        whatsapp,
+        aadhar,
+        dob,
+        gender,
+        bloodGroup,
+        street,
+        place,
+        district,
+        pincode,
+        state
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedJoin) {
+      return res.status(404).json({ error: 'Volunteer dossier not found' });
+    }
+
+    res.json({ message: 'Volunteer profile updated successfully', data: updatedJoin });
+  } catch (err) {
+    console.error('Error updating join application:', err);
+    res.status(500).json({ error: 'Server error: ' + err.message });
+  }
+});
+
 module.exports = router;
