@@ -584,20 +584,54 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.target === contactModal) contactModal.style.display = "none";
     });
 
+    // Refresh Buttons Handling
+    document.getElementById("refresh-contacts-btn").addEventListener("click", function () {
+        const icon = this.querySelector("i");
+        icon.classList.add("fa-spin");
+        loadContacts().finally(() => {
+            setTimeout(() => icon.classList.remove("fa-spin"), 800);
+        });
+    });
+
+    document.getElementById("refresh-volunteers-btn").addEventListener("click", function () {
+        const icon = this.querySelector("i");
+        icon.classList.add("fa-spin");
+        loadVolunteers().finally(() => {
+            setTimeout(() => icon.classList.remove("fa-spin"), 800);
+        });
+    });
+
     function showContactModal(name, email, phone, date, msg) {
         contactModalName.textContent = `Inquiry from ${name}`;
         contactModalDetails.innerHTML = `
-            <div class="dossier-field">
-                <span class="d-lbl">Email Address:</span>
-                <span class="d-val"><a href="mailto:${escapeHTML(email)}" style="color:var(--color-orange);">${escapeHTML(email)}</a></span>
-            </div>
-            <div class="dossier-field">
-                <span class="d-lbl">Phone Number:</span>
-                <span class="d-val"><a href="tel:${escapeHTML(phone)}" style="color:white; text-decoration:none;">${escapeHTML(phone)}</a></span>
-            </div>
-            <div class="dossier-field">
-                <span class="d-lbl">Received Date:</span>
-                <span class="d-val" style="font-size:0.8rem; color:var(--text-secondary);">${escapeHTML(date)}</span>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; width: 100%;">
+                <div style="background: rgba(248, 167, 47, 0.04); border: 1px solid rgba(248, 167, 47, 0.08); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(248, 167, 47, 0.12); display: flex; align-items: center; justify-content: center; color: var(--color-orange); font-size: 1.25rem;">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Email Address</span>
+                        <a href="mailto:${escapeHTML(email)}" style="font-size: 0.95rem; color: var(--text-primary); font-weight: 600; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='var(--color-orange)'" onmouseout="this.style.color='var(--text-primary)'">${escapeHTML(email)}</a>
+                    </div>
+                </div>
+                <div style="background: rgba(248, 167, 47, 0.04); border: 1px solid rgba(248, 167, 47, 0.08); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(248, 167, 47, 0.12); display: flex; align-items: center; justify-content: center; color: var(--color-orange); font-size: 1.25rem;">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Phone Number</span>
+                        <a href="tel:${escapeHTML(phone)}" style="font-size: 0.95rem; color: var(--text-primary); font-weight: 600; text-decoration: none; transition: color 0.2s ease;" onmouseover="this.style.color='var(--color-orange)'" onmouseout="this.style.color='var(--text-primary)'">${escapeHTML(phone)}</a>
+                    </div>
+                </div>
+                <div style="background: rgba(248, 167, 47, 0.04); border: 1px solid rgba(248, 167, 47, 0.08); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); grid-column: 1 / -1;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(248, 167, 47, 0.12); display: flex; align-items: center; justify-content: center; color: var(--color-orange); font-size: 1.25rem;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px;">Inquiry Date</span>
+                        <span style="font-size: 0.95rem; color: var(--text-primary); font-weight: 600;">${escapeHTML(date)}</span>
+                    </div>
+                </div>
             </div>
         `;
         contactModalBody.textContent = msg;
