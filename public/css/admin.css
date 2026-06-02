@@ -1123,6 +1123,21 @@ tbody tr:hover {
     color: var(--color-red);
 }
 
+.status-resolved {
+    background-color: rgba(46, 204, 113, 0.12);
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    color: var(--color-green);
+}
+
+.status-cancelled {
+    background-color: rgba(100, 116, 139, 0.12);
+    border: 1px solid rgba(100, 116, 139, 0.25);
+    color: var(--text-muted);
+}
+
+.text-danger { color: var(--color-red); }
+.text-muted-cell { color: var(--text-muted); }
+
 /* Dropdown Sort Styling */
 .table-sort select {
     padding: 8px 12px;
