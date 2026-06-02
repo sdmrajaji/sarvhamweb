@@ -109,6 +109,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (contactForm) {
         const feedback = document.getElementById("form-feedback");
         const submitBtn = contactForm.querySelector("button");
+        const phoneInput = document.getElementById("contact-phone");
+
+        if (phoneInput) {
+            phoneInput.addEventListener("input", (e) => {
+                // Remove non-digit characters dynamically
+                e.target.value = e.target.value.replace(/\D/g, "");
+            });
+        }
 
         contactForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -123,6 +131,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (!name || !email || !phone || !message) {
                 feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> All fields are required.';
+                feedback.className = 'form-feedback error';
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Validate that phone is exactly 10 digits
+            const phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phone)) {
+                feedback.innerHTML = '<i class="fas fa-exclamation-circle"></i> Phone number must be exactly 10 digits.';
                 feedback.className = 'form-feedback error';
                 submitBtn.disabled = false;
                 return;
