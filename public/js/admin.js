@@ -1178,6 +1178,10 @@ document.addEventListener("DOMContentLoaded", function () {
             filtered.sort((a, b) => a.fullName.localeCompare(b.fullName));
         } else if (sortVal === "name-desc") {
             filtered.sort((a, b) => b.fullName.localeCompare(a.fullName));
+        } else if (sortVal === "blood-asc") {
+            filtered.sort((a, b) => (a.bloodGroup || '').localeCompare(b.bloodGroup || ''));
+        } else if (sortVal === "blood-desc") {
+            filtered.sort((a, b) => (b.bloodGroup || '').localeCompare(a.bloodGroup || ''));
         } else if (sortVal === "status") {
             const statusWeight = { verified: 1, pending: 2, rejected: 3 };
             filtered.sort((a, b) => {
