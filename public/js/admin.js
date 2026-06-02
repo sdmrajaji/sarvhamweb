@@ -738,6 +738,8 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(item => {
             const card = document.createElement("div");
             card.className = "gallery-admin-card";
+            card.setAttribute("draggable", "true");
+            card.setAttribute("data-id", item._id);
             card.innerHTML = `
                 <div class="card-img-wrapper">
                     <img src="${escapeHTML(item.imageUrl)}" alt="${escapeHTML(item.title)}" onerror="this.src='https://placehold.co/400x300?text=Invalid+Image+URL';">
@@ -762,6 +764,82 @@ document.addEventListener("DOMContentLoaded", function () {
                 const id = this.getAttribute("data-id");
                 if (confirm("Are you sure you want to permanently remove this image from the gallery?")) {
                     await deleteGalleryItem(id);
+                }
+            });
+        });
+
+        // Drag and Drop Listeners
+        let dragSourceId = null;
+        const cards = grid.querySelectorAll(".gallery-admin-card");
+        cards.forEach(card => {
+            card.addEventListener("dragstart", function (e) {
+                dragSourceId = this.getAttribute("data-id");
+                this.classList.add("dragging");
+                e.dataTransfer.effectAllowed = "move";
+                e.dataTransfer.setData("text/plain", dragSourceId);
+            });
+
+            card.addEventListener("dragend", function () {
+                this.classList.remove("dragging");
+                cards.forEach(c => c.classList.remove("drag-over"));
+            });
+
+            card.addEventListener("dragover", function (e) {
+                e.preventDefault();
+                return false;
+            });
+
+            card.addEventListener("dragenter", function () {
+                if (this.getAttribute("data-id") !== dragSourceId) {
+                    this.classList.add("drag-over");
+                }
+            });
+
+            card.addEventListener("dragleave", function () {
+                this.classList.remove("drag-over");
+            });
+
+            card.addEventListener("drop", async function (e) {
+                e.preventDefault();
+                this.classList.remove("drag-over");
+                
+                const targetId = this.getAttribute("data-id");
+                if (dragSourceId && dragSourceId !== targetId) {
+                    const dragIndex = galleryList.findIndex(item => item._id === dragSourceId);
+                    const targetIndex = galleryList.findIndex(item => item._id === targetId);
+                    
+                    if (dragIndex !== -1 && targetIndex !== -1) {
+                        const [draggedItem] = galleryList.splice(dragIndex, 1);
+                        galleryList.splice(targetIndex, 0, draggedItem);
+                        
+                        renderGallery(galleryList);
+                        
+                        try {
+                            const orders = galleryList.map((item, idx) => ({
+                                id: item._id,
+                                position: idx
+                            }));
+                            
+                            const res = await fetch("/api/gallery/reorder", {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization": `Bearer ${token}`
+                                },
+                                body: JSON.stringify({ orders })
+                            });
+                            
+                            if (res.ok) {
+                                showToast("Gallery order saved successfully!", "success");
+                            } else {
+                                const err = await res.json();
+                                showToast(err.error || "Failed to save reorder", "error");
+                            }
+                        } catch (err) {
+                            console.error("Reorder failed:", err);
+                            showToast("Failed to save reorder", "error");
+                        }
+                    }
                 }
             });
         });
@@ -920,7 +998,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 4000);
     }
 
-    // Inject Toast animations if they don't exist
+    // Inject Toast and Drag animations
     const styleSheet = document.createElement("style");
     styleSheet.textContent = `
         @keyframes slideInRight {
@@ -930,6 +1008,22 @@ document.addEventListener("DOMContentLoaded", function () {
         @keyframes slideOutRight {
             from { opacity: 1; transform: translateX(0); }
             to { opacity: 0; transform: translateX(50px); }
+        }
+        .gallery-admin-card {
+            cursor: grab;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .gallery-admin-card:active {
+            cursor: grabbing;
+        }
+        .gallery-admin-card.dragging {
+            opacity: 0.5;
+            border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+        }
+        .gallery-admin-card.drag-over {
+            border: 2px dashed var(--color-orange) !important;
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px var(--glow-orange);
         }
     `;
     document.head.appendChild(styleSheet);

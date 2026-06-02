@@ -6,7 +6,7 @@ const auth = require('../middleware/auth');
 // GET /api/gallery (Public)
 router.get('/', async (req, res) => {
   try {
-    let images = await Gallery.find().sort({ createdAt: -1 });
+    let images = await Gallery.find().sort({ position: 1, createdAt: -1 });
 
     if (images.length === 0) {
       const defaultImages = [
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         { title: 'Green Earth Drive', imageUrl: 'images/pho7.png', description: 'Planting thousands of native trees for tomorrow.' }
       ];
       await Gallery.insertMany(defaultImages);
-      images = await Gallery.find().sort({ createdAt: -1 });
+      images = await Gallery.find().sort({ position: 1, createdAt: -1 });
     }
 
     res.json(images);
@@ -58,6 +58,29 @@ router.delete('/:id', auth, async (req, res) => {
   } catch (err) {
     console.error('Error deleting gallery item:', err.message);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PUT /api/gallery/reorder (Admin protected - Bulk Reorder)
+router.put('/reorder', auth, async (req, res) => {
+  try {
+    const { orders } = req.body;
+    if (!Array.isArray(orders)) {
+      return res.status(400).json({ error: 'Invalid orders data' });
+    }
+
+    const bulkOps = orders.map(item => ({
+      updateOne: {
+        filter: { _id: item.id },
+        update: { $set: { position: item.position } }
+      }
+    }));
+
+    await Gallery.bulkWrite(bulkOps);
+    res.json({ message: 'Gallery reordered successfully' });
+  } catch (err) {
+    console.error('Error reordering gallery:', err.message);
+    res.status(500).json({ error: 'Server error: ' + err.message });
   }
 });
 

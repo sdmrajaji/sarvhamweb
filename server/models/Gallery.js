@@ -12,6 +12,10 @@ const gallerySchema = new mongoose.Schema({
   description: {
     type: String
   },
+  position: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now
