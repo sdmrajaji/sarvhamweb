@@ -12,6 +12,18 @@ const statSchema = new mongoose.Schema({
   bloodBridges: {
     type: String,
     default: '400+'
+  },
+  address: {
+    type: String,
+    default: 'Coimbatore, Tamil Nadu, India'
+  },
+  phone: {
+    type: String,
+    default: '+91 6385842829'
+  },
+  email: {
+    type: String,
+    default: 'sarvhamhelp@gmail.com'
   }
 });
 

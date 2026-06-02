@@ -250,6 +250,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (response.ok) {
                     showSuccessToast(result.message || "Successfully submitted!");
                     joinForm.reset();
+
+                    // Redirect to WhatsApp with a prefilled message
+                    const whatsappMsg = `Hello Sarvham Foundation, I have successfully submitted my volunteer application under the name ${encodeURIComponent(fullName)}. Looking forward to joining!`;
+                    const waUrl = `https://wa.me/916385842829?text=${whatsappMsg}`;
+
+                    setTimeout(() => {
+                        window.open(waUrl, "_blank");
+                    }, 1500);
                 } else {
                     showErrorToast("Error: " + result.error);
                 }
@@ -302,4 +310,47 @@ document.addEventListener("DOMContentLoaded", function () {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 4000);
     }
+
+    // 6. Dynamic Contact Details Loader
+    fetch("/api/stats")
+        .then(res => res.json())
+        .then(data => {
+            if (data) {
+                // Update footer/contact paragraphs containing direct icons
+                document.querySelectorAll("p").forEach(p => {
+                    const icon = p.querySelector("i");
+                    if (icon) {
+                        if (icon.classList.contains("fa-map-marker-alt")) {
+                            p.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.address || 'Coimbatore, Tamil Nadu, India'}`;
+                        } else if (icon.classList.contains("fa-phone-alt")) {
+                            p.innerHTML = `<i class="fas fa-phone-alt"></i> ${data.phone || '+91 6385842829'}`;
+                        } else if (icon.classList.contains("fa-envelope")) {
+                            p.innerHTML = `<i class="fas fa-envelope"></i> ${data.email || 'sarvhamhelp@gmail.com'}`;
+                        }
+                    }
+                });
+
+                // Update Contact page specific cards
+                document.querySelectorAll(".contact-info-card").forEach(card => {
+                    const icon = card.querySelector(".card-icon i");
+                    const p = card.querySelector("p");
+                    if (icon && p) {
+                        if (icon.classList.contains("fa-map-marker-alt")) {
+                            p.textContent = data.address || 'Coimbatore, Tamil Nadu, India';
+                        } else if (icon.classList.contains("fa-phone-alt")) {
+                            p.textContent = data.phone || '+91 6385842829';
+                            if (card.tagName === "A") {
+                                card.setAttribute("href", `tel:${(data.phone || '+916385842829').replace(/[^\d+]/g, "")}`);
+                            }
+                        } else if (icon.classList.contains("fa-envelope")) {
+                            p.textContent = data.email || 'sarvhamhelp@gmail.com';
+                            if (card.tagName === "A") {
+                                card.setAttribute("href", `mailto:${data.email || 'sarvhamhelp@gmail.com'}`);
+                            }
+                        }
+                    }
+                });
+            }
+        })
+        .catch(err => console.error("Failed to load dynamic contact details:", err));
 });

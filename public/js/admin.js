@@ -54,6 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const statsTreesInput = document.getElementById("stats-trees-input");
     const statsBloodInput = document.getElementById("stats-blood-input");
 
+    // Contact Info Form Elements
+    const contactInfoForm = document.getElementById("contact-info-form");
+    const contactAddressInput = document.getElementById("contact-address-input");
+    const contactPhoneInput = document.getElementById("contact-phone-input");
+    const contactEmailInput = document.getElementById("contact-email-input");
+
     // Local state variables
     let token = localStorage.getItem("sarvham_admin_token") || null;
     let contactsList = [];
@@ -211,6 +217,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 statsMealsInput.value = data.mealsDonated || "5,000+";
                 statsTreesInput.value = data.treesPlanted || "500+";
                 statsBloodInput.value = data.bloodBridges || "400+";
+                
+                if (contactAddressInput) contactAddressInput.value = data.address || "Coimbatore, Tamil Nadu, India";
+                if (contactPhoneInput) contactPhoneInput.value = data.phone || "+91 6385842829";
+                if (contactEmailInput) contactEmailInput.value = data.email || "sarvhamhelp@gmail.com";
             }
         } catch (err) {
             console.error("Failed to load counters stats:", err);
@@ -1180,6 +1190,48 @@ document.addEventListener("DOMContentLoaded", function () {
             } finally {
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Counters';
+            }
+        });
+    }
+
+    if (contactInfoForm) {
+        contactInfoForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            
+            const address = contactAddressInput.value.trim();
+            const phone = contactPhoneInput.value.trim();
+            const email = contactEmailInput.value.trim();
+            
+            if (!address || !phone || !email) {
+                showToast("All contact info fields are required.", "error");
+                return;
+            }
+
+            const saveBtn = contactInfoForm.querySelector("button");
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch("/api/stats", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ address, phone, email })
+                });
+
+                if (res.ok) {
+                    showToast("Public contact info saved successfully!", "success");
+                } else {
+                    const err = await res.json();
+                    showToast(err.error || "Failed to save contact info", "error");
+                }
+            } catch (err) {
+                handleApiError(err);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Contact Info';
             }
         });
     }
