@@ -8,195 +8,8 @@
         content="Emergency Blood Request - Request emergency blood support from the verified donor database of Sarvham Foundation.">
     <title>Emergency Blood Request - Sarvham Foundation</title>
     <link rel="stylesheet" href="css/contactpage.css">
+    <link rel="stylesheet" href="css/bloodpage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Extra custom micro-animations and enhancements for blood group request styling */
-        .blood-card-accent {
-            border-top: 4px solid var(--color-red, #e63946);
-        }
-        .text-red {
-            color: #e63946 !important;
-        }
-        
-        /* Premium Custom Dropdown Selector Styling */
-        .custom-select-wrapper {
-            position: relative;
-            width: 100%;
-        }
-        .custom-select-trigger {
-            width: 100%;
-            padding: 14px 16px;
-            background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            color: #1a1a2e;
-            font-size: 1rem;
-            font-family: inherit;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
-        }
-        .custom-select-trigger.placeholder-active {
-            color: #7f8c8d;
-            font-weight: 400;
-        }
-        .custom-select-trigger:hover {
-            border-color: #e63946;
-            background: #fff8f8;
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.12);
-        }
-        .custom-select-trigger.open {
-            border-color: #e63946;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.12);
-        }
-        .custom-select-trigger .select-arrow {
-            font-size: 0.85rem;
-            color: #555;
-            transition: transform 0.3s ease;
-        }
-        .custom-select-trigger.open .select-arrow {
-            transform: rotate(180deg);
-            color: #e63946;
-        }
-        .custom-select-trigger .trigger-text {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: inherit;
-        }
-        /* Selected value shown in trigger */
-        .custom-select-trigger:not(.placeholder-active) .trigger-text {
-            color: #1a1a2e;
-            font-weight: 700;
-            font-size: 1.05rem;
-        }
-        .custom-options-container {
-            position: absolute;
-            top: calc(100% + 8px);
-            left: 0;
-            width: 100%;
-            background: #ffffff;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-            z-index: 200;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px) scale(0.95);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 260px;
-            overflow-y: auto;
-            padding: 8px;
-        }
-        .custom-options-container.open {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0) scale(1);
-        }
-        .custom-option {
-            padding: 12px 16px;
-            color: #1a1a2e;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 0.3px;
-        }
-        .custom-option i {
-            font-size: 0.9rem;
-            color: #e63946;
-            opacity: 0.55;
-            transition: all 0.2s ease;
-        }
-        .custom-option:hover {
-            background: rgba(230, 57, 70, 0.1);
-            color: #c31432;
-        }
-        .custom-option:hover i {
-            color: #e63946;
-            opacity: 1;
-            transform: scale(1.2);
-        }
-        .custom-option.selected {
-            background: linear-gradient(135deg, #e63946 0%, #c31432 100%);
-            color: #ffffff;
-            font-weight: 700;
-            box-shadow: 0 3px 10px rgba(230, 57, 70, 0.35);
-        }
-        .custom-option.selected i {
-            color: #ffffff;
-            opacity: 1;
-        }
-        /* Scrollbar styling */
-        .custom-options-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-options-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        .custom-options-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.12);
-            border-radius: 3px;
-        }
-        .custom-options-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(230, 57, 70, 0.35);
-        }
-
-        /* Premium Tab System CSS */
-        .blood-tabs-wrapper {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0 25px 0;
-            gap: 16px;
-        }
-        .blood-tab-button {
-            padding: 14px 32px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px dashed rgba(255, 255, 255, 0.12);
-            border-radius: 14px;
-            color: #cbd5e1;
-            font-size: 1.05rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .blood-tab-button:hover {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-        .blood-tab-button.active {
-            background: linear-gradient(135deg, #e63946 0%, #b31624 100%);
-            border-color: #e63946;
-            color: #ffffff;
-            box-shadow: 0 8px 24px rgba(230, 57, 70, 0.3);
-            transform: translateY(0);
-        }
-        .blood-tab-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .blood-tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
 </head>
 
 <body>
@@ -221,7 +34,7 @@
         <div class="container">
             <!-- Header -->
             <div class="contact-header animate-fadeIn">
-                <span class="sub-label text-red">Life-Saving Assistance</span>
+                <span class="sub-label">Life-Saving Assistance</span>
                 <h1>Blood Donation Arrangement</h1>
                 <p>Facing a medical emergency? Submit your request details below. Our team connects seekers with verified voluntary donors immediately.</p>
             </div>
@@ -233,7 +46,7 @@
                     <h3>Immediate Assistance</h3>
                     <p>Verified Donor Networking</p>
                 </div>
-                <a href="#" id="emergency-helpline-link" class="contact-info-card interactive-card blood-card-accent">
+                <a href="#" id="emergency-helpline-link" class="contact-info-card interactive-card blood-card-accent heartbeat-active">
                     <div class="card-icon" style="background: rgba(230, 57, 70, 0.12); color: #e63946;"><i class="fas fa-phone-alt"></i></div>
                     <h3>Emergency Helpline</h3>
                     <p id="emergency-helpline-text">Loading...</p>
@@ -259,8 +72,8 @@
             <div id="tab-seeker-content" class="blood-tab-content active">
                 <div class="contact-split-grid">
                     <!-- Emergency Instructions / Info -->
-                    <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
-                        <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                    <div class="map-card guidelines-card animate-slideInLeft">
+                        <h3 style="margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-shield-heart text-red"></i> Guidelines for Blood Seekers
                         </h3>
                         <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
@@ -281,6 +94,24 @@
                                 <span><strong>Immediate Support:</strong> For ultra-critical requirements needing immediate action under 2 hours, please call our emergency support directly instead of only submitting forms.</span>
                             </li>
                         </ul>
+
+                        <!-- Live Compatibility Matcher Widget -->
+                        <div class="compat-container">
+                            <div class="compat-title">
+                                <i class="fas fa-arrows-spin text-red heartbeat-active"></i> Blood Compatibility Matcher
+                            </div>
+                            <p style="font-size: 0.82rem; color: #4a5568; margin-bottom: 12px; line-height: 1.4;">Select a blood group in the form to highlight compatible donor blood groups.</p>
+                            <div class="compat-badges-grid" id="seeker-compat-grid">
+                                <span class="compat-badge" data-group="A+">A+</span>
+                                <span class="compat-badge" data-group="A-">A-</span>
+                                <span class="compat-badge" data-group="B+">B+</span>
+                                <span class="compat-badge" data-group="B-">B-</span>
+                                <span class="compat-badge" data-group="AB+">AB+</span>
+                                <span class="compat-badge" data-group="AB-">AB-</span>
+                                <span class="compat-badge" data-group="O+">O+</span>
+                                <span class="compat-badge" data-group="O-">O-</span>
+                            </div>
+                        </div>
                     </div>
     
                     <!-- Blood Request Form -->
@@ -291,29 +122,49 @@
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="blood-patientName">Patient Name</label>
-                                    <input type="text" id="blood-patientName" name="blood-patientName" placeholder="Enter patient name" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-user-injured"></i>
+                                        <input type="text" id="blood-patientName" name="blood-patientName" placeholder="Enter patient name" required aria-required="true">
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="blood-contactName">Contact Person Name</label>
-                                    <input type="text" id="blood-contactName" name="blood-contactName" placeholder="Enter contact name" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-user-shield"></i>
+                                        <input type="text" id="blood-contactName" name="blood-contactName" placeholder="Enter contact name" required aria-required="true">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="blood-email">Your Email</label>
-                                    <input type="email" id="blood-email" name="blood-email" placeholder="Enter contact email" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="blood-email" name="blood-email" placeholder="Enter contact email" required aria-required="true">
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="blood-phone">Contact Mobile</label>
-                                    <input type="tel" id="blood-phone" name="blood-phone" placeholder="Enter 10-digit mobile" required aria-required="true" maxlength="10">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-phone-alt"></i>
+                                        <input type="tel" id="blood-phone" name="blood-phone" placeholder="Enter 10-digit mobile" required aria-required="true" maxlength="10">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="blood-units">Units Required</label>
-                                    <input type="number" id="blood-units" name="blood-units" placeholder="e.g. 2" required aria-required="true" min="1">
+                                    <div class="stepper-container">
+                                        <button type="button" class="stepper-btn" id="stepper-decrement"><i class="fas fa-minus"></i></button>
+                                        <div class="stepper-value" id="stepper-display">1</div>
+                                        <button type="button" class="stepper-btn" id="stepper-increment"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <input type="hidden" id="blood-units" name="blood-units" value="1" required aria-required="true">
+                                    <div class="stepper-warning" id="stepper-warning" style="display: none;">
+                                        <i class="fas fa-exclamation-triangle"></i> For requests above 5 units, local verification is required.
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="blood-group">Blood Group</label>
@@ -340,27 +191,39 @@
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="blood-date">Required Date</label>
-                                    <input type="date" id="blood-date" name="blood-date" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <input type="date" id="blood-date" name="blood-date" required aria-required="true">
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="blood-hospitalName">Hospital Name</label>
-                                    <input type="text" id="blood-hospitalName" name="blood-hospitalName" placeholder="e.g. KG Hospital" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-hospital"></i>
+                                        <input type="text" id="blood-hospitalName" name="blood-hospitalName" placeholder="e.g. KG Hospital" required aria-required="true">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
                                 <div class="input-group" style="grid-column: span 2;">
                                     <label for="blood-hospitalLocation">Hospital Location (City/Area)</label>
-                                    <input type="text" id="blood-hospitalLocation" name="blood-hospitalLocation" placeholder="e.g. Ramanathapuram, Coimbatore" required aria-required="true">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <input type="text" id="blood-hospitalLocation" name="blood-hospitalLocation" placeholder="e.g. Ramanathapuram, Coimbatore" required aria-required="true">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-group">
                                 <label for="blood-message">Clinical Notes / Additional Details</label>
-                                <textarea id="blood-message" name="blood-message" placeholder="Provide any other specific requirements or medical details..." rows="3"></textarea>
+                                <div class="input-icon-wrapper">
+                                    <i class="fas fa-notes-medical"></i>
+                                    <textarea id="blood-message" name="blood-message" placeholder="Provide any other specific requirements or medical details..." rows="3"></textarea>
+                                </div>
                             </div>
     
-                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Submit Emergency Request</button>
+                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3); width: 100%; max-width: 100%;">Submit Emergency Request</button>
                             <div id="blood-feedback" class="form-feedback"></div>
                         </form>
                     </div>
@@ -371,8 +234,8 @@
             <div id="tab-donor-content" class="blood-tab-content">
                 <div class="contact-split-grid">
                     <!-- Guidelines for Blood Donors -->
-                    <div class="map-card animate-slideInLeft" style="background: rgba(22, 30, 49, 0.4); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; color: #cbd5e1;">
-                        <h3 style="color: white; margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
+                    <div class="map-card guidelines-card animate-slideInLeft">
+                        <h3 style="margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-hand-holding-drop text-red"></i> Guidelines for Blood Donors
                         </h3>
                         <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 18px; line-height: 1.6; font-size: 0.95rem;">
@@ -393,10 +256,39 @@
                                 <span><strong>Health & Hygiene:</strong> Do not donate if you are suffering from acute illnesses, taking strong antibiotics, or have recently gotten a tattoo/piercing in the last 6 months.</span>
                             </li>
                         </ul>
-                        <div style="margin-top: 30px; padding: 20px; background: rgba(230, 57, 70, 0.08); border-left: 4px solid #e63946; border-radius: 8px;">
-                            <p style="font-size: 0.9rem; margin: 0; color: #cbd5e1; font-style: italic;">
+                        <div style="margin-top: 25px; padding: 20px; background: rgba(230, 57, 70, 0.04); border-left: 4px solid #e63946; border-radius: 8px;">
+                            <p style="font-size: 0.9rem; margin: 0; color: #4a5568; font-style: italic;">
                                 "To give blood is to give another birthday, another anniversary, another day at the beach, another laugh, another hug, another chance."
                             </p>
+                        </div>
+
+                        <!-- Interactive Eligibility Quiz -->
+                        <div class="eligibility-container">
+                            <div class="eligibility-title">
+                                <i class="fas fa-clipboard-check text-red"></i> Eligibility Self-Check
+                            </div>
+                            <p style="font-size: 0.82rem; color: #4a5568; margin-bottom: 12px; line-height: 1.4;">Ticking all checkmarks certifies your general physical readiness for donation.</p>
+                            
+                            <label class="eligibility-item">
+                                <input type="checkbox" class="eligibility-check" id="check-age">
+                                <span>I am between 18 and 65 years old.</span>
+                            </label>
+                            <label class="eligibility-item">
+                                <input type="checkbox" class="eligibility-check" id="check-weight">
+                                <span>I weigh 45 kg or more.</span>
+                            </label>
+                            <label class="eligibility-item">
+                                <input type="checkbox" class="eligibility-check" id="check-interval">
+                                <span>My last donation was more than 90 days ago.</span>
+                            </label>
+                            <label class="eligibility-item">
+                                <input type="checkbox" class="eligibility-check" id="check-health">
+                                <span>I feel healthy today (no active fever/cold/antibiotics).</span>
+                            </label>
+
+                            <div class="eligibility-badge not-eligible" id="eligibility-status-badge">
+                                <i class="fas fa-circle-exclamation"></i> Complete the checklist above
+                            </div>
                         </div>
                     </div>
     
@@ -408,35 +300,50 @@
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="donor-fullName">Full Name</label>
-                                    <input type="text" id="donor-fullName" name="donor-fullName" placeholder="Enter your full name" required>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="donor-fullName" name="donor-fullName" placeholder="Enter your full name" required>
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="donor-phone">Mobile Number</label>
-                                    <input type="tel" id="donor-phone" name="donor-phone" placeholder="Enter 10-digit mobile" required maxlength="10">
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-phone-alt"></i>
+                                        <input type="tel" id="donor-phone" name="donor-phone" placeholder="Enter 10-digit mobile" required maxlength="10">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
                                 <div class="input-group">
-                                    <label for="donor-email">Email Address <span style="font-size:0.8rem; color:var(--text-muted);">(Optional)</span></label>
-                                    <input type="email" id="donor-email" name="donor-email" placeholder="Enter email address">
+                                    <label for="donor-email">Email Address <span style="font-size:0.8rem; color:#718096;">(Optional)</span></label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="donor-email" name="donor-email" placeholder="Enter email address">
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="donor-age">Donor Age</label>
-                                    <input type="number" id="donor-age" name="donor-age" placeholder="Min 18 - Max 65" min="18" max="65" required>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-birthday-cake"></i>
+                                        <input type="number" id="donor-age" name="donor-age" placeholder="Min 18 - Max 65" min="18" max="65" required>
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
-                                <div class="input-group" style="position: relative;">
+                                <div class="input-group">
                                     <label for="donor-gender">Gender</label>
-                                    <select id="donor-gender" name="donor-gender" required style="width: 100%; padding: 14px 16px; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 12px; color: #1a1a2e; font-size: 1rem; font-family: inherit; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;">
-                                        <option value="" disabled selected>Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Other">Other</option>
-                                    </select>
-                                    <span style="position: absolute; right: 18px; bottom: 15px; color: #7f8c8d; pointer-events: none;"><i class="fas fa-chevron-down"></i></span>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-venus-mars"></i>
+                                        <select id="donor-gender" name="donor-gender" required>
+                                            <option value="" disabled selected>Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down select-arrow-icon"></i>
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <label for="donor-group">Blood Group</label>
@@ -463,39 +370,51 @@
                             <div class="input-row">
                                 <div class="input-group">
                                     <label for="donor-city">City / District</label>
-                                    <input type="text" id="donor-city" name="donor-city" placeholder="e.g. Coimbatore" required>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-city"></i>
+                                        <input type="text" id="donor-city" name="donor-city" placeholder="e.g. Coimbatore" required>
+                                    </div>
                                 </div>
                                 <div class="input-group">
-                                    <label for="donor-lastDonationDate">Last Donation Date <span style="font-size:0.8rem; color:var(--text-muted);">(Optional)</span></label>
-                                    <input type="date" id="donor-lastDonationDate" name="donor-lastDonationDate">
+                                    <label for="donor-lastDonationDate">Last Donation Date <span style="font-size:0.8rem; color:#718096;">(Optional)</span></label>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <input type="date" id="donor-lastDonationDate" name="donor-lastDonationDate">
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row">
                                 <div class="input-group" style="grid-column: span 2;">
                                     <label for="donor-address">Full Address</label>
-                                    <textarea id="donor-address" name="donor-address" placeholder="Enter your full address details..." rows="2" required></textarea>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        <textarea id="donor-address" name="donor-address" placeholder="Enter your full address details..." rows="2" required></textarea>
+                                    </div>
                                 </div>
                             </div>
     
                             <div class="input-row" style="margin-bottom: 20px;">
-                                <div class="input-group" style="position: relative;">
+                                <div class="input-group">
                                     <label for="donor-availability">Availability Status</label>
-                                    <select id="donor-availability" name="donor-availability" style="width: 100%; padding: 14px 16px; background: #ffffff; border: 2px solid #e0e0e0; border-radius: 12px; color: #1a1a2e; font-size: 1rem; font-family: inherit; font-weight: 600; cursor: pointer; outline: none; appearance: none; -webkit-appearance: none;">
-                                        <option value="available" selected>Available</option>
-                                        <option value="unavailable">Not Available</option>
-                                    </select>
-                                    <span style="position: absolute; right: 18px; bottom: 15px; color: #7f8c8d; pointer-events: none;"><i class="fas fa-chevron-down"></i></span>
+                                    <div class="input-icon-wrapper">
+                                        <i class="fas fa-toggle-on"></i>
+                                        <select id="donor-availability" name="donor-availability">
+                                            <option value="available" selected>Available</option>
+                                            <option value="unavailable">Not Available</option>
+                                        </select>
+                                        <i class="fas fa-chevron-down select-arrow-icon"></i>
+                                    </div>
                                 </div>
                                 <div class="input-group" style="display: flex; align-items: center; padding-top: 25px;">
-                                    <label class="checkbox-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; font-size: 0.9rem; color: #cbd5e1; font-weight: 500;">
+                                    <label class="checkbox-container" style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; font-size: 0.9rem; color: #4a5568; font-weight: 600;">
                                         <input type="checkbox" id="donor-consent" name="donor-consent" checked required style="width: 20px; height: 20px; accent-color: #e63946; cursor: pointer;">
                                         Agree to be contacted for donation
                                     </label>
                                 </div>
                             </div>
     
-                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);">Register as Blood Donor</button>
+                            <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3); width: 100%; max-width: 100%;">Register as Blood Donor</button>
                             <div id="donor-feedback" class="form-feedback"></div>
                         </form>
                     </div>
@@ -596,22 +515,18 @@
                 const value = this.getAttribute('data-value');
                 hiddenInput.value = value;
 
-                // Update trigger text — show selected blood group prominently
+                // Update trigger text
                 triggerText.innerHTML = `<i class="fas fa-droplet text-red"></i> <strong>${value}</strong>`;
-
-                // Remove placeholder styling so text colour goes bold & dark
                 trigger.classList.remove('placeholder-active');
 
-                // Highlight the selected option
                 optionsList.forEach(opt => opt.classList.remove('selected'));
                 this.classList.add('selected');
 
-                // Close dropdown
                 trigger.classList.remove('open');
                 optionsContainer.classList.remove('open');
 
-                // Dispatch change event for any external listeners
                 hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+                updateCompatibilityMatch(value);
             });
         });
 
@@ -622,27 +537,27 @@
         const dHiddenInput = document.getElementById('donor-group');
         const dTriggerText = dTrigger.querySelector('.trigger-text');
 
-        // Toggle dropdown open state
         dTrigger.addEventListener('click', function(e) {
             e.stopPropagation();
             dTrigger.classList.toggle('open');
             dOptionsContainer.classList.toggle('open');
         });
 
-        // Select option
         dOptionsList.forEach(option => {
             option.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const value = this.getAttribute('data-value');
                 dHiddenInput.value = value;
 
-                // Update trigger text
                 dTriggerText.innerHTML = `<i class="fas fa-droplet text-red"></i> <strong>${value}</strong>`;
                 dTrigger.classList.remove('placeholder-active');
+
                 dOptionsList.forEach(opt => opt.classList.remove('selected'));
                 this.classList.add('selected');
+
                 dTrigger.classList.remove('open');
                 dOptionsContainer.classList.remove('open');
+
                 dHiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
             });
         });
@@ -655,13 +570,98 @@
             dOptionsContainer.classList.remove('open');
         });
 
-        // Form submission is handled by main.js (section 5.5)
+        // ─── Quantity Stepper Logic ────────────────────────────────────────────
+        const stepperValDiv = document.getElementById('stepper-display');
+        const stepperInput = document.getElementById('blood-units');
+        const btnIncrement = document.getElementById('stepper-increment');
+        const btnDecrement = document.getElementById('stepper-decrement');
+        const warningDiv = document.getElementById('stepper-warning');
+
+        function updateStepper(newVal) {
+            if (newVal < 1) newVal = 1;
+            if (newVal > 10) newVal = 10;
+            
+            stepperInput.value = newVal;
+            stepperValDiv.textContent = newVal;
+
+            if (newVal > 5) {
+                warningDiv.style.display = 'flex';
+            } else {
+                warningDiv.style.display = 'none';
+            }
+        }
+
+        btnIncrement.addEventListener('click', () => {
+            let current = parseInt(stepperInput.value, 10) || 1;
+            updateStepper(current + 1);
+        });
+
+        btnDecrement.addEventListener('click', () => {
+            let current = parseInt(stepperInput.value, 10) || 1;
+            updateStepper(current - 1);
+        });
+
+        // ─── Compatibility Matcher Logic ────────────────────────────────────────
+        const compatBadges = document.querySelectorAll('#seeker-compat-grid .compat-badge');
+        
+        const compatibilityMap = {
+            'O-': ['O-'],
+            'O+': ['O+', 'O-'],
+            'A-': ['A-', 'O-'],
+            'A+': ['A+', 'A-', 'O+', 'O-'],
+            'B-': ['B-', 'O-'],
+            'B+': ['B+', 'B-', 'O+', 'O-'],
+            'AB-': ['AB-', 'A-', 'B-', 'O-'],
+            'AB+': ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+        };
+
+        function updateCompatibilityMatch(patientGroup) {
+            // Clear current highlights
+            compatBadges.forEach(b => b.classList.remove('highlight'));
+            
+            if (!patientGroup || !compatibilityMap[patientGroup]) return;
+
+            const acceptableDonors = compatibilityMap[patientGroup];
+            compatBadges.forEach(badge => {
+                const group = badge.getAttribute('data-group');
+                if (acceptableDonors.includes(group)) {
+                    badge.classList.add('highlight');
+                }
+            });
+        }
+
+        // ─── Donor Eligibility Checklist Logic ──────────────────────────────────
+        const eligibilityChecks = document.querySelectorAll('.eligibility-check');
+        const eligibilityBadge = document.getElementById('eligibility-status-badge');
+
+        function updateEligibilityStatus() {
+            let allChecked = true;
+            eligibilityChecks.forEach(box => {
+                if (!box.checked) allChecked = false;
+            });
+
+            if (allChecked) {
+                eligibilityBadge.className = 'eligibility-badge eligible';
+                eligibilityBadge.innerHTML = '<i class="fas fa-check-circle"></i> Perfect! You are fit to donate blood.';
+            } else {
+                eligibilityBadge.className = 'eligibility-badge not-eligible';
+                eligibilityBadge.innerHTML = '<i class="fas fa-circle-exclamation"></i> Complete the checklist above';
+            }
+        }
+
+        eligibilityChecks.forEach(box => {
+            box.addEventListener('change', updateEligibilityStatus);
+        });
+
+        // ─── Form Submission Integration & Resets ──────────────────────────────
         // Dropdown reset after success is coordinated via window.bloodDropdownReset
         window.bloodDropdownReset = function() {
             triggerText.innerHTML = '<i class="fas fa-droplet text-red"></i> Select Blood Group';
             trigger.classList.add('placeholder-active');
             optionsList.forEach(opt => opt.classList.remove('selected'));
             hiddenInput.value = '';
+            compatBadges.forEach(b => b.classList.remove('highlight'));
+            updateStepper(1);
         };
 
         window.donorDropdownReset = function() {
@@ -669,6 +669,9 @@
             dTrigger.classList.add('placeholder-active');
             dOptionsList.forEach(opt => opt.classList.remove('selected'));
             dHiddenInput.value = '';
+            // Reset eligibility checks
+            eligibilityChecks.forEach(box => box.checked = false);
+            updateEligibilityStatus();
         };
     </script>
 </body>
