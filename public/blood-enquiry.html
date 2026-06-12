@@ -73,6 +73,25 @@
                 <div class="contact-split-grid">
                     <!-- Emergency Instructions / Info -->
                     <div class="map-card guidelines-card animate-slideInLeft">
+                        <!-- Live Portal Stats -->
+                        <div class="stats-badge-grid">
+                            <div class="stats-badge-card">
+                                <i class="fas fa-heartbeat"></i>
+                                <span class="stats-num">1,240+</span>
+                                <span class="stats-label">Donors</span>
+                            </div>
+                            <div class="stats-badge-card">
+                                <i class="fas fa-circle-check"></i>
+                                <span class="stats-num">98%</span>
+                                <span class="stats-label">Matched</span>
+                            </div>
+                            <div class="stats-badge-card">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                <span class="stats-num">Free</span>
+                                <span class="stats-label">Service</span>
+                            </div>
+                        </div>
+
                         <h3 style="margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-shield-heart text-red"></i> Guidelines for Blood Seekers
                         </h3>
@@ -235,6 +254,7 @@
                 <div class="contact-split-grid">
                     <!-- Guidelines for Blood Donors -->
                     <div class="map-card guidelines-card animate-slideInLeft">
+                        <img src="images/blood-illustration.png" alt="Blood Donation Vector Care Illustration" class="sidebar-illustration">
                         <h3 style="margin-bottom: 20px; font-size: 1.35rem; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-hand-holding-drop text-red"></i> Guidelines for Blood Donors
                         </h3>
@@ -268,6 +288,17 @@
                                 <i class="fas fa-clipboard-check text-red"></i> Eligibility Self-Check
                             </div>
                             <p style="font-size: 0.82rem; color: #4a5568; margin-bottom: 12px; line-height: 1.4;">Ticking all checkmarks certifies your general physical readiness for donation.</p>
+                            
+                            <!-- Checklist Progress Bar -->
+                            <div class="eligibility-progress-wrapper">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #4a5568;">
+                                    <span>Checklist Progress</span>
+                                    <span id="progress-percent">0%</span>
+                                </div>
+                                <div class="eligibility-progress-track">
+                                    <div class="eligibility-progress-bar" id="eligibility-progress-bar"></div>
+                                </div>
+                            </div>
                             
                             <label class="eligibility-item">
                                 <input type="checkbox" class="eligibility-check" id="check-age">
@@ -396,14 +427,15 @@
     
                             <div class="input-row" style="margin-bottom: 20px;">
                                 <div class="input-group">
-                                    <label for="donor-availability">Availability Status</label>
-                                    <div class="input-icon-wrapper">
-                                        <i class="fas fa-toggle-on"></i>
-                                        <select id="donor-availability" name="donor-availability">
-                                            <option value="available" selected>Available</option>
-                                            <option value="unavailable">Not Available</option>
-                                        </select>
-                                        <i class="fas fa-chevron-down select-arrow-icon"></i>
+                                    <label>Availability Status</label>
+                                    <input type="hidden" id="donor-availability" name="donor-availability" value="available">
+                                    <div class="visual-toggle-group" id="donor-availability-toggle">
+                                        <div class="visual-toggle-btn active" data-value="available">
+                                            <span class="pulse-dot"></span> Available Now
+                                        </div>
+                                        <div class="visual-toggle-btn" data-value="unavailable">
+                                            <span class="pulse-dot"></span> Unavailable
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="input-group" style="display: flex; align-items: center; padding-top: 25px;">
@@ -630,20 +662,28 @@
             });
         }
 
-        // ─── Donor Eligibility Checklist Logic ──────────────────────────────────
+        // ─── Donor Eligibility Checklist Logic & Progress Bar ──────────────────
         const eligibilityChecks = document.querySelectorAll('.eligibility-check');
         const eligibilityBadge = document.getElementById('eligibility-status-badge');
+        const progressBar = document.getElementById('eligibility-progress-bar');
+        const progressPercentText = document.getElementById('progress-percent');
 
         function updateEligibilityStatus() {
-            let allChecked = true;
+            let checkedCount = 0;
             eligibilityChecks.forEach(box => {
-                if (!box.checked) allChecked = false;
+                if (box.checked) checkedCount++;
             });
 
-            if (allChecked) {
+            const percent = (checkedCount / eligibilityChecks.length) * 100;
+            progressBar.style.width = percent + '%';
+            progressPercentText.textContent = Math.round(percent) + '%';
+
+            if (checkedCount === eligibilityChecks.length) {
+                progressBar.classList.add('complete');
                 eligibilityBadge.className = 'eligibility-badge eligible';
                 eligibilityBadge.innerHTML = '<i class="fas fa-check-circle"></i> Perfect! You are fit to donate blood.';
             } else {
+                progressBar.classList.remove('complete');
                 eligibilityBadge.className = 'eligibility-badge not-eligible';
                 eligibilityBadge.innerHTML = '<i class="fas fa-circle-exclamation"></i> Complete the checklist above';
             }
@@ -651,6 +691,18 @@
 
         eligibilityChecks.forEach(box => {
             box.addEventListener('change', updateEligibilityStatus);
+        });
+
+        // ─── Custom Availability Visual Toggle Buttons ──────────────────────────
+        const availabilityBtns = document.querySelectorAll('#donor-availability-toggle .visual-toggle-btn');
+        const availabilityInput = document.getElementById('donor-availability');
+
+        availabilityBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                availabilityBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                availabilityInput.value = this.getAttribute('data-value');
+            });
         });
 
         // ─── Form Submission Integration & Resets ──────────────────────────────
@@ -669,9 +721,16 @@
             dTrigger.classList.add('placeholder-active');
             dOptionsList.forEach(opt => opt.classList.remove('selected'));
             dHiddenInput.value = '';
-            // Reset eligibility checks
+            
+            // Reset eligibility checks and progress
             eligibilityChecks.forEach(box => box.checked = false);
             updateEligibilityStatus();
+
+            // Reset availability visual toggle
+            availabilityBtns.forEach(btn => btn.classList.remove('active'));
+            const defaultBtn = document.querySelector('#donor-availability-toggle .visual-toggle-btn[data-value="available"]');
+            if (defaultBtn) defaultBtn.classList.add('active');
+            availabilityInput.value = 'available';
         };
     </script>
 </body>
