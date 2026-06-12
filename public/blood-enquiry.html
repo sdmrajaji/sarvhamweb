@@ -60,17 +60,20 @@
 
             <!-- Premium Glassmorphic Tab switcher -->
             <div class="blood-tabs-wrapper animate-fadeIn">
-                <button class="blood-tab-button active">
-                    <i class="fas fa-heartbeat"></i> Request Emergency Blood
+                <button class="blood-tab-button" id="trigger-seeker-modal" style="color: #e63946 !important;">
+                    <i class="fas fa-heartbeat text-red heartbeat-active"></i> Request Emergency Blood
                 </button>
-                <button class="blood-tab-button">
+                <button class="blood-tab-button active" id="trigger-donor-page">
                     <i class="fas fa-hand-holding-medical"></i> Become a Blood Donor
                 </button>
             </div>
 
-            <!-- Tab 1: Seeker Content -->
-            <div id="tab-seeker-content" class="blood-tab-content active">
-                <div class="contact-split-grid">
+            <!-- Tab 1: Seeker Content (Modal Popup Layout) -->
+            <div class="blood-modal-backdrop" id="seeker-modal">
+                <div class="blood-modal-content">
+                    <span class="blood-modal-close" id="close-seeker-modal"><i class="fas fa-times"></i></span>
+                    <div id="tab-seeker-content" class="blood-tab-content active" style="display: block; opacity: 1; transform: none; transition: none;">
+                        <div class="contact-split-grid">
                     <!-- Emergency Instructions / Info -->
                     <div class="map-card guidelines-card animate-slideInLeft">
                         <!-- Live Portal Stats -->
@@ -245,12 +248,13 @@
                             <button type="submit" class="cta-button" style="background: linear-gradient(135deg, #e63946, #c31432); box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3); width: 100%; max-width: 100%;">Submit Emergency Request</button>
                             <div id="blood-feedback" class="form-feedback"></div>
                         </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 2: Donor Content -->
-            <div id="tab-donor-content" class="blood-tab-content">
+            <!-- Tab 2: Donor Content (Always Visible on Page) -->
+            <div id="tab-donor-content" class="blood-tab-content active" style="display: block; opacity: 1; transform: none;">
                 <div class="contact-split-grid">
                     <!-- Guidelines for Blood Donors -->
                     <div class="map-card guidelines-card animate-slideInLeft">
@@ -497,33 +501,49 @@
             document.getElementById('blood-date').valueAsDate = new Date();
         }
 
-        // ─── Tab Switching Logic ──────────────────────────────────────────────
-        const tabButtons = document.querySelectorAll('.blood-tab-button');
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                tabButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+        // ─── Modal Popup and Tab Switching Logic ────────────────────────────────
+        const seekerModal = document.getElementById('seeker-modal');
+        const closeSeekerModalBtn = document.getElementById('close-seeker-modal');
+        const triggerSeekerBtn = document.getElementById('trigger-seeker-modal');
+        const triggerDonorBtn = document.getElementById('trigger-donor-page');
 
-                const isDonor = this.innerHTML.includes('Become');
-                const seekerContent = document.getElementById('tab-seeker-content');
-                const donorContent = document.getElementById('tab-donor-content');
+        function openSeekerModal() {
+            seekerModal.style.display = 'block';
+            document.body.classList.add('modal-open');
+            triggerDonorBtn.classList.remove('active');
+            triggerSeekerBtn.classList.add('active');
+        }
 
-                if (isDonor) {
-                    seekerContent.classList.remove('active');
-                    setTimeout(() => {
-                        seekerContent.style.display = 'none';
-                        donorContent.style.display = 'block';
-                        setTimeout(() => donorContent.classList.add('active'), 50);
-                    }, 300);
-                } else {
-                    donorContent.classList.remove('active');
-                    setTimeout(() => {
-                        donorContent.style.display = 'none';
-                        seekerContent.style.display = 'block';
-                        setTimeout(() => seekerContent.classList.add('active'), 50);
-                    }, 300);
-                }
-            });
+        function closeSeekerModal() {
+            seekerModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            triggerSeekerBtn.classList.remove('active');
+            triggerDonorBtn.classList.add('active');
+        }
+
+        triggerSeekerBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openSeekerModal();
+        });
+
+        triggerDonorBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeSeekerModal();
+        });
+
+        closeSeekerModalBtn.addEventListener('click', closeSeekerModal);
+
+        seekerModal.addEventListener('click', function(e) {
+            if (e.target === seekerModal) {
+                closeSeekerModal();
+            }
+        });
+
+        // Handle URL hash routing
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#request' || window.location.hash === '#seeker') {
+                openSeekerModal();
+            }
         });
 
         // ─── Custom Blood Group Dropdown (Seeker) ──────────────────────────────

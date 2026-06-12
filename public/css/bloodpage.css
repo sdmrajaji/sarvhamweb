@@ -814,3 +814,92 @@
         height: 100px;
     }
 }
+
+/* Modal Backdrop Overlay */
+.blood-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10000;
+    overflow-y: auto;
+    padding: 60px 20px;
+    animation: fadeInBackdrop 0.4s ease;
+}
+
+@keyframes fadeInBackdrop {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal Content Container */
+.blood-modal-content {
+    background: radial-gradient(circle at 10% 20%, rgba(230, 57, 70, 0.03) 0%, rgba(255, 255, 255, 1) 90%);
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 28px;
+    border: 1px solid rgba(230, 57, 70, 0.16);
+    box-shadow: 0 25px 60px -15px rgba(230, 57, 70, 0.25);
+    position: relative;
+    padding: 60px 40px 40px 40px;
+    animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(40px) scale(0.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Modal Close Button */
+.blood-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    width: 40px;
+    height: 40px;
+    background: rgba(230, 57, 70, 0.05);
+    border: 1px solid rgba(230, 57, 70, 0.1);
+    color: #e63946;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.blood-modal-close:hover {
+    background: #e63946;
+    color: #ffffff;
+    transform: rotate(90deg) scale(1.05);
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Responsiveness for Modal Content */
+@media (max-width: 768px) {
+    .blood-modal-backdrop {
+        padding: 20px 10px;
+    }
+    .blood-modal-content {
+        padding: 50px 16px 24px 16px;
+        border-radius: 20px;
+    }
+    .blood-modal-close {
+        top: 10px;
+        right: 15px;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+}
